@@ -4,7 +4,7 @@ table.schedule tr {height: 2em}
 table.schedule th {padding: 0 0.5em}
 td.schedule_user {padding-right: 1em}
 td.schedule_green, td.schedule_red {text-align: center}
-td.schedule_green {background-color: #cec /*#aca*/}
-td.schedule_red {background-color: #ecc /*#caa*/}
+td.schedule_green {background: #cec url("ok.png") no-repeat center}
+td.schedule_red {background-color: #ecc}
 tr.schedule_buttons {text-align: right}
 form.schedule input.submit {margin-top: 0.5em; padding: 0.2em 0.5em}

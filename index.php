@@ -13,7 +13,7 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 }
 
 
-define('SCHEDULE_VERSION', '1beta1');
+define('SCHEDULE_VERSION', '1beta2');
 
 
 function Schedule_dataFolder()
@@ -120,7 +120,12 @@ function Schedule_write($event, $recs)
 
 
 /**
+ * Returns the view.
  *
+ * @param  string $event  The name of the event.
+ * @param  array $dates  The dates.
+ * @param  array $recs
+ * @return string  The (X)HTML.
  */
 function Schedule_view($event, $dates, $recs) // TODO: rename $dates to $options
 {
@@ -134,11 +139,18 @@ function Schedule_view($event, $dates, $recs) // TODO: rename $dates to $options
         $o .= '<th>' . $date . '</th>';
     }
     $o .= '</tr>';
+    $counts = array();
+    foreach ($dates as $date) {
+        $counts[$date] = 0;
+    }
     foreach ($recs as $user => $rec) {
         $o .= '<tr>'
             . '<td class="schedule_user">' . $user . '</td>';
         foreach ($dates as $date) {
             $ok = array_search($date, $rec) !== false;
+            if ($ok) {
+                $counts[$date]++;
+            }
             $class = 'schedule_' . ($ok ? 'green' : 'red');
             $checked = $ok ? ' checked="checked"' : '';
             $cell = $user == Schedule_user()
@@ -149,6 +161,11 @@ function Schedule_view($event, $dates, $recs) // TODO: rename $dates to $options
         }
         $o .= '</tr>';
     }
+    $o .= '<tr class="schedule_total"><td></td>';
+    foreach ($counts as $count) {
+        $o .= '<td>' . $count . '</td>';
+    }
+    $o .= '</tr>';
     if (Schedule_user()) {
         $o .= '<tr class="schedule_buttons"><td colspan="4">'
             . tag('input type="submit" class="submit" name="schedule_submit_' . $event
@@ -208,7 +225,7 @@ function Schedule($event)
     $options = func_get_args();
     array_shift($options);
     if (empty($options)) {
-        return '<p class="cmsimplecore_warning">' . $ptx['err_no_options']
+        return '<p class="cmsimplecore_warning">' . $ptx['err_no_option']
             . '</p>';
     }
 

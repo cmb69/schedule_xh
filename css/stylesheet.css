@@ -6,5 +6,6 @@ td.schedule_user {padding-right: 1em}
 td.schedule_green, td.schedule_red {text-align: center}
 td.schedule_green {background: #cec url("ok.png") no-repeat center}
 td.schedule_red {background-color: #ecc}
+tr.schedule_total td {text-align: center; font-weight: bold}
 tr.schedule_buttons {text-align: right}
 form.schedule input.submit {margin-top: 0.5em; padding: 0.2em 0.5em}

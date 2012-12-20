@@ -16,11 +16,34 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 define('SCHEDULE_VERSION', '1beta2');
 
 
+/**
+ * Returns the data folder.
+ *
+ * @return string
+ */
 function Schedule_dataFolder()
 {
-    global $pth;
+    global $pth, $plugin_cf;
 
-    return $pth['folder']['plugins'] . 'schedule/data/';
+    $pcf = $plugin_cf['schedule'];
+    if (!empty($pcf['folder_data'])) {
+	$fn = $pth['folder']['base'] . $pcf['folder_data'];
+    } else {
+	$fn = $pth['folder']['plugins'] . 'schedule/data/';
+    }
+    if (substr($fn, -1) != '/') {
+	$fn .= '/';
+    }
+    if (file_exists($fn)) {
+	if (!is_dir($fn)) {
+	    e('cntopen', 'folder', $fn);
+	}
+    } else {
+	if (!mkdir($fn, 0777, true)) {
+	    e('cntwriteto', 'folder', $fn);
+	}
+    }
+    return $fn;
 }
 
 

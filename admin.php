@@ -67,7 +67,7 @@ function Schedule_systemCheck() // RELEASE-TODO
 	. '&nbsp;&nbsp;' . $ptx['syscheck_magic_quotes'] . tag('br') . tag('br');
     $o .= (strtoupper($tx['meta']['codepage']) == 'UTF-8' ? $ok : $warn)
 	. '&nbsp;&nbsp;' . $ptx['syscheck_encoding'] . tag('br');
-    foreach (array('css/', 'languages/') as $folder) {
+    foreach (array('config/', 'css/', 'languages/') as $folder) {
 	$folders[] = $pth['folder']['plugins'] . 'schedule/' . $folder;
     }
     $folders[] = Schedule_dataFolder();

@@ -148,13 +148,13 @@ function Schedule_write($event, $recs)
  * @param  string $event  The name of the event.
  * @param  array $dates  The dates.
  * @param  array $recs
+ * @param  bool $showTotals
  * @return string  The (X)HTML.
  */
-function Schedule_view($event, $dates, $recs) // TODO: rename $dates to $options
+function Schedule_view($event, $dates, $recs, $showTotals) // TODO: rename $dates to $options
 {
-    global $sn, $su, $tx, $plugin_cf, $plugin_tx;
+    global $sn, $su, $tx, $plugin_tx;
 
-    $pcf = $plugin_cf['schedule'];
     $ptx = $plugin_tx['schedule'];
     $url = "$sn?$su";
     $o = '<form class="schedule" action="' . $url . '" method="POST">'
@@ -187,7 +187,7 @@ function Schedule_view($event, $dates, $recs) // TODO: rename $dates to $options
         }
         $o .= '</tr>';
     }
-    if ($pcf['default_totals']) {
+    if ($showTotals) {
         $o .= '<tr class="schedule_total"><td class="schedule_user">' . $ptx['total'] . '</td>';
         foreach ($counts as $count) {
             $o .= '<td>' . $count . '</td>';
@@ -241,8 +241,9 @@ function Schedule_submit($event, $options, $recs)
  */
 function Schedule($event)
 {
-    global $plugin_tx;
+    global $plugin_cf, $plugin_tx;
 
+    $pcf = $plugin_cf['schedule'];
     $ptx = $plugin_tx['schedule'];
 
     if (!preg_match('/^[a-z\-0-9]+$/i', $event)) {
@@ -252,6 +253,7 @@ function Schedule($event)
 
     $options = func_get_args();
     array_shift($options);
+    $showTotals = is_bool($options[0]) ? array_shift($options) : $pcf['default_totals'];
     if (empty($options)) {
         return '<p class="cmsimplecore_warning">' . $ptx['err_no_option']
             . '</p>';
@@ -270,7 +272,7 @@ function Schedule($event)
 
     Schedule_lock($event, LOCK_UN);
 
-    return Schedule_view($event, $options, $recs);
+    return Schedule_view($event, $options, $recs, $showTotals);
 }
 
 ?>

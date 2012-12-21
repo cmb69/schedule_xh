@@ -79,13 +79,18 @@ oder diese Ihren Wünschen gemäß anpassen.</p>
 <h2><a name="usage">Verwendung</a></h2>
 <p>Um eine Planung/Abstimmung auf einer CMSimple-Seite zu ermöglichen,
 verwenden Sie den folgenden Plugin-Aufruf:</p>
-<pre>{{{PLUGIN:schedule(%NAME%, %OPTION_1%, %OPTION_2%, %OPTION_N%);}}}</pre>
+<pre>{{{PLUGIN:schedule('%NAME%', %GESAMTERGEBNIS%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');}}}</pre>
 <p>Die Parameter haben folgende Bedeutung:</p>
 <dl>
 <dt>%NAME%</dt>
 <dd>Der Name des Ereignisses oder einer sonstigen Abstimmung.
 Dieser wird als Basisname der CSV-Datei verwendet, in der die Ergebnisse gespeichert werden,
 und darf daher nur alphanumerische und Minus-Zeichen enthalten.</dd>
+<dt>%GESAMTERGEBNIS%</dt>
+<dd>Ob das Gesamtergebnis angezeigt werden soll: <em>true</em> (ja) oder <em>false</em> (nein).
+Es ist wichtig diesen Parameter ohne Anführungszeichen zu notieren.
+Wenn Sie die Voreinstellung aus der Plugin-Konfiguration verwenden wollen,
+dann lassen Sie diesen Parameter einfach weg.</dd>
 <dt>%OPTION_X%</dt>
 <dd>Der Name der Option, der als Überschrift der entsprechenden Tabellenspalte angezeigt wird.
 Dies ist normalerweise ein Datum, aber da dieser Name keine semantische Bedeutung für Schedule_XH hat,
@@ -95,15 +100,17 @@ Grundsätzlich können Sie so viele Option angegeben wie Sie möchten.</dd>
 <p>Es ist nicht erforderlich den Zugriff auf diese Seite auf Mitglieder zu beschränken;
 wenn ein Besucher Ihrer Website nicht angemeldet ist, wird er eben nur die aktuellen Ergebnisse sehen,
 ohne jedoch abstimmen zu können. Daher können Sie den Planer auch im Template platzieren:</p>
-<pre>&lt;?php echo schedule(%NAME%, %OPTION_1%, %OPTION_2%, %OPTION_N%);?&gt;</pre>
+<pre>&lt;?php echo schedule('%NAME%', %GESAMTERGEBNIS%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');?&gt;</pre>
 <p>Wenn sie allerdings die Abstimmung auf eine bestimmte Benutzergruppe bzw. Zugriffsebene beschränken wollen,
 müssen Sie den Planer auf einer Seite unterbringen, die nur Mitgliedern mit entsprechender Autorisation  zugänglich ist.</p>
 <h4>Beispiele</h4>
 <p>Um eine Weihnachtsfeier für die Belegschaft zu terminieren:</p>
 <pre>{{{PLUGIN:schedule('Weihnachten', '18.12.', '19.12.', '22.12.');}}}</pre>
 <div style="text-align: center"><img src="./schedule.jpg" alt="Screenshot"></div>
-<p>Für eine Abstimmung über die Farbe der neuen Mannschaftstrikots:</p>
-<pre>{{{PLUGIN:schedule('Trikots', 'rot', 'grün', 'blau');}}}</pre>
+<p>Für eine Abstimmung über die Farbe der neuen Mannschaftstrikots,
+bei der das Gesamtergebnis unabhängig von der Einstellung der entsprechenden Konfigurationsoption
+unterhalb der Tabelle angezeigt wird:</p>
+<pre>{{{PLUGIN:schedule('Trikots', true, 'rot', 'grün', 'blau');}}}</pre>
 <h4>Hinweise</h4>
 <ul>
 <li>Sie können so viele Planer haben wie Sie wünschen;

@@ -78,12 +78,17 @@ or customize them according to your needs.</p>
 
 <h2><a name="usage">Usage</a></h2>
 <p>To set up a planning/voting on a CMSimple page, use the following plugin call:</p>
-<pre>{{{PLUGIN:schedule(%NAME%, %OPTION_1%, %OPTION_2%, %OPTION_N%);}}}</pre>
+<pre>{{{PLUGIN:schedule('%NAME%', %SHOW_TOTALS%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');}}}</pre>
 <p>The parameters have the following meaning:</p>
 <dl>
 <dt>%NAME%</dt>
 <dd>The name of the event or other voting. This is used as basename of the CSV file in which the results are stored,
 so it may contain alphanumeric characters and minus signs only.</dd>
+<dt>%SHOW_TOTALS%</dt>
+<dd>Whether the totals should be displayed: <em>true</em> (yes) or <em>false</em> (no).
+It's important to write this parameter without quotes.
+If you want to use the default value from the plugin configuration,
+just skip this parameter.</dd>
 <dt>%OPTION_X%</dt>
 <dd>The name of the option, which will be displayed as heading of the respective table column.
 This is typically a date, but as it has no semantic meaning to Schedule_XH, can actually be any string.
@@ -92,7 +97,7 @@ Basically you can have as many options as you like.</dd>
 <p>It is not necessary to restrict access to this page to members;
 if a visitor of your site is not logged in, he will just see the current results,
 without being able to vote. So you can even place the planner in the template:</p>
-<pre>&lt;?php echo schedule(%NAME%, %OPTION_1%, %OPTION_2%, %OPTION_N%);?&gt;</pre>
+<pre>&lt;?php echo schedule('%NAME%', %SHOW_TOTALS%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');?&gt;</pre>
 <p>However, if you want to restrict the voting to a certain user group resp. access level,
 you have to place the planner on a page,
 which can only be accessed by members with the respective authorization.</p>
@@ -100,8 +105,10 @@ which can only be accessed by members with the respective authorization.</p>
 <p>To schedule a Christmas staff party:</p>
 <pre>{{{PLUGIN:schedule('christmas', 'Dec. 18th', 'Dec. 19th', 'Dec. 22nd');}}}</pre>
 <div style="text-align: center"><img src="./schedule.jpg" alt="Screenshot"></div>
-<p>To set up a voting about the color of the new team shirts:</p>
-<pre>{{{PLUGIN:schedule('shirts', 'red', 'green', 'blue');}}}</pre>
+<p>To set up a voting about the color of the new team shirts,
+that displays the voting totals below the table
+independently of the respective configuration option:</p>
+<pre>{{{PLUGIN:schedule('shirts', true, 'red', 'green', 'blue');}}}</pre>
 <h4>Notes</h4>
 <ul>
 <li>You can have as many planners as you like;

@@ -152,20 +152,23 @@ function Schedule_write($event, $recs)
  */
 function Schedule_view($event, $dates, $recs) // TODO: rename $dates to $options
 {
-    global $sn, $su, $tx;
+    global $sn, $su, $tx, $plugin_cf, $plugin_tx;
 
+    $pcf = $plugin_cf['schedule'];
+    $ptx = $plugin_tx['schedule'];
     $url = "$sn?$su";
     $o = '<form class="schedule" action="' . $url . '" method="POST">'
-        . '<table class="schedule"><tbody>'
+        . '<table class="schedule"><thead>'
         . '<tr><th></th>';
     foreach ($dates as $date) {
         $o .= '<th>' . $date . '</th>';
     }
-    $o .= '</tr>';
+    $o .= '</tr></thead>';
     $counts = array();
     foreach ($dates as $date) {
         $counts[$date] = 0;
     }
+    $o .= '<tbody>';
     foreach ($recs as $user => $rec) {
         $o .= '<tr>'
             . '<td class="schedule_user">' . $user . '</td>';
@@ -184,11 +187,13 @@ function Schedule_view($event, $dates, $recs) // TODO: rename $dates to $options
         }
         $o .= '</tr>';
     }
-    $o .= '<tr class="schedule_total"><td></td>';
-    foreach ($counts as $count) {
-        $o .= '<td>' . $count . '</td>';
+    if ($pcf['default_totals']) {
+        $o .= '<tr class="schedule_total"><td class="schedule_user">' . $ptx['total'] . '</td>';
+        foreach ($counts as $count) {
+            $o .= '<td>' . $count . '</td>';
+        }
+        $o .= '</tr>';
     }
-    $o .= '</tr>';
     if (Schedule_user()) {
         $o .= '<tr class="schedule_buttons"><td colspan="4">'
             . tag('input type="submit" class="submit" name="schedule_submit_' . $event

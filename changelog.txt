@@ -1,2 +1,7 @@
+Version 1beta2 - released 2012-12-21
+cmb     added column totals and possibility to hide them (suggested by Ele)
+cmb     made data folder configurable (suggested by Ele)
+cmb     updated user manuals accordingly
+
 Version 1beta1 - released 2012-12-18
 cmb	initial release

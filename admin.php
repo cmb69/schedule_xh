@@ -3,7 +3,11 @@
 /**
  * Back-end of Schedule_XH.
  *
- * Copyright (c) 2012 Christoph M. Becker (see license.txt)
+ * @package	Schedule
+ * @copyright	Copyright (c) 2012-2013 Christoph M. Becker <http://3-magi.net/>
+ * @license	http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
+ * @version     $Id$
+ * @link	http://3-magi.net/?CMSimple_XH/Schedule_XH
  */
 
 
@@ -16,6 +20,7 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 /**
  * Returns the plugin version information view.
  *
+ * @global  The paths of system files and folders.
  * @return string  The (X)HTML.
  */
 function Schedule_version()
@@ -43,6 +48,9 @@ function Schedule_version()
 /**
  * Returns the requirements information view.
  *
+ * @global array  The paths of system files and folders.
+ * @global array  The localization of the core.
+ * @global array  The localization of the plugins.
  * @return string  The (X)HTML.
  */
 function Schedule_systemCheck() // RELEASE-TODO
@@ -66,7 +74,7 @@ function Schedule_systemCheck() // RELEASE-TODO
     $o .= (!get_magic_quotes_runtime() ? $ok : $fail)
 	. '&nbsp;&nbsp;' . $ptx['syscheck_magic_quotes'] . tag('br') . tag('br');
     $o .= (strtoupper($tx['meta']['codepage']) == 'UTF-8' ? $ok : $warn)
-	. '&nbsp;&nbsp;' . $ptx['syscheck_encoding'] . tag('br');
+	. '&nbsp;&nbsp;' . $ptx['syscheck_encoding'] . tag('br'). tag('br');
     foreach (array('config/', 'css/', 'languages/') as $folder) {
 	$folders[] = $pth['folder']['plugins'] . 'schedule/' . $folder;
     }

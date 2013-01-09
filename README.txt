@@ -1,5 +1,5 @@
 Schedule_XH -- a CMSimple_XH plugin
-Copyright (C) 2012 Christoph M. Becker
+Copyright (C) 2012-2013 Christoph M. Becker
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

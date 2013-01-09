@@ -17,9 +17,10 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 }
 
 
+/**
+ * The plugin version.
+ */
 define('SCHEDULE_VERSION', '1beta3');
-
-// TODO: document globals
 
 
 /**

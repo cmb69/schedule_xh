@@ -12,5 +12,6 @@ $plugin_tx['schedule']['syscheck_writable']="Folder '%s' writable";
 
 $plugin_tx['schedule']['cf_folder_data']="Path of a folder relative to the CMSimple_XH root directory, where to store the plugin's data. E.g. \"content/schedule/\". Leave empty to store in the data/ folder in the plugin's directory.";
 $plugin_tx['schedule']['cf_default_totals']="Whether the totals should be displayed: \"1\" (yes) or \"0\" (no).";
+$plugin_tx['schedule']['cf_default_readonly']="Whether the planner should be read only: \"1\" (yes) or \"0\" (no).";
 
 ?>

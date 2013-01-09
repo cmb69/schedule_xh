@@ -13,7 +13,7 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 }
 
 
-define('SCHEDULE_VERSION', '1beta2');
+define('SCHEDULE_VERSION', '1beta3');
 
 
 /**
@@ -90,9 +90,10 @@ function Schedule_lock($event, $mode)
  * Returns all stored records for the event.
  *
  * @param  string $event  The name of the event.
+ * @param  bool $readOnly  Whether the planer is read only.
  * @return array
  */
-function Schedule_read($event)
+function Schedule_read($event, $readOnly)
 {
     $recs = array();
     $fn = Schedule_dataFolder() . $event . '.csv';
@@ -108,7 +109,8 @@ function Schedule_read($event)
         $user = array_shift($rec);
         $recs[$user] = $rec;
     }
-    if (($user = Schedule_user()) !== null && !isset($recs[$user])) {
+    if (!$readOnly
+	 && ($user = Schedule_user()) !== null && !isset($recs[$user])) {
         $recs[$user] = array();
     }
     ksort($recs);
@@ -149,16 +151,19 @@ function Schedule_write($event, $recs)
  * @param  array $dates  The dates.
  * @param  array $recs
  * @param  bool $showTotals
+ * @param  bool $readOnly
  * @return string  The (X)HTML.
  */
-function Schedule_view($event, $dates, $recs, $showTotals) // TODO: rename $dates to $options
+function Schedule_view($event, $dates, $recs, $showTotals, $readOnly) // TODO: rename $dates to $options
 {
     global $sn, $su, $tx, $plugin_tx;
 
     $ptx = $plugin_tx['schedule'];
     $url = "$sn?$su";
-    $o = '<form class="schedule" action="' . $url . '" method="POST">'
-        . '<table class="schedule"><thead>'
+    $o = $readOnly
+	? '<div class="schedule">'
+	: '<form class="schedule" action="' . $url . '" method="POST">';
+    $o .= '<table class="schedule"><thead>'
         . '<tr><th></th>';
     foreach ($dates as $date) {
         $o .= '<th>' . $date . '</th>';
@@ -179,7 +184,7 @@ function Schedule_view($event, $dates, $recs, $showTotals) // TODO: rename $date
             }
             $class = 'schedule_' . ($ok ? 'green' : 'red');
             $checked = $ok ? ' checked="checked"' : '';
-            $cell = $user == Schedule_user()
+            $cell = !$readOnly && $user == Schedule_user()
                 ? tag('input type="checkbox" name="schedule_date_' . $event
                       . '[]" value="' . $date . '"' . $checked)
                 : '&nbsp;';
@@ -194,13 +199,14 @@ function Schedule_view($event, $dates, $recs, $showTotals) // TODO: rename $date
         }
         $o .= '</tr>';
     }
-    if (Schedule_user()) {
+    if (!$readOnly && Schedule_user()) {
         $o .= '<tr class="schedule_buttons"><td colspan="4">'
             . tag('input type="submit" class="submit" name="schedule_submit_' . $event
                   . '" value="' . ucfirst($tx['action']['save']) . '"')
             . '</td></tr>';
     }
-    $o .= '</tbody></table></form>';
+    $o .= '</tbody></table>';
+    $o .= $readOnly ? '</div>' : '</form>';
 
     return $o;
 }
@@ -254,6 +260,7 @@ function Schedule($event)
     $options = func_get_args();
     array_shift($options);
     $showTotals = is_bool($options[0]) ? array_shift($options) : $pcf['default_totals'];
+    $readOnly = is_bool($options[0]) ? array_shift($options) : $pcf['default_readonly'];
     if (empty($options)) {
         return '<p class="cmsimplecore_warning">' . $ptx['err_no_option']
             . '</p>';
@@ -264,7 +271,7 @@ function Schedule($event)
                     ? LOCK_EX
                     : LOCK_SH);
 
-    $recs = Schedule_read($event);
+    $recs = Schedule_read($event, $readOnly);
 
     if (isset($_POST['schedule_submit_' . $event]) && Schedule_user()) {
         $recs = Schedule_submit($event, $options, $recs);
@@ -272,7 +279,7 @@ function Schedule($event)
 
     Schedule_lock($event, LOCK_UN);
 
-    return Schedule_view($event, $options, $recs, $showTotals);
+    return Schedule_view($event, $options, $recs, $showTotals, $readOnly);
 }
 
 ?>

@@ -1,10 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html lang="de">
 
 <head>
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
-<meta name="content-language" content="de">
 <title>Schedule_XH – Handbuch</title>
 <link rel="stylesheet" type="text/css" href="./stylesheet.css">
 </head>
@@ -12,7 +11,7 @@
 <body>
 
 <h1>Schedule_XH – ein CMSimple_XH-Plugin</h1>
-<img src="../schedule.png" style="float: left; margin-right: 1em">
+<img src="../schedule.png" style="float: left; margin-right: 1em" alt="Plugin-Icon">
 <p style="text-align:justify">Schedule_XH ermöglicht die Koordination von Treffen für Mitglieder
 (durch <a href="http://3-magi.net/?CMSimple_XH/Register_XH">Register_XH</a>
 oder <a href="http://frankziesing.de/cmsimple/en/?Welcome:Memberpages">Memberpages_XH &ge; 3.0</a> eingeschrieben)
@@ -79,7 +78,7 @@ oder diese Ihren Wünschen gemäß anpassen.</p>
 <h2><a name="usage">Verwendung</a></h2>
 <p>Um eine Planung/Abstimmung auf einer CMSimple-Seite zu ermöglichen,
 verwenden Sie den folgenden Plugin-Aufruf:</p>
-<pre>{{{PLUGIN:schedule('%NAME%', %GESAMTERGEBNIS%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');}}}</pre>
+<pre>{{{PLUGIN:schedule('%NAME%', %GESAMTERGEBNIS%, %SCHREIBGESCHÜTZT%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');}}}</pre>
 <p>Die Parameter haben folgende Bedeutung:</p>
 <dl>
 <dt>%NAME%</dt>
@@ -88,6 +87,12 @@ Dieser wird als Basisname der CSV-Datei verwendet, in der die Ergebnisse gespeic
 und darf daher nur alphanumerische und Minus-Zeichen enthalten.</dd>
 <dt>%GESAMTERGEBNIS%</dt>
 <dd>Ob das Gesamtergebnis angezeigt werden soll: <em>true</em> (ja) oder <em>false</em> (nein).
+Es ist wichtig diesen Parameter ohne Anführungszeichen zu notieren.
+Wenn Sie die Voreinstellung aus der Plugin-Konfiguration verwenden wollen,
+können Sie diesen Parameter auslassen,
+wenn Sie ebenfalls den %SCHREIBGESCHÜTZT% Parameter auslassen.</dd>
+<dt>%SCHREIBGESCHÜTZT%</dt>
+<dd>Ob der Planer schreibgeschützt sein soll: <em>true</em> (ja) oder <em>false</em> (nein).
 Es ist wichtig diesen Parameter ohne Anführungszeichen zu notieren.
 Wenn Sie die Voreinstellung aus der Plugin-Konfiguration verwenden wollen,
 dann lassen Sie diesen Parameter einfach weg.</dd>
@@ -100,17 +105,31 @@ Grundsätzlich können Sie so viele Option angegeben wie Sie möchten.</dd>
 <p>Es ist nicht erforderlich den Zugriff auf diese Seite auf Mitglieder zu beschränken;
 wenn ein Besucher Ihrer Website nicht angemeldet ist, wird er eben nur die aktuellen Ergebnisse sehen,
 ohne jedoch abstimmen zu können. Daher können Sie den Planer auch im Template platzieren:</p>
-<pre>&lt;?php echo schedule('%NAME%', %GESAMTERGEBNIS%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');?&gt;</pre>
+<pre>&lt;?php echo schedule('%NAME%', %GESAMTERGEBNIS%, %SCHREIBGESCHÜTZT%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');?&gt;</pre>
 <p>Wenn sie allerdings die Abstimmung auf eine bestimmte Benutzergruppe bzw. Zugriffsebene beschränken wollen,
 müssen Sie den Planer auf einer Seite unterbringen, die nur Mitgliedern mit entsprechender Autorisation  zugänglich ist.</p>
 <h4>Beispiele</h4>
+<ul>
+<li>
 <p>Um eine Weihnachtsfeier für die Belegschaft zu terminieren:</p>
 <pre>{{{PLUGIN:schedule('Weihnachten', '18.12.', '19.12.', '22.12.');}}}</pre>
 <div style="text-align: center"><img src="./schedule.jpg" alt="Screenshot"></div>
-<p>Für eine Abstimmung über die Farbe der neuen Mannschaftstrikots,
+<p style="font-size: 85%">Der Screenshot ist dem englischen Handbuch entnommen,
+weswegen die Spaltenüberschriften nicht den angegebenen Optionen entsprechen.</p>
+<p>Nachdem die Abstimmung für die Weihnachtsfeier beendet ist,
+möchten Sie den Planer vielleicht weiterhin angezeigt lassen,
+so dass jeder das Ergebnis sehen kann.
+In diesem Fall sollten Sie den Schreibschutz aktivieren.
+Um den %SCHREIBGESCHÜTZT% Parameter zu verwenden,
+müssen Sie ebenfalls den %GESAMTERGEBNIS% Parameter angeben:</p>
+<pre>{{{PLUGIN:schedule('Weihnachten', false, true, '18.12.', '19.12.', '22.12.');}}}</pre>
+</li>
+<li><p>Für eine Abstimmung über die Farbe der neuen Mannschaftstrikots,
 bei der das Gesamtergebnis unabhängig von der Einstellung der entsprechenden Konfigurationsoption
 unterhalb der Tabelle angezeigt wird:</p>
 <pre>{{{PLUGIN:schedule('Trikots', true, 'rot', 'grün', 'blau');}}}</pre>
+</li>
+</ul>
 <h4>Hinweise</h4>
 <ul>
 <li>Sie können so viele Planer haben wie Sie wünschen;

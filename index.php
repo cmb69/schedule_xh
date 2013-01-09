@@ -66,9 +66,11 @@ function Schedule_user()
     if (session_id() == '') {
         session_start();
     }
-    return isset($_SESSION['username']) // TODO: extend for old Memberpages
+    return isset($_SESSION['username'])
         ? $_SESSION['username']
-        : null;
+        : isset($_SESSION['Name'])
+	    ? $_SESSION['Name']
+	    : null;
 }
 
 

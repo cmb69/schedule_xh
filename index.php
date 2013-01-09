@@ -160,9 +160,12 @@ function Schedule_view($event, $dates, $recs, $showTotals, $readOnly) // TODO: r
 
     $ptx = $plugin_tx['schedule'];
     $url = "$sn?$su";
-    $o = $readOnly
-	? '<div class="schedule">'
-	: '<form class="schedule" action="' . $url . '" method="POST">';
+    $currentUser = $readOnly
+	? null
+	: Schedule_user();
+    $o = $currentUser
+	? '<form class="schedule" action="' . $url . '" method="POST">'
+	: '<div class="schedule">';
     $o .= '<table class="schedule"><thead>'
         . '<tr><th></th>';
     foreach ($dates as $date) {
@@ -184,7 +187,7 @@ function Schedule_view($event, $dates, $recs, $showTotals, $readOnly) // TODO: r
             }
             $class = 'schedule_' . ($ok ? 'green' : 'red');
             $checked = $ok ? ' checked="checked"' : '';
-            $cell = !$readOnly && $user == Schedule_user()
+            $cell = $user == $currentUser
                 ? tag('input type="checkbox" name="schedule_date_' . $event
                       . '[]" value="' . $date . '"' . $checked)
                 : '&nbsp;';
@@ -199,14 +202,14 @@ function Schedule_view($event, $dates, $recs, $showTotals, $readOnly) // TODO: r
         }
         $o .= '</tr>';
     }
-    if (!$readOnly && Schedule_user()) {
+    if ($currentUser) {
         $o .= '<tr class="schedule_buttons"><td colspan="4">'
             . tag('input type="submit" class="submit" name="schedule_submit_' . $event
                   . '" value="' . ucfirst($tx['action']['save']) . '"')
             . '</td></tr>';
     }
     $o .= '</tbody></table>';
-    $o .= $readOnly ? '</div>' : '</form>';
+    $o .= $currentUser ? '</form>' : '</div>';
 
     return $o;
 }
@@ -273,7 +276,9 @@ function Schedule($event)
 
     $recs = Schedule_read($event, $readOnly);
 
-    if (isset($_POST['schedule_submit_' . $event]) && Schedule_user()) {
+    if (isset($_POST['schedule_submit_' . $event])
+	&& Schedule_user() && !$readOnly)
+    {
         $recs = Schedule_submit($event, $options, $recs);
     }
 

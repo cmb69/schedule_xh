@@ -30,7 +30,7 @@ function Schedule_version()
     return '<h1><a href="http://3-magi.net/?CMSimple_XH/Schedule_XH">Schedule_XH</a></h1>'
         . tag('img src="' . $pth['folder']['plugins'] . 'schedule/schedule.png" style="float:left; margin-right: 1em"')
         . '<p>Version: ' . SCHEDULE_VERSION . '</p>'
-        . 'Copyright &copy; 2012 <a href="http://3-magi.net/">Christoph M. Becker</a></p>'
+        . 'Copyright &copy; 2012-2013 <a href="http://3-magi.net/">Christoph M. Becker</a></p>'
         . '<p style="text-align:justify">This program is free software: you can redistribute it and/or modify'
         . ' it under the terms of the GNU General Public License as published by'
         . ' the Free Software Foundation, either version 3 of the License, or'
@@ -57,15 +57,15 @@ function Schedule_systemCheck() // RELEASE-TODO
 {
     global $pth, $tx, $plugin_tx;
 
-    define('SCHEDULE_PHP_VERSION', '4.0.7');
+    $phpVersion = '4.3.0';
     $ptx = $plugin_tx['schedule'];
     $imgdir = $pth['folder']['plugins'] . 'schedule/images/';
     $ok = tag('img src="' . $imgdir . 'ok.png" alt="ok"');
     $warn = tag('img src="' . $imgdir . 'warn.png" alt="warning"');
     $fail = tag('img src="' . $imgdir . 'fail.png" alt="failure"');
     $o = '<h4>' . $ptx['syscheck_title'] . '</h4>'
-        . (version_compare(PHP_VERSION, SCHEDULE_PHP_VERSION) >= 0 ? $ok : $fail)
-        . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_phpversion'], SCHEDULE_PHP_VERSION)
+        . (version_compare(PHP_VERSION, $phpVersion) >= 0 ? $ok : $fail)
+        . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_phpversion'], $phpVersion)
         . tag('br');
     foreach (array('pcre', 'session') as $ext) {
 	$o .= (extension_loaded($ext) ? $ok : $fail)

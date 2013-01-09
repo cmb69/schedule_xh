@@ -68,9 +68,9 @@ function Schedule_user()
     }
     return isset($_SESSION['username'])
         ? $_SESSION['username']
-        : isset($_SESSION['Name'])
+        : (isset($_SESSION['Name'])
 	    ? $_SESSION['Name']
-	    : null;
+	    : null);
 }
 
 
@@ -160,9 +160,26 @@ function Schedule_write($name, $recs)
 
 
 /**
- * Returns the view.
+ * Returns the view of a template.
  *
- * @todo   refactor as view
+ * @global array  The paths of system files and folders.
+ * @param string $template  Path to the template.
+ * @param array $bag  The data for the view.
+ * @return string  The (X)HTML.
+ */
+function Schedule_view($template, $bag)
+{
+    global $pth;
+
+    ob_start();
+    extract($bag);
+    include $pth['folder']['plugins'] . 'schedule/views/' . $template . '.htm';
+    return ob_get_clean();
+}
+
+
+/**
+ * Returns the planner view.
  *
  * @global string  The name of the site.
  * @global string  The GET parameter of the current page.
@@ -175,66 +192,51 @@ function Schedule_write($name, $recs)
  * @param  bool $readOnly  Whether the planner is read only.
  * @return string  The (X)HTML.
  */
-function Schedule_view($name, $options, $recs, $showTotals, $readOnly)
+function Schedule_planner($name, $options, $recs, $showTotals, $readOnly)
 {
     global $sn, $su, $tx, $plugin_tx;
 
-    $ptx = $plugin_tx['schedule'];
-    $url = "$sn?$su";
-    $currentUser = $readOnly
-	? null
-	: Schedule_user();
-    $o = $currentUser
-	? '<form class="schedule" action="' . $url . '" method="POST">'
-	: '<div class="schedule">';
-    $o .= '<table class="schedule"><thead>'
-        . '<tr><th></th>';
-    foreach ($options as $option) {
-        $o .= '<th>' . $option . '</th>';
-    }
-    $o .= '</tr></thead>';
+    $currentUser = $readOnly ? null : Schedule_user();
     $counts = array();
     foreach ($options as $option) {
         $counts[$option] = 0;
     }
-    $o .= '<tbody>';
+    $users = array();
+    $cells = array();
     foreach ($recs as $user => $rec) {
-        $o .= '<tr>'
-            . '<td class="schedule_user">' . $user . '</td>';
+	$users[$user] = array();
+	$cells[$user] = array();
         foreach ($options as $option) {
             $ok = array_search($option, $rec) !== false;
+	    $users[$user][$option] = $ok;
             if ($ok) {
                 $counts[$option]++;
             }
             $class = 'schedule_' . ($ok ? 'green' : 'red');
             $checked = $ok ? ' checked="checked"' : '';
-            $cell = $user == $currentUser
+            $cells[$user][$option] = $user == $currentUser
                 ? tag('input type="checkbox" name="schedule_date_' . $name
                       . '[]" value="' . $option . '"' . $checked)
                 : '&nbsp;';
-            $o .= '<td class="' . $class . '">' . $cell . '</td>';
         }
-        $o .= '</tr>';
-    }
-    if ($showTotals) {
-        $o .= '<tr class="schedule_total"><td class="schedule_user">'
-	    . $ptx['total'] . '</td>';
-        foreach ($counts as $count) {
-            $o .= '<td>' . $count . '</td>';
-        }
-        $o .= '</tr>';
     }
     if ($currentUser) {
 	$iname = 'schedule_submit_' . $name;
-        $o .= '<tr class="schedule_buttons"><td colspan="4">'
-            . tag('input type="submit" class="submit" name="' . $iname
-                  . '" value="' . ucfirst($tx['action']['save']) . '"')
-            . '</td></tr>';
+        $submit = tag('input type="submit" class="submit" name="' . $iname
+		      . '" value="' . ucfirst($tx['action']['save']) . '"');
+    } else {
+	$submit = '';
     }
-    $o .= '</tbody></table>';
-    $o .= $currentUser ? '</form>' : '</div>';
-
-    return $o;
+    $bag = array('showTotals'=> $showTotals,
+		 'ptx' => $plugin_tx['schedule'],
+		 'currentUser' => $readOnly ? null : Schedule_user(),
+		 'url' => "$sn?$su",
+		 'options' => $options,
+		 'counts' => $counts,
+		 'users' => $users,
+		 'cells' => $cells,
+		 'submit' => $submit);
+    return Schedule_view('planner', $bag);
 }
 
 
@@ -307,7 +309,7 @@ function Schedule($name)
         $recs = Schedule_submit($name, $options, $recs);
     }
     Schedule_lock($name, LOCK_UN);
-    return Schedule_view($name, $options, $recs, $showTotals, $readOnly);
+    return Schedule_planner($name, $options, $recs, $showTotals, $readOnly);
 }
 
 ?>

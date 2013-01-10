@@ -18,30 +18,22 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 
 
 /**
- * Returns the plugin version information view.
+ * Returns the plugin's About view.
  *
  * @global  The paths of system files and folders.
  * @return string  The (X)HTML.
  */
-function Schedule_version()
+function Schedule_about()
 {
     global $pth;
 
-    return '<h1><a href="http://3-magi.net/?CMSimple_XH/Schedule_XH">Schedule_XH</a></h1>'
-        . tag('img src="' . $pth['folder']['plugins'] . 'schedule/schedule.png" style="float:left; margin-right: 1em"')
-        . '<p>Version: ' . SCHEDULE_VERSION . '</p>'
-        . 'Copyright &copy; 2012-2013 <a href="http://3-magi.net/">Christoph M. Becker</a></p>'
-        . '<p style="text-align:justify">This program is free software: you can redistribute it and/or modify'
-        . ' it under the terms of the GNU General Public License as published by'
-        . ' the Free Software Foundation, either version 3 of the License, or'
-        . ' (at your option) any later version.</p>'
-        . '<p style="text-align:justify">This program is distributed in the hope that it will be useful,'
-        . ' but WITHOUT ANY WARRANTY; without even the implied warranty of'
-        . ' MERCHAN&shy;TABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the'
-        . ' GNU General Public License for more details.</p>'
-        . '<p style="text-align:justify">You should have received a copy of the GNU General Public License'
-        . ' along with this program.  If not, see'
-        . ' <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>';
+    $icon = tag('img src="' . $pth['folder']['plugins']
+		. 'schedule/schedule.png" alt="Plugin Icon"');
+    $bag = array('heading' => 'Schedule_XH',
+		 'url' => 'http://3-magi.net/?CMSimple_XH/Schedule_XH',
+		 'icon' => $icon,
+		 'version' => SCHEDULE_VERSION);
+    return Schedule_view('about', $bag);
 }
 
 
@@ -94,7 +86,7 @@ if (isset($schedule) && $schedule == 'true') {
     $o .= print_plugin_admin('off');
     switch ($admin) {
     case '':
-        $o .= Schedule_version() . tag('hr') . Schedule_systemCheck();
+        $o .= Schedule_about() . tag('hr') . Schedule_systemCheck();
         break;
     default:
         $o .= plugin_admin_common($action, $admin, $plugin);

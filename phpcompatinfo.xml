@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phpcompatinfo reference="ALL"
+               report="function"
+               reportFileAppend="false"
+               cacheDriver="file"
+               recursive="true"
+               fileExtensions="php, htm"
+               consoleProgress="false"
+               verbose="false">
+
+    <excludes>
+        <exclude id="schedule">
+            <directory name="tests"/>
+
+            <function name="mkdir"/>
+        </exclude>
+    </excludes>
+</phpcompatinfo>

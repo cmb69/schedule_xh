@@ -3,49 +3,59 @@
 /**
  * Back-end of Schedule_XH.
  *
- * @package	Schedule
- * @copyright	Copyright (c) 2012-2013 Christoph M. Becker <http://3-magi.net/>
- * @license	http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @version     $Id$
- * @link	http://3-magi.net/?CMSimple_XH/Schedule_XH
+ * PHP versions 4 and 5
+ *
+ * @category  CMSimple_XH
+ * @package   Schedule
+ * @author    Christoph M. Becker <cmbecker69@gmx.de>
+ * @copyright 2012-2014 Christoph M. Becker <http://3-magi.net>
+ * @license   http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
+ * @version   SVN: $Id$
+ * @link      http://3-magi.net/?CMSimple_XH/Schedule_XH
  */
 
-
+/*
+ * Prevent direct access.
+ */
 if (!defined('CMSIMPLE_XH_VERSION')) {
     header('HTTP/1.0 403 Forbidden');
     exit;
 }
 
-
 /**
  * Returns the plugin's About view.
  *
- * @global  The paths of system files and folders.
- * @return string  The (X)HTML.
+ * @return string (X)HTML.
+ *
+ * @global array The paths of system files and folders.
  */
 function Schedule_about()
 {
     global $pth;
 
-    $icon = tag('img src="' . $pth['folder']['plugins']
-		. 'schedule/schedule.png" alt="Plugin Icon"');
-    $bag = array('heading' => 'Schedule_XH',
-		 'url' => 'http://3-magi.net/?CMSimple_XH/Schedule_XH',
-		 'icon' => $icon,
-		 'version' => SCHEDULE_VERSION);
+    $icon = tag(
+        'img src="' . $pth['folder']['plugins']
+        . 'schedule/schedule.png" alt="Plugin Icon"'
+    );
+    $bag = array(
+        'heading' => 'Schedule_XH',
+        'url' => 'http://3-magi.net/?CMSimple_XH/Schedule_XH',
+        'icon' => $icon,
+        'version' => SCHEDULE_VERSION
+    );
     return Schedule_view('about', $bag);
 }
-
 
 /**
  * Returns the requirements information view.
  *
- * @global array  The paths of system files and folders.
- * @global array  The localization of the core.
- * @global array  The localization of the plugins.
- * @return string  The (X)HTML.
+ * @return string (X)HTML.
+ *
+ * @global array The paths of system files and folders.
+ * @global array The localization of the core.
+ * @global array Zhe localization of the plugins.
  */
-function Schedule_systemCheck() // RELEASE-TODO
+function Schedule_systemCheck()
 {
     global $pth, $tx, $plugin_tx;
 
@@ -60,24 +70,25 @@ function Schedule_systemCheck() // RELEASE-TODO
         . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_phpversion'], $phpVersion)
         . tag('br');
     foreach (array('pcre', 'session') as $ext) {
-	$o .= (extension_loaded($ext) ? $ok : $fail)
-            . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_extension'], $ext) . tag('br');
+        $o .= (extension_loaded($ext) ? $ok : $fail)
+            . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_extension'], $ext)
+            . tag('br');
     }
     $o .= (!get_magic_quotes_runtime() ? $ok : $fail)
-	. '&nbsp;&nbsp;' . $ptx['syscheck_magic_quotes'] . tag('br') . tag('br');
+        . '&nbsp;&nbsp;' . $ptx['syscheck_magic_quotes'] . tag('br') . tag('br');
     $o .= (strtoupper($tx['meta']['codepage']) == 'UTF-8' ? $ok : $warn)
-	. '&nbsp;&nbsp;' . $ptx['syscheck_encoding'] . tag('br'). tag('br');
+        . '&nbsp;&nbsp;' . $ptx['syscheck_encoding'] . tag('br'). tag('br');
     foreach (array('config/', 'css/', 'languages/') as $folder) {
-	$folders[] = $pth['folder']['plugins'] . 'schedule/' . $folder;
+        $folders[] = $pth['folder']['plugins'] . 'schedule/' . $folder;
     }
     $folders[] = Schedule_dataFolder();
     foreach ($folders as $folder) {
-	$o .= (is_writable($folder) ? $ok : $warn)
-	    . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_writable'], $folder) . tag('br');
+        $o .= (is_writable($folder) ? $ok : $warn)
+            . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_writable'], $folder)
+            . tag('br');
     }
     return $o;
 }
-
 
 /*
  * Handle the plugin administration.

@@ -22,6 +22,8 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
     exit;
 }
 
+require_once $pth['folder']['plugin_classes'] . 'Model.php';
+
 /**
  * The plugin version.
  */
@@ -321,5 +323,7 @@ function schedule($name)
     Schedule_lock($name, LOCK_UN);
     return Schedule_planner($name, $options, $recs, $showTotals, $readOnly);
 }
+
+$_Schedule_model = new Schedule_Model();
 
 ?>

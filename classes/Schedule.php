@@ -278,9 +278,13 @@ class Schedule
      * @param bool   $readOnly Whether the planer is read only.
      *
      * @return array
+     *
+     * @global array The configuration of the plugins.
      */
     protected function read($name, $readOnly)
     {
+        global $plugin_cf;
+
         $recs = array();
         $fn = $this->dataFolder() . $name . '.csv';
         if (!file_exists($fn)) {
@@ -300,7 +304,9 @@ class Schedule
         ) {
             $recs[$user] = array();
         }
-        ksort($recs);
+        if ($plugin_cf['schedule']['sort_users']) {
+            ksort($recs);
+        }
         return $recs;
     }
 

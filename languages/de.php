@@ -17,6 +17,7 @@ $plugin_tx['schedule']['syscheck_writable']="Ordner '%s' beschreibbar";
 $plugin_tx['schedule']['alt_logo']="Terminkalender";
 
 $plugin_tx['schedule']['cf_folder_data']="Der Pfad eines Ordners relativ zum CMSimple_XH-Installationsverzeichnis, in dem die Plugindaten gespeichert werden sollen. Z.B. \"content/schedule/\". Leer lassen, um im data/ Ordner im Pluginverzeichnis zu speichern.";
+$plugin_tx['schedule']['cf_sort_users']="Ob der Planer nach Benutzernamen sortiert werden soll.";
 $plugin_tx['schedule']['cf_default_totals']="Ob das Gesamtergebnis angezeigt werden soll.";
 $plugin_tx['schedule']['cf_default_readonly']="Ob der Planer schreibgeschützt sein soll.";
 

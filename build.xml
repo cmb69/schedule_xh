@@ -44,41 +44,23 @@
         <phpunit haltonerror="true" haltonfailure="true">
             <formatter type="plain" usefile="false"/>
             <batchtest>
-                <fileset dir="tests/unit">
-                    <include name="*Test.php"/>
-                </fileset>
+                <fileset refid="unit-tests"/>
             </batchtest>
         </phpunit>
     </target>
 
-    <!--<target name="attack-tests" description="runs all attack tests">-->
-    <!--    <fail unless="env.CMSIMPLEDIR" message="CMSIMPLEDIR undefined!"/>-->
-    <!--    <phpunit haltonerror="true" haltonfailure="true">-->
-    <!--        <formatter type="plain" usefile="false"/>-->
-    <!--        <batchtest>-->
-    <!--            <fileset dir="tests/attack">-->
-    <!--                <include name="*Test.php"/>-->
-    <!--            </fileset>-->
-    <!--        </batchtest>-->
-    <!--    </phpunit>-->
-    <!--</target>-->
-
-    <target name="coverage" description="generates coverage report">
-        <coverage-setup database="tests/coverage/coverage.db">
-            <fileset dir="classes">
-                <include name="*.php"/>
-            </fileset>
-        </coverage-setup>
-        <phpunit codecoverage="true">
+    <target name="attack-tests" description="runs all attack tests">
+        <fail unless="env.CMSIMPLEDIR" message="CMSIMPLEDIR undefined!"/>
+        <phpunit haltonerror="true" haltonfailure="true">
+            <formatter type="plain" usefile="false"/>
             <batchtest>
-                <fileset dir="tests/unit">
-                    <include name="*Test.php"/>
-                </fileset>
+                <fileset refid="attack-tests"/>
             </batchtest>
         </phpunit>
-        <coverage-report outfile="tests/coverage/coverage.xml">
-            <report todir="tests/coverage" styledir="${styledir}"/>
-        </coverage-report>
+    </target>
+
+    <target name="coverage" description="generates coverage report">
+        <exec command="phpunit --configuration coverage.xml" logoutput="true"/>
     </target>
 
     <target name="php-doc">

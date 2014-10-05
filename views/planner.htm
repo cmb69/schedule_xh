@@ -5,39 +5,39 @@
 <div class="schedule">
 <?php endif;?>
     <table class="schedule">
-	<thead>
-	    <tr>
-		<th></th>
+        <thead>
+            <tr>
+                <th></th>
 <?php foreach ($options as $option):?>
-		<th><?php echo $option;?></th>
+                <th><?php echo $option;?></th>
 <?php endforeach;?>
-	    </tr>
-	</thead>
-	<tbody>
+            </tr>
+        </thead>
+        <tbody>
 <?php foreach ($users as $user => $votes):?>
-	    <tr>
-		<td class="schedule_user"><?php echo $user;?></td>
+            <tr>
+                <td class="schedule_user"><?php echo $user;?></td>
 <?php foreach ($votes as $option => $voted):?>
-		<td class="schedule_<?php echo $voted ? 'green' : 'red';?>"><?php echo $cells[$user][$option];?></td>
+                <td class="schedule_<?php echo $voted ? 'green' : 'red';?>"><?php echo $cells[$user][$option];?></td>
 <?php endforeach;?>
-	    </tr>
+            </tr>
 <?php endforeach;?>
 
 <?php if ($showTotals):?>
-	    <tr class="schedule_total">
-		<td class="schedule_user"><?php echo $ptx['total'];?></td>
+            <tr class="schedule_total">
+                <td class="schedule_user"><?php echo $ptx['total'];?></td>
 <?php foreach ($counts as $count):?>
-		<td><?php echo $count;?></td>
+                <td><?php echo $count;?></td>
 <?php endforeach;?>
-	    </tr>
+            </tr>
 <?php endif;?>
 
 <?php if ($currentUser):?>
-	    <tr class="schedule_buttons">
-		<td colspan="<?php echo count($options) + 1;?>"><?php echo $submit;?></td>
-	    </tr>
+            <tr class="schedule_buttons">
+                <td colspan="<?php echo count($options) + 1;?>"><?php echo $submit;?></td>
+            </tr>
 <?php endif;?>
-	</tbody>
+        </tbody>
     </table>
 <?php if ($currentUser):?>
 </form>

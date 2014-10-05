@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id$ -->
-
-<project name="Schedule" default="default">
-
-    <!-- Properties -->
-
-    <property name="styledir" value="C:\xampp\php\data\phing\etc"/>
-
-    <!-- Filesets -->
+<project name="Schedule" default="help">
 
     <fileset id="php-sources" dir=".">
         <include name="admin.php"/>
@@ -16,22 +8,23 @@
         <include name="classes/*.php"/>
     </fileset>
 
-    <!-- Checks -->
+    <target name="help" description="lists available targets">
+        <exec command="phing -l" outputProperty="help"/>
+        <echo>${help}</echo>
+    </target>
 
-    <target name="sniff">
+    <target name="sniff" description="checks adherence to PEAR CS">
         <phpcodesniffer standard="PEAR">
             <fileset refid="php-sources"/>
         </phpcodesniffer>
     </target>
 
-    <target name="compat">
+    <target name="compat" description="checks compatibility with PHP_CompatInfo 2">
         <exec command="phpcompatinfo --configuration phpcompatinfo.xml print --exclude-pattern schedule ."
               logoutput="true"/>
     </target>
 
-    <!-- Tests -->
-
-    <target name="unit-tests">
+    <target name="unit-tests" description="runs all unit tests">
         <phpunit haltonerror="true" haltonfailure="true">
             <formatter type="plain" usefile="false"/>
             <batchtest>
@@ -42,7 +35,7 @@
         </phpunit>
     </target>
 
-    <!--<target name="attack-tests">-->
+    <!--<target name="attack-tests" description="runs all attack tests">-->
     <!--    <fail unless="env.CMSIMPLEDIR" message="CMSIMPLEDIR undefined!"/>-->
     <!--    <phpunit haltonerror="true" haltonfailure="true">-->
     <!--        <formatter type="plain" usefile="false"/>-->
@@ -54,9 +47,7 @@
     <!--    </phpunit>-->
     <!--</target>-->
 
-    <!-- Code coverage -->
-
-    <target name="coverage">
+    <target name="coverage" description="generates coverage report">
         <coverage-setup database="tests/coverage/coverage.db">
             <fileset dir="classes">
                 <include name="*.php"/>
@@ -74,8 +65,6 @@
         </coverage-report>
     </target>
 
-    <!-- Documentation -->
-
     <target name="php-doc">
         <phpdoc title="Schedule_XH Developer Documentation" destdir="doc/php"
                 output="HTML:frames:default" defaultpackagename="Schedule"
@@ -92,11 +81,10 @@
         <exec command="jsdoc -d doc/js imagescroller.js" checkreturn="true"/>
     </target>
 -->
-    <target name="doc" depends="php-doc"/>
+    <target name="doc" depends="php-doc"
+            description="generates the developer documentation"/>
 
-    <!-- Build -->
-
-    <target name="build">
+    <target name="build" description="builds a distributable ZIP archive">
         <fail unless="version" message="version is not defined!"/>
         <svnexport revision="" repositoryurl="." todir="export"/>
         <move todir="dist">

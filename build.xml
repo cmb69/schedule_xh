@@ -3,7 +3,6 @@
 <project name="Schedule" default="help">
 
     <fileset id="php-sources" dir=".">
-        <include name="admin.php"/>
         <include name="index.php"/>
         <include name="classes/*.php"/>
     </fileset>

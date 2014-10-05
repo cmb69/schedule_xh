@@ -1,4 +1,6 @@
 * lift requirements
+* add XH 1.6 APIs (XH_wantsPluginAdministration(),
+  XH_registerStandardPluginMenuItems(), etc.)
 * add CSRF protection
 * revise manuals
 * sort

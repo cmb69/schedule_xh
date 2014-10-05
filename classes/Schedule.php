@@ -32,13 +32,28 @@ class Schedule
      */
     public function dispatch()
     {
-        global $schedule;
-
         if (XH_ADM) {
-            if (isset($schedule) && $schedule == 'true') {
+            XH_registerStandardPluginMenuItems(false);
+            if ($this->isAdministrationRequested()) {
                 $this->handleAdministration();
             }
         }
+    }
+
+    /**
+     * Returns whether the administration is requested.
+     *
+     * @return bool
+     *
+     * @global string Whether the plugin administration is requested.
+     */
+    protected function isAdministrationRequested()
+    {
+        global $schedule;
+
+        return function_exists('XH_wantsPluginAdministration')
+            && XH_wantsPluginAdministration('schedule')
+            || isset($schedule) && $schedule == 'true';
     }
 
     /**

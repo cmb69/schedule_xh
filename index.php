@@ -30,7 +30,7 @@ require_once $pth['folder']['plugin_classes'] . 'Model.php';
 /**
  * The plugin version.
  */
-define('SCHEDULE_VERSION', '1beta3');
+define('SCHEDULE_VERSION', '@SCHEDULE_VERSION@');
 
 /**
  * Returns the data folder.

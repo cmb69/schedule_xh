@@ -105,24 +105,28 @@
                 </replacetokens>
             </filterchain>
         </move>
-        <!--<jsMin targetDir="dist" suffix="" failonerror="true">-->
-        <!--    <fileset dir="export">-->
-        <!--        <include name="imagescroller.js"/>-->
-        <!--    </fileset>-->
-        <!--</jsMin>-->
+        <jsMin targetDir="dist" suffix="" failOnError="false">
+            <fileset dir="export">
+                <include name="*.js"/>
+            </fileset>
+        </jsMin>
         <move todir="dist">
             <fileset dir="export">
-                <exclude name="tests/**"/>
                 <exclude name="build.xml"/>
+                <exclude name="composer.*"/>
+                <exclude name="coverage.xml"/>
                 <exclude name="phpcompatinfo.*"/>
+                <exclude name="tests/**"/>
                 <exclude name="TODO"/>
                 <exclude name="schedule.komodoproject"/>
             </fileset>
         </move>
         <delete dir="export"/>
-        <copy file="dist/config/config.php" tofile="dist/config/defaultconfig.php"/>
+        <copy file="dist/config/config.php"
+              tofile="dist/config/defaultconfig.php"/>
         <copy file="dist/languages/en.php" tofile="dist/languages/default.php"/>
-        <zip destfile="Schedule_XH-${version}.zip" basedir="dist" prefix="schedule/"/>
+        <zip destfile="Schedule_XH-${version}.zip" basedir="dist"
+             prefix="schedule/"/>
         <delete dir="dist"/>
     </target>
 

@@ -1,7 +1,5 @@
-* update tooling
 * lift requirements
 * add CSRF protection
-* update data/.htaccess for Apache 2.4
 * revise manuals
 * sort
   (<http://cmsimpleforum.com/viewtopic.php?f=16&t=5491&st=0&sk=t&sd=a&start=10#p32463>)

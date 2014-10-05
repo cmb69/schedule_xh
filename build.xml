@@ -8,6 +8,14 @@
         <include name="classes/*.php"/>
     </fileset>
 
+    <fileset id="unit-tests" dir="tests/unit">
+        <include name="*Test.php"/>
+    </fileset>
+
+    <fileset id="attack-tests" dir="tests/attack">
+        <include name="*Test.php"/>
+    </fileset>
+
     <target name="help" description="lists available targets">
         <exec command="phing -l" outputProperty="help"/>
         <echo>${help}</echo>
@@ -16,6 +24,8 @@
     <target name="sniff" description="checks adherence to PEAR CS">
         <phpcodesniffer standard="PEAR">
             <fileset refid="php-sources"/>
+            <fileset refid="unit-tests"/>
+            <fileset refid="attack-tests"/>
         </phpcodesniffer>
     </target>
 

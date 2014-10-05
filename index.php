@@ -22,6 +22,9 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
     exit;
 }
 
+/**
+ * The model.
+ */
 require_once $pth['folder']['plugin_classes'] . 'Model.php';
 
 /**

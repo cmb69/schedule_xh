@@ -1,23 +1,24 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html lang="de">
 
 <head>
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
-<title>Schedule_XH – Handbuch</title>
+<title>Schedule_XH &ndash; Handbuch</title>
 <link rel="stylesheet" type="text/css" href="./stylesheet.css">
 </head>
 
 <body>
 
-<h1>Schedule_XH – ein CMSimple_XH-Plugin</h1>
-<img src="../schedule.png" style="float: left; margin-right: 1em" alt="Plugin-Icon">
-<p style="text-align:justify">Schedule_XH ermöglicht die Koordination von Treffen für Mitglieder
-(durch <a href="http://3-magi.net/?CMSimple_XH/Register_XH">Register_XH</a>
-oder <a href="http://frankziesing.de/cmsimple/en/?Welcome:Memberpages">Memberpages_XH</a> eingeschrieben)
-auf Ihrer CMSimple_XH Website.
-Es ist ähnlich zum Doodle-Service, da aber die Termine keine semantische Bedeutung für Schedule_XH haben,
-kann es ebenso für andere Abstimmungen verwendet werden.</p>
+<h1>Schedule_XH &ndash; ein CMSimple_XH-Plugin</h1>
+<img src="../schedule.png" style="float: left; margin-right: 1em"
+alt="Plugin-Icon">
+<p style="text-align:justify">Schedule_XH ermöglicht die Koordination von
+Treffen für Mitglieder (durch <a
+href="http://3-magi.net/?CMSimple_XH/Register_XH">Register_XH</a> oder <a
+href="http://frankziesing.de/cmsimple/en/?Welcome:Memberpages">Memberpages_XH</a>
+eingeschrieben) auf Ihrer CMSimple_XH Website. Es ist ähnlich zum
+Doodle-Service, da aber die Termine keine semantische Bedeutung für Schedule_XH
+haben, kann es ebenso für andere Abstimmungen verwendet werden.</p>
 
 <ul id="nav">
 <li><a href="#notice">Wichtiger Hinweis</a></li>
@@ -32,82 +33,92 @@ kann es ebenso für andere Abstimmungen verwendet werden.</p>
 
 <div id="body">
 
-<p><strong>Bitte lesen Sie diese Dokumentation
-<em>bevor</em> Sie auf Probleme stoßen!</strong></p>
+<p><strong>Bitte lesen Sie diese Dokumentation <em>bevor</em> Sie auf Probleme
+stoßen!</strong></p>
 
-<h2><a name="notice">Wichtiger Hinweis</a></h2>
-<p><strong>Schedule_XH konnte bisher nicht in diversen Umgebungen getestet werden.
-Es ist eine so genannte BETA-Version. Vorsicht bei der Verwendung!</strong></p>
+<h2 id="notice">Wichtiger Hinweis</h2>
+<p><strong>Schedule_XH konnte bisher nicht in diversen Umgebungen getestet
+werden. Es ist eine so genannte Beta-Version. Vorsicht bei der
+Verwendung!</strong></p>
 <div class="toplink"><a href="#">zum Seitenanfang</a></div>
 
-<h2><a name="requirements">Voraussetzungen</a></h2>
+<h2 id="requirements">Voraussetzungen</h2>
 <p>Schedule_XH ist ein Plugin für CMSimple_XH. Es benötigt CMSimple_XH &ge; 1.6
 und PHP &ge; 5.0.0.</p>
 <div class="toplink"><a href="#">zum Seitenanfang</a></div>
 
-<h2><a name="installation">Installation</a></h2>
-<p>Die Installation erfolgt wie bei vielen anderen CMSimple_XH-Plugins auch.
-Im <a href="http://www.cmsimple-xh.org/wiki/doku.php/de:installation">
+<h2 id="installation">Installation</h2>
+<p>Die Installation erfolgt wie bei vielen anderen CMSimple_XH-Plugins auch. Im
+<a href="http://www.cmsimple-xh.org/wiki/doku.php/de:installation">
 CMSimple_XH-Wiki</a> finden Sie weitere Details.</p>
 <ol>
-<li><strong>Sichern Sie die Daten auf Ihrem Server.</strong></li>
+<li>Sichern Sie die Daten auf Ihrem Server.</li>
 <li>Entpacken Sie die ZIP-Datei auf Ihrem Rechner.</li>
-<li>Laden Sie das ganze Verzeichnis schedule/ auf Ihren Server in CMSimple_XHs Plugin-Verzeichnis hoch.</li>
-<li>Machen Sie die Unterverzeichnisse config/, css/, languages/ und den Datenordner des Plugins beschreibbar.</li>
-<li><strong>Gehen Sie zu "Schedule" im Administrationsbereich, um zu prüfen,
-ob alle Voraussetzungen erfüllt sind.</strong></li>
+<li>Laden Sie das ganze Verzeichnis schedule/ auf Ihren Server in CMSimple_XHs
+Plugin-Verzeichnis hoch.</li>
+<li>Machen Sie die Unterverzeichnisse config/, css/, languages/ und den
+Datenordner des Plugins beschreibbar.</li>
+<li>Gehen Sie zu "Schedule" im Administrationsbereich, um zu prüfen, ob alle
+Voraussetzungen erfüllt sind.</li>
 </ol>
-<p>Beachten Sie, dass die Datendateien von Schedule_XH durch direkten Aufruf ihrer URL eingesehen werden können.
-Eine .htaccess Datei um das zu verhindern befindet sich bereits im voreingestellten Datenordner.
-Für andere Server oder für angepasste Datenordner müssen Sie selbst darauf achten,
-dass diese Daten vor nicht autorisiertem Zugriff geschützt sind.</p>
+<p>Beachten Sie, dass die Datendateien von Schedule_XH durch direkten Aufruf
+ihrer URL eingesehen werden können. Eine .htaccess Datei um das zu verhindern
+befindet sich bereits im voreingestellten Datenordner. Für andere Server oder
+für angepasste Datenordner müssen Sie selbst darauf achten, dass diese Daten vor
+nicht autorisiertem Zugriff geschützt sind.</p>
 <div class="toplink"><a href="#">zum Seitenanfang</a></div>
 
-<h2><a name="settings">Einstellungen</a></h2>
-<p>Die Plugin-Konfiguration erfolgt wie bei vielen anderen CMSimple_XH-Plugins auch
-im Administrationsbereich der Website.
-Wählen Sie "Plugins"&rarr;"Schedule".</p>
-<!--<p>Sie können die Voreinstellungen von Adventcalendar_XH unter "Konfiguration" ändern.
-Hinweise zu den Optionen werden beim Überfahren der Hilfe-Icons mit der Maus angezeigt.</p>
---><p>Die Lokalisierung wird unter "Sprache" vorgenommen.
-Sie können die Sprachtexte in Ihre eigene Sprache übersetzen,
-oder diese Ihren Wünschen gemäß anpassen.</p>
+<h2 id="settings">Einstellungen</h2>
+<p>Die Plugin-Konfiguration erfolgt wie bei vielen anderen CMSimple_XH-Plugins
+auch im Administrationsbereich der Website. Wählen Sie Plugins &rarr;
+Schedule.</p>
+<p>Sie können die Voreinstellungen von Schedule_XH unter "Konfiguration" ändern.
+Hinweise zu den Optionen werden beim Überfahren der Hilfe-Icons mit der Maus
+angezeigt.</p>
+<p>Die Lokalisierung wird unter "Sprache" vorgenommen. Sie können die
+Sprachtexte in Ihre eigene Sprache übersetzen, falls keine entsprechende
+Sprachdatei zur Verfügung steht, oder diese Ihren Wünschen gemäß anpassen.</p>
 <p>Das Aussehen von Schedule_XH kann unter "Stylesheet" angepasst werden.</p>
 <div class="toplink"><a href="#">zum Seitenanfang</a></div>
 
-<h2><a name="usage">Verwendung</a></h2>
-<p>Um eine Planung/Abstimmung auf einer CMSimple-Seite zu ermöglichen,
-verwenden Sie den folgenden Plugin-Aufruf:</p>
+<h2 id="usage">Verwendung</h2>
+<p>Um eine Planung/Abstimmung auf einer CMSimple-Seite zu ermöglichen, verwenden
+Sie den folgenden Plugin-Aufruf:</p>
 <pre>{{{PLUGIN:schedule('%NAME%', %GESAMTERGEBNIS%, %SCHREIBGESCHÜTZT%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');}}}</pre>
 <p>Die Parameter haben folgende Bedeutung:</p>
 <dl>
 <dt>%NAME%</dt>
-<dd>Der Name des Ereignisses oder einer sonstigen Abstimmung.
-Dieser wird als Basisname der CSV-Datei verwendet, in der die Ergebnisse gespeichert werden,
-und darf daher nur alphanumerische und Minus-Zeichen enthalten.</dd>
+<dd>Der Name des Ereignisses oder einer sonstigen Abstimmung. Dieser wird als
+Basisname der CSV-Datei verwendet, in der die Ergebnisse gespeichert werden, und
+darf daher nur Kleinbuchstaben (a-z), Ziffern (0-9) und Minus-Zeichen (-)
+enthalten.</dd>
 <dt>%GESAMTERGEBNIS%</dt>
-<dd>Ob das Gesamtergebnis angezeigt werden soll: <em>true</em> (ja) oder <em>false</em> (nein).
-Es ist wichtig diesen Parameter ohne Anführungszeichen zu notieren.
-Wenn Sie die Voreinstellung aus der Plugin-Konfiguration verwenden wollen,
-können Sie diesen Parameter auslassen,
+<dd>Ob das Gesamtergebnis angezeigt werden soll: <em>true</em> (bedeutet ja)
+oder <em>false</em> (bedeutet nein). Es ist wichtig diesen Parameter ohne
+Anführungszeichen zu notieren. Wenn Sie die Voreinstellung aus der
+Plugin-Konfiguration verwenden wollen, können Sie diesen Parameter auslassen,
 wenn Sie ebenfalls den %SCHREIBGESCHÜTZT% Parameter auslassen.</dd>
 <dt>%SCHREIBGESCHÜTZT%</dt>
-<dd>Ob der Planer schreibgeschützt sein soll: <em>true</em> (ja) oder <em>false</em> (nein).
-Es ist wichtig diesen Parameter ohne Anführungszeichen zu notieren.
-Wenn Sie die Voreinstellung aus der Plugin-Konfiguration verwenden wollen,
-dann lassen Sie diesen Parameter einfach weg.</dd>
+<dd>Ob der Planer schreibgeschützt sein soll: <em>true</em> (bedeutet ja) oder
+<em>false</em> (bedeutet nein). Es ist wichtig diesen Parameter ohne
+Anführungszeichen zu notieren. Wenn Sie die Voreinstellung aus der
+Plugin-Konfiguration verwenden wollen, dann lassen Sie diesen Parameter einfach
+weg.</dd>
 <dt>%OPTION_X%</dt>
-<dd>Der Name der Option, der als Überschrift der entsprechenden Tabellenspalte angezeigt wird.
-Dies ist normalerweise ein Datum, aber da dieser Name keine semantische Bedeutung für Schedule_XH hat,
-kann es eine beliebige Zeichenkette sein.
-Grundsätzlich können Sie so viele Option angegeben wie Sie möchten.</dd>
+<dd>Der Name der Option, der als Überschrift der entsprechenden Tabellenspalte
+angezeigt wird. Dies ist normalerweise ein Datum, aber da dieser Name keine
+semantische Bedeutung für Schedule_XH hat, kann es eine beliebige Zeichenkette
+sein. Grundsätzlich können Sie so viele Option angegeben wie Sie möchten.</dd>
 </dl>
-<p>Es ist nicht erforderlich den Zugriff auf diese Seite auf Mitglieder zu beschränken;
-wenn ein Besucher Ihrer Website nicht angemeldet ist, wird er eben nur die aktuellen Ergebnisse sehen,
-ohne jedoch abstimmen zu können. Daher können Sie den Planer auch im Template platzieren:</p>
+<p>Es ist nicht erforderlich den Zugriff auf diese Seite auf Mitglieder zu
+beschränken; wenn ein Besucher Ihrer Website nicht angemeldet ist, wird er eben
+nur die aktuellen Ergebnisse sehen, ohne jedoch abstimmen zu können. Daher
+können Sie den Planer auch im Template platzieren:</p>
 <pre>&lt;?php echo schedule('%NAME%', %GESAMTERGEBNIS%, %SCHREIBGESCHÜTZT%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');?&gt;</pre>
-<p>Wenn sie allerdings die Abstimmung auf eine bestimmte Benutzergruppe bzw. Zugriffsebene beschränken wollen,
-müssen Sie den Planer auf einer Seite unterbringen, die nur Mitgliedern mit entsprechender Autorisation  zugänglich ist.</p>
+<p>Wenn sie allerdings die Abstimmung auf eine bestimmte Benutzergruppe bzw.
+Zugriffsebene beschränken wollen, müssen Sie den Planer auf einer Seite
+unterbringen, die nur Mitgliedern mit entsprechender Berechtigung zugänglich
+ist.</p>
 <h4>Beispiele</h4>
 <ul>
 <li>
@@ -115,55 +126,60 @@ müssen Sie den Planer auf einer Seite unterbringen, die nur Mitgliedern mit ent
 <pre>{{{PLUGIN:schedule('Weihnachten', '18.12.', '19.12.', '22.12.');}}}</pre>
 <div style="text-align: center"><img src="./schedule.jpg" alt="Screenshot"></div>
 <p style="font-size: 85%">Der Screenshot ist dem englischen Handbuch entnommen,
-weswegen die Spaltenüberschriften nicht den angegebenen Optionen entsprechen.</p>
-<p>Nachdem die Abstimmung für die Weihnachtsfeier beendet ist,
-möchten Sie den Planer vielleicht weiterhin angezeigt lassen,
-so dass jeder das Ergebnis sehen kann.
-In diesem Fall sollten Sie den Schreibschutz aktivieren.
-Um den %SCHREIBGESCHÜTZT% Parameter zu verwenden,
-müssen Sie ebenfalls den %GESAMTERGEBNIS% Parameter angeben:</p>
+weswegen die Spaltenüberschriften nicht den angegebenen Optionen
+entsprechen.</p>
+<p>Nachdem die Abstimmung für die Weihnachtsfeier beendet ist, möchten Sie den
+Planer vielleicht weiterhin angezeigt lassen, so dass jeder das Ergebnis sehen
+kann. In diesem Fall sollten Sie den Schreibschutz aktivieren. Um den
+%SCHREIBGESCHÜTZT% Parameter zu verwenden, müssen Sie ebenfalls den
+%GESAMTERGEBNIS% Parameter angeben:</p>
 <pre>{{{PLUGIN:schedule('Weihnachten', false, true, '18.12.', '19.12.', '22.12.');}}}</pre>
 </li>
-<li><p>Für eine Abstimmung über die Farbe der neuen Mannschaftstrikots,
-bei der das Gesamtergebnis unabhängig von der Einstellung der entsprechenden Konfigurationsoption
-unterhalb der Tabelle angezeigt wird:</p>
+<li>
+<p>Für eine Abstimmung über die Farbe der neuen Mannschaftstrikots, bei der das
+Gesamtergebnis unabhängig von der Einstellung der entsprechenden
+Konfigurationsoption unterhalb der Tabelle angezeigt wird:</p>
 <pre>{{{PLUGIN:schedule('Trikots', true, 'rot', 'grün', 'blau');}}}</pre>
 </li>
 </ul>
 <h4>Hinweise</h4>
 <ul>
-<li>Sie können so viele Planer haben wie Sie wünschen;
-geben Sie diesen einfach unterschiedliche Namen.</li>
-<li>Sie können den selben Planer auf verschiedenen Seiten anzeigen;
-verwenden Sie einfach den selben Namen.</li>
+<li>Sie können so viele Planer haben wie Sie wünschen; geben Sie diesen einfach
+unterschiedliche Namen.</li>
+<li>Sie können den selben Planer auf verschiedenen Seiten anzeigen; verwenden
+Sie einfach den selben Namen.</li>
 <li>Die Mitglieder können jederzeit erneut abstimmen.</li>
-<li>Sie können die Optionen ändern, auch wenn bereits einige Mitglieder abgestimmt haben.
-Da die Stimmen den Optionsnamen zugewiesen werden (nicht nach Position), sollte das vernünftig funktionieren.</li>
+<li>Sie können die Optionen ändern, auch wenn bereits einige Mitglieder
+abgestimmt haben. Da die Stimmen den Optionsnamen zugewiesen werden (nicht nach
+Position), sollte das vernünftig funktionieren.</li>
 </ul>
 <div class="toplink"><a href="#">zum Seitenanfang</a></div>
 
-<!--<h2><a name="limitations">Limitations</a></h2>
-<div class="toplink"><a href="#">back to top</a></div>
--->
-<h2><a name="license">Lizenz</a></h2>
-<p>Schedule_XH kann unter Einhaltung der
-<a href="http://www.gnu.org/licenses/gpl.html">GPLv3</a> verwendet werden.</p>
+<!--<h2 id="limitations">Limitations</h2>
+<div class="toplink"><a href="#">back to top</a></div>-->
+
+<h2 id="license">Lizenz</h2>
+<p>Schedule_XH kann unter Einhaltung der <a
+href="http://www.gnu.org/licenses/gpl.html">GPLv3</a> verwendet werden.</p>
 <p>&copy; 2012-2014 Christoph M. Becker</p>
 <div class="toplink"><a href="#">zum Seitenanfang</a></div>
 
-<h2><a name="credits">Danksagung</a></h2>
+<h2 id="credits">Danksagung</h2>
 <p>Das Plugin wurde von Roymcavoy angeregt.</p>
-<p>Das Plugin-Icon wurde von <a href="http://schollidesign.deviantart.com/">schollidesign</a> entworfen.
-Vielen Dank für die Veröffentlichung unter GPL.</p>
-<p>Dieses Plugin verwendet freie Anwendungs-Icons von <a href="http://www.aha-soft.com/">Aha-Soft</a>.
-Vielen Dank für die freie Verwendbarkeit dieser Icons.</p>
-<p>Vielen Dank an die Gemeinde im <a href="http://www.cmsimpleforum.com/">CMSimple_XH-Forum</a>
-für Hinweise, Vorschläge und das Testen.
-Besonders möchte ich Ele für das Beta-Testen und gute Verbesserungsvorschläge danken.</p>
-<p>Und zu guter letzt vielen Dank an <a href="http://www.harteg.dk">Peter Harteg</a>,
-den "Vater" von CMSimple, und allen Entwicklern von
-<a href="http://www.cmsimple-xh.org/de/">CMSimple_XH</a>
-ohne die es dieses phantastische CMS nicht gäbe.</p>
+<p>Das Plugin-Icon wurde von <a
+href="http://schollidesign.deviantart.com/">schollidesign</a> entworfen. Vielen
+Dank für die Veröffentlichung unter GPL.</p>
+<p>Dieses Plugin verwendet freie Anwendungs-Icons von <a
+href="http://www.aha-soft.com/">Aha-Soft</a>. Vielen Dank für die freie
+Verwendbarkeit dieser Icons.</p>
+<p>Vielen Dank an die Gemeinde im <a
+href="http://www.cmsimpleforum.com/">CMSimple_XH-Forum</a> für Hinweise,
+Vorschläge und das Testen. Besonders möchte ich Ele für das Beta-Testen und gute
+Verbesserungsvorschläge danken.</p>
+<p>Und zu guter letzt vielen Dank an <a href="http://www.harteg.dk">Peter
+Harteg</a>, den "Vater" von CMSimple, und allen Entwicklern von <a
+href="http://www.cmsimple-xh.org/de/">CMSimple_XH</a> ohne die es dieses
+phantastische CMS nicht gäbe.</p>
 <div class="toplink"><a href="#">zum Seitenanfang</a></div>
 
 </div>

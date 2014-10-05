@@ -1,0 +1,13 @@
+Version 1beta3 - released 2013-01-10
+* added read only option (suggested by Ele)
+* extended to also work with old versions of Memberpages
+* refactored "planner" and "about" as views
+* updated user manuals accordingly
+
+Version 1beta2 - released 2012-12-21
+* added column totals and possibility to hide them (suggested by Ele)
+* made data folder configurable (suggested by Ele)
+* updated user manuals accordingly
+
+Version 1beta1 - released 2012-12-18
+* initial release

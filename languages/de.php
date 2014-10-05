@@ -3,6 +3,8 @@
 $plugin_tx['schedule']['err_invalid_name']="Der Name des Ereignisses darf nur alphanumerische und Minus-Zeichen enthalten!";
 $plugin_tx['schedule']['err_no_option']="Sie müssen wenigstens eine Option angeben!";
 
+$plugin_tx['schedule']['menu_info']="Info";
+
 $plugin_tx['schedule']['syscheck_title']="Systemprüfung";
 $plugin_tx['schedule']['syscheck_phpversion']="PHP-Version ≥ %s";
 $plugin_tx['schedule']['syscheck_extension']="Erweiterung '%s' geladen";

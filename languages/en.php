@@ -5,6 +5,8 @@ $plugin_tx['schedule']['err_no_option']="You have to specify at least one option
 
 $plugin_tx['schedule']['total']="Total";
 
+$plugin_tx['schedule']['menu_info']="Info";
+
 $plugin_tx['schedule']['syscheck_title']="System check";
 $plugin_tx['schedule']['syscheck_phpversion']="PHP version ≥ %s";
 $plugin_tx['schedule']['syscheck_extension']="Extension '%s' loaded";

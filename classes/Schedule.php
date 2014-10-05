@@ -93,12 +93,11 @@ class Schedule
 
         $icon = tag(
             'img src="' . $pth['folder']['plugins'] . 'schedule/schedule.png"'
-            . ' alt="' . $plugin_tx['schedule']['alt_logo'] . '"'
-            . ' style="float: left; margin: 0 16px 0 0; width: 128px; height: 128px"'
+            . ' alt="' . $plugin_tx['schedule']['alt_logo']
+            . '" class="schedule_logo"'
         );
         $bag = array(
-            'heading' => 'Schedule_XH',
-            'url' => 'http://3-magi.net/?CMSimple_XH/Schedule_XH',
+            'heading' => 'Schedule &ndash; ' . $plugin_tx['schedule']['menu_info'],
             'icon' => $icon,
             'version' => SCHEDULE_VERSION
         );

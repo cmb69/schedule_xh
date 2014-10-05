@@ -11,8 +11,7 @@
     <excludes>
         <exclude id="schedule">
             <directory name="tests"/>
-
-            <function name="mkdir"/>
+            <directory name="vendor"/>
         </exclude>
     </excludes>
 </phpcompatinfo>

@@ -34,8 +34,10 @@ class Schedule
     {
         global $schedule;
 
-        if (isset($schedule) && $schedule == 'true') {
-            $this->handleAdministration();
+        if (XH_ADM) {
+            if (isset($schedule) && $schedule == 'true') {
+                $this->handleAdministration();
+            }
         }
     }
 

@@ -85,14 +85,16 @@ class Schedule
      * @return string (X)HTML.
      *
      * @global array The paths of system files and folders.
+     * @global array The localization of the plugins.
      */
     protected function about()
     {
-        global $pth;
+        global $pth, $plugin_tx;
 
         $icon = tag(
-            'img src="' . $pth['folder']['plugins']
-            . 'schedule/schedule.png" alt="Plugin Icon"'
+            'img src="' . $pth['folder']['plugins'] . 'schedule/schedule.png"'
+            . ' alt="' . $plugin_tx['schedule']['alt_logo'] . '"'
+            . ' style="float: left; margin: 0 16px 0 0; width: 128px; height: 128px"'
         );
         $bag = array(
             'heading' => 'Schedule_XH',

@@ -10,7 +10,7 @@
  * @author    Christoph M. Becker <cmbecker69@gmx.de>
  * @copyright 2012-2014 Christoph M. Becker <http://3-magi.net/>
  * @license   http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @version   SVN: $Id$
+ * @version   Release: @SCHEDULE_VERSION@
  * @link      http://3-magi.net/?CMSimple_XH/Schedule_XH
  */
 

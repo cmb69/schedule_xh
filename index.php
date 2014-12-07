@@ -37,7 +37,7 @@ require_once $pth['folder']['plugin_classes'] . 'Model.php';
 /**
  * The schedule class.
  */
-require_once $pth['folder']['plugin_classes'] . 'Schedule.php';
+require_once $pth['folder']['plugin_classes'] . 'Controller.php';
 
 /**
  * The plugin version.
@@ -49,8 +49,8 @@ define('SCHEDULE_VERSION', '@SCHEDULE_VERSION@');
  *
  * @var Schedule
  */
-$_schedule = new Schedule();
-$_schedule->dispatch();
+$_Schedule_controller = new Schedule_Controller();
+$_Schedule_controller->dispatch();
 
 /**
  * The main function.
@@ -61,9 +61,11 @@ $_schedule->dispatch();
  */
 function schedule($name)
 {
-    global $_schedule;
+    global $_Schedule_controller;
 
-    return call_user_func_array(array($_schedule, 'main'), func_get_args());
+    return call_user_func_array(
+        array($_Schedule_controller, 'main'), func_get_args()
+    );
 }
 
 $_Schedule_model = new Schedule_Model();

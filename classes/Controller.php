@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The schedule class.
+ * The schedule controllers.
  *
  * PHP version 5
  *
@@ -14,7 +14,7 @@
  */
 
 /**
- * The schedule class.
+ * The schedule controllers.
  *
  * @category CMSimple_XH
  * @package  Schedule
@@ -22,7 +22,7 @@
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Schedule_XH
  */
-class Schedule
+class Schedule_Controller
 {
     /**
      * Dispatches on plugin related requests.

@@ -242,7 +242,7 @@ class Schedule
     }
 
     /**
-     * (Un)locks the voting file.
+     * Locks resp. unlocks the voting file.
      *
      * @param string $name The voting name.
      * @param int    $mode The lock operation.

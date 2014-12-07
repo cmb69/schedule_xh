@@ -99,7 +99,6 @@
             <fileset dir="export">
                 <include name="index.php"/>
                 <include name="version.nfo"/>
-                <include name="classes/*.php"/>
             </fileset>
             <filterchain>
                 <replacetokens>

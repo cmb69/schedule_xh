@@ -1,3 +1,9 @@
+* lifted requirements to CMSimple_XH >= 1.6 and PHP >= 5.0.0
+* updated .htaccess for Apache 2.4
+* added config option sort_users (suggested by Ele)
+* added meaningful alt texts to images
+* added version.nfo
+
 Version 1beta3 - released 2013-01-10
 * added read only option (suggested by Ele)
 * extended to also work with old versions of Memberpages

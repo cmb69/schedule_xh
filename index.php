@@ -77,6 +77,4 @@ function schedule($name)
     );
 }
 
-$_Schedule_model = new Schedule_Model();
-
 ?>

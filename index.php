@@ -35,25 +35,6 @@ EOT
 define('SCHEDULE_VERSION', '@SCHEDULE_VERSION@');
 
 /**
- * Autoloads the plugin classes.
- *
- * @param string $class A class name.
- *
- * @return void
- */
-function Schedule_autoload($class)
-{
-    global $pth;
-    $parts = explode('_', $class, 2);
-    if ($parts[0] == 'Schedule') {
-        include_once $pth['folder']['plugins'] . 'schedule/classes/'
-            . $parts[1] . '.php';
-    }
-}
-
-spl_autoload_register('Schedule_autoload');
-
-/**
  * The schedule object.
  *
  * @var Schedule

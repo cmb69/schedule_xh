@@ -1,3 +1,6 @@
+Version 1rc1 - released 2015-02-03
+* added multi option (suggested by Tata)
+
 Version 1beta4 - released 2014-12-08
 * lifted requirements to CMSimple_XH >= 1.6 and PHP >= 5.1.2
 * updated .htaccess for Apache 2.4

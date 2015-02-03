@@ -20,5 +20,5 @@ $plugin_tx['schedule']['cf_folder_data']="Der Pfad eines Ordners relativ zum CMS
 $plugin_tx['schedule']['cf_sort_users']="Ob der Planer nach Benutzernamen sortiert werden soll.";
 $plugin_tx['schedule']['cf_default_totals']="Ob das Gesamtergebnis angezeigt werden soll.";
 $plugin_tx['schedule']['cf_default_readonly']="Ob der Planer schreibgeschützt sein soll.";
-
+$plugin_tx['schedule']['cf_default_multi']="Ob mehrere Optionen für einen einzigen Planer ausgewählt werden dürfen.";
 ?>

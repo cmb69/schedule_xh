@@ -81,7 +81,7 @@ or customize them according to your needs.</p>
 <h2 id="usage">Usage</h2>
 <p>To set up a planning/voting on a CMSimple page, use the following plugin
 call:</p>
-<pre>{{{PLUGIN:schedule('%NAME%', %SHOW_TOTALS%, %READ_ONLY%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');}}}</pre>
+<pre>{{{PLUGIN:schedule('%NAME%', %SHOW_TOTALS%, %READ_ONLY%, %MULTI%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');}}}</pre>
 <p>The parameters have the following meaning:</p>
 <dl>
 <dt>%NAME%</dt>
@@ -92,12 +92,18 @@ digits (0-9) and minus signs (-) only.</dd>
 <dd>Whether the totals should be displayed: <em>true</em> (means yes) or
 <em>false</em> (means no). It's important to write this parameter without
 quotes. If you want to use the default value from the plugin configuration, you
-can omit this parameter, if you also omit the %READ_ONLY% parameter.</dd>
+can omit this parameter, if you also omit the %READ_ONLY% and the %MULTI%
+parameter.</dd>
 <dt>%READ_ONLY%</dt>
 <dd>Whether the planner should be read only: <em>true</em> (means yes) or
 <em>false</em> (means no). It's important to write this parameter without
-quotes. If you want to use the default value from the plugin configuration,
-simply omit this parameter.</dd>
+quotes. If you want to use the default value from the plugin configuration, you
+can omit this parameter, if you also omit the %MULTI% parameter.</dd>
+<dt>%MULTI%</dt>
+<dd>Whether multiple options may be chosen for a single planner: <em>true</em>
+(means yes) or <em>false</em> (means no). It's important to write this parameter
+without quotes. If you want to use the default value from the plugin
+configuration, simply omit this parameter.</dd>
 <dt>%OPTION_X%</dt>
 <dd>The name of the option, which will be displayed as heading of the respective
 table column. This is typically a date, but as it has no semantic meaning to
@@ -107,7 +113,7 @@ options as you like.</dd>
 <p>It is not necessary to restrict access to this page to members; if a visitor
 of your site is not logged in, he will just see the current results, without
 being able to vote. So you can even place the planner in the template:</p>
-<pre>&lt;?php echo schedule('%NAME%', %SHOW_TOTALS%, %READ_ONLY%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');?&gt;</pre>
+<pre>&lt;?php echo schedule('%NAME%', %SHOW_TOTALS%, %READ_ONLY%, %MULTI%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');?&gt;</pre>
 <p>However, if you want to restrict the voting to a certain user group resp.
 access level, you have to place the planner on a page, which can only be
 accessed by members with the respective authorization.</p>

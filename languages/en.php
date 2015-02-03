@@ -20,5 +20,6 @@ $plugin_tx['schedule']['cf_folder_data']="Path of a folder relative to the CMSim
 $plugin_tx['schedule']['cf_sort_users']="Whether the planner shall be ordered by user name.";
 $plugin_tx['schedule']['cf_default_totals']="Whether the totals shall be displayed.";
 $plugin_tx['schedule']['cf_default_readonly']="Whether the planner shall be read only.";
+$plugin_tx['schedule']['cf_default_multi']="Whether multiple options may be chosen for a single planner.";
 
 ?>

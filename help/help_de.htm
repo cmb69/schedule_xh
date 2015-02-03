@@ -84,7 +84,7 @@ Sprachdatei zur Verfügung steht, oder diese Ihren Wünschen gemäß anpassen.</
 <h2 id="usage">Verwendung</h2>
 <p>Um eine Planung/Abstimmung auf einer CMSimple-Seite zu ermöglichen, verwenden
 Sie den folgenden Plugin-Aufruf:</p>
-<pre>{{{PLUGIN:schedule('%NAME%', %GESAMTERGEBNIS%, %SCHREIBGESCHÜTZT%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');}}}</pre>
+<pre>{{{PLUGIN:schedule('%NAME%', %GESAMTERGEBNIS%, %SCHREIBGESCHÜTZT%, %MEHRFACH%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');}}}</pre>
 <p>Die Parameter haben folgende Bedeutung:</p>
 <dl>
 <dt>%NAME%</dt>
@@ -97,13 +97,20 @@ enthalten.</dd>
 oder <em>false</em> (bedeutet nein). Es ist wichtig diesen Parameter ohne
 Anführungszeichen zu notieren. Wenn Sie die Voreinstellung aus der
 Plugin-Konfiguration verwenden wollen, können Sie diesen Parameter auslassen,
-wenn Sie ebenfalls den %SCHREIBGESCHÜTZT% Parameter auslassen.</dd>
+wenn Sie ebenfalls den %SCHREIBGESCHÜTZT% und den %MEHRFACH% Parameter
+auslassen.</dd>
 <dt>%SCHREIBGESCHÜTZT%</dt>
 <dd>Ob der Planer schreibgeschützt sein soll: <em>true</em> (bedeutet ja) oder
 <em>false</em> (bedeutet nein). Es ist wichtig diesen Parameter ohne
 Anführungszeichen zu notieren. Wenn Sie die Voreinstellung aus der
-Plugin-Konfiguration verwenden wollen, dann lassen Sie diesen Parameter einfach
-weg.</dd>
+Plugin-Konfiguration verwenden wollen, können Sie diesen Parameter auslassen,
+wenn Sie ebenfalls den %MEHRFACH% Parameter auslassen.</dd>
+<dt>%MEHRFACH%</dt>
+<dd>Ob mehrere Optionen für einen einzigen Planer ausgewählt werden dürfen:
+<em>true</em> (bedeutet ja) oder <em>false</em> (bedeutet nein). Es ist wichtig
+diesen Parameter ohne Anführungszeichen zu notieren. Wenn Sie die Voreinstellung
+aus der Plugin-Konfiguration verwenden wollen, dann lassen Sie diesen Parameter
+einfach weg.</dd>
 <dt>%OPTION_X%</dt>
 <dd>Der Name der Option, der als Überschrift der entsprechenden Tabellenspalte
 angezeigt wird. Dies ist normalerweise ein Datum, aber da dieser Name keine
@@ -114,7 +121,7 @@ sein. Grundsätzlich können Sie so viele Option angegeben wie Sie möchten.</dd
 beschränken; wenn ein Besucher Ihrer Website nicht angemeldet ist, wird er eben
 nur die aktuellen Ergebnisse sehen, ohne jedoch abstimmen zu können. Daher
 können Sie den Planer auch im Template platzieren:</p>
-<pre>&lt;?php echo schedule('%NAME%', %GESAMTERGEBNIS%, %SCHREIBGESCHÜTZT%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');?&gt;</pre>
+<pre>&lt;?php echo schedule('%NAME%', %GESAMTERGEBNIS%, %SCHREIBGESCHÜTZT%, %MEHRFACH%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');?&gt;</pre>
 <p>Wenn sie allerdings die Abstimmung auf eine bestimmte Benutzergruppe bzw.
 Zugriffsebene beschränken wollen, müssen Sie den Planer auf einer Seite
 unterbringen, die nur Mitgliedern mit entsprechender Berechtigung zugänglich

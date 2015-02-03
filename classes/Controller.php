@@ -175,6 +175,8 @@ class Schedule_Controller
             ? array_shift($options) : $pcf['default_totals'];
         $readOnly = is_bool($options[0])
             ? array_shift($options) : $pcf['default_readonly'];
+        $isMulti = is_bool($options[0])
+            ? array_shift($options) : $pcf['default_multi'];
         if (empty($options)) {
             return '<p class="cmsimplecore_warning">' . $ptx['err_no_option']
                 . '</p>';
@@ -187,7 +189,9 @@ class Schedule_Controller
             $recs = $this->submit($name, $options, $recs);
         }
         $this->lock($name, LOCK_UN);
-        return $this->planner($name, $options, $recs, $showTotals, $readOnly);
+        return $this->planner(
+            $name, $options, $recs, $showTotals, $readOnly, $isMulti
+        );
     }
 
     /**
@@ -363,6 +367,7 @@ class Schedule_Controller
      * @param array  $recs       The stored votings.
      * @param bool   $showTotals Whether to show the totals.
      * @param bool   $readOnly   Whether the planner is read only.
+     * @param bool   $isMulti    Whether the planner allows multiple options.
      *
      * @return string  (X)HTML.
      *
@@ -371,8 +376,9 @@ class Schedule_Controller
      * @global string   The localization of the core.
      * @global string   The localization of the plugins.
      */
-    protected function planner($name, $options, $recs, $showTotals, $readOnly)
-    {
+    protected function planner(
+        $name, $options, $recs, $showTotals, $readOnly, $isMulti
+    ) {
         global $sn, $su, $tx, $plugin_tx;
 
         $currentUser = $readOnly ? null : $this->user();
@@ -393,9 +399,10 @@ class Schedule_Controller
                 }
                 $class = 'schedule_' . ($ok ? 'green' : 'red');
                 $checked = $ok ? ' checked="checked"' : '';
+                $type = $isMulti ? 'checkbox' : 'radio';
                 $cells[$user][$option] = $user == $currentUser
                     ? tag(
-                        'input type="checkbox" name="schedule_date_' . $name
+                        'input type="' . $type . '" name="schedule_date_' . $name
                         . '[]" value="' . $option . '"' . $checked
                     )
                     : '&nbsp;';

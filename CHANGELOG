@@ -1,3 +1,7 @@
+Version 1.0 - released 2015-03-08
+* fixed bug, where required PHP was wrong in system check
+* fixed issue wrt. mkdir() and umask
+
 Version 1rc1 - released 2015-02-03
 * added multi option (suggested by Tata)
 

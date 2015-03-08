@@ -116,7 +116,7 @@ class Schedule_Controller
     {
         global $pth, $tx, $plugin_tx;
 
-        $phpVersion = '4.3.0';
+        $phpVersion = '5.1.2';
         $ptx = $plugin_tx['schedule'];
         $imgdir = $pth['folder']['plugins'] . 'schedule/images/';
         $ok = tag('img src="' . $imgdir . 'ok.png" alt="ok"');

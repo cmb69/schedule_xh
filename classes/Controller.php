@@ -398,7 +398,6 @@ class Schedule_Controller
                 if ($ok) {
                     $counts[$option]++;
                 }
-                $class = 'schedule_' . ($ok ? 'green' : 'red');
                 $checked = $ok ? ' checked="checked"' : '';
                 $type = $isMulti ? 'checkbox' : 'radio';
                 $cells[$user][$option] = $user == $currentUser

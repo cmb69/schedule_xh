@@ -7,10 +7,6 @@
         <include name="classes/*.php"/>
     </fileset>
 
-    <fileset id="js-sources" dir=".">
-        <include name="*.js"/>
-    </fileset>
-
     <fileset id="unit-tests" dir="tests/unit">
         <include name="*Test.php"/>
     </fileset>
@@ -60,8 +56,8 @@
         <exec command="phpunit --configuration coverage.xml" logoutput="true"/>
     </target>
 
-    <target name="php-doc">
-        <phpdoc title="Schedule_XH Developer Documentation" destdir="doc/php"
+    <target name="doc" description="generates developer documentation">
+        <phpdoc title="Schedule_XH Developer Documentation" destdir="doc"
                 output="HTML:Smarty:HandS" defaultpackagename="Schedule"
                 defaultcategoryname="CMSimple_XH" parseprivate="true">
             <fileset refid="php-sources"/>
@@ -72,19 +68,7 @@
         </phpdoc>
     </target>
 
-    <target name="js-doc">
-        <apply executable="jsdoc" parallel="true" checkreturn="true">
-            <arg value="-d"/>
-            <arg value="doc/js"/>
-            <arg value="-p"/>
-            <fileset refid="js-sources"/>
-        </apply>
-    </target>
-
-    <target name="doc" depends="php-doc, js-doc"
-            description="generates the developer documentation"/>
-
-    <target name="build" description="builds a distributable ZIP archive">
+    <target name="build" description="builds distributable ZIP archive">
         <fail unless="version" message="version is not defined!"/>
         <exec command="git archive -o export.tar HEAD" checkreturn="true"/>
         <untar file="export.tar" todir="export"/>

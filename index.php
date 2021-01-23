@@ -32,7 +32,7 @@ EOT
 /**
  * The plugin version.
  */
-define('SCHEDULE_VERSION', '@SCHEDULE_VERSION@');
+define('SCHEDULE_VERSION', '1.0');
 
 /**
  * The schedule object.

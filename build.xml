@@ -34,9 +34,8 @@
         </exec>
     </target>
 
-    <target name="compat"
-            description="checks compatibility with PHP_CompatInfo">
-        <exec command="phpcompatinfo analyser:run ." logoutput="true"/>
+    <target name="compat" description="checks compatibility with PHP_CompatInfo">
+        <exec command="phpcompatinfo analyser:run --ansi classes" passthru="true" checkreturn="true"/>
     </target>
 
     <target name="build" description="builds distributable ZIP archive">

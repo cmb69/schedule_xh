@@ -429,7 +429,6 @@ class Controller
             : array();
         $rec = array();
         foreach ($fields as $field) {
-            $field = stsl($field);
             if (array_search($field, $options) === false) {
                 // user voted for invalid option, what's normally not possible
                 return $recs;

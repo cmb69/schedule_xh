@@ -70,11 +70,11 @@ class Schedule_Controller
 
         $o .= print_plugin_admin('off');
         switch ($admin) {
-        case '':
-            $o .= $this->about() . tag('hr') . $this->systemCheck();
-            break;
-        default:
-            $o .= plugin_admin_common($action, $admin, 'schedule');
+            case '':
+                $o .= $this->about() . tag('hr') . $this->systemCheck();
+                break;
+            default:
+                $o .= plugin_admin_common($action, $admin, 'schedule');
         }
     }
 
@@ -189,9 +189,7 @@ class Schedule_Controller
             $recs = $this->submit($name, $options, $recs);
         }
         $this->lock($name, LOCK_UN);
-        return $this->planner(
-            $name, $options, $recs, $showTotals, $readOnly, $isMulti
-        );
+        return $this->planner($name, $options, $recs, $showTotals, $readOnly, $isMulti);
     }
 
     /**
@@ -377,9 +375,8 @@ class Schedule_Controller
      * @global string   The localization of the core.
      * @global string   The localization of the plugins.
      */
-    protected function planner(
-        $name, $options, $recs, $showTotals, $readOnly, $isMulti
-    ) {
+    protected function planner($name, $options, $recs, $showTotals, $readOnly, $isMulti)
+    {
         global $sn, $su, $tx, $plugin_tx;
 
         $currentUser = $readOnly ? null : $this->user();
@@ -458,5 +455,3 @@ class Schedule_Controller
         return $recs;
     }
 }
-
-?>

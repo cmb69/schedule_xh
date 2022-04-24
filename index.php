@@ -54,8 +54,7 @@ function schedule($name)
     global $_Schedule_controller;
 
     return call_user_func_array(
-        array($_Schedule_controller, 'main'), func_get_args()
+        array($_Schedule_controller, 'main'),
+        func_get_args()
     );
 }
-
-?>

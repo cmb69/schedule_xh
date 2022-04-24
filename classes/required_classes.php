@@ -31,5 +31,3 @@ function Schedule_autoload($class)
 }
 
 spl_autoload_register('Schedule_autoload');
-
-?>

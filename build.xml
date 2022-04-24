@@ -46,11 +46,6 @@
         <exec command="git archive -o export.tar HEAD" checkreturn="true"/>
         <untar file="export.tar" todir="export"/>
         <delete file="export.tar"/>
-        <jsMin targetDir="dist" suffix="" failOnError="false">
-            <fileset dir="export">
-                <include name="*.js"/>
-            </fileset>
-        </jsMin>
         <move todir="dist">
             <fileset dir="export">
                 <exclude name="build.xml"/>

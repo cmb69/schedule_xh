@@ -7,14 +7,6 @@
         <include name="classes/*.php"/>
     </fileset>
 
-    <fileset id="unit-tests" dir="tests/unit">
-        <include name="*Test.php"/>
-    </fileset>
-
-    <fileset id="attack-tests" dir="tests/attack">
-        <include name="*Test.php"/>
-    </fileset>
-
     <target name="help" description="lists available targets">
         <exec command="phing -l" outputProperty="help"/>
         <echo>${help}</echo>
@@ -23,44 +15,18 @@
     <target name="sniff" description="checks adherence to PEAR CS">
         <phpcodesniffer standard="PEAR">
             <fileset refid="php-sources"/>
-            <fileset refid="unit-tests"/>
-            <fileset refid="attack-tests"/>
         </phpcodesniffer>
     </target>
 
     <target name="mess" description="detects code flaws">
         <phpmd rulesets="codesize,unusedcode">
             <fileset refid="php-sources"/>
-            <fileset refid="unit-tests"/>
          </phpmd>
     </target>
 
     <target name="compat"
             description="checks compatibility with PHP_CompatInfo">
         <exec command="phpcompatinfo analyser:run ." logoutput="true"/>
-    </target>
-
-    <target name="unit-tests" description="runs all unit tests">
-        <phpunit haltonerror="true" haltonfailure="true">
-            <formatter type="plain" usefile="false"/>
-            <batchtest>
-                <fileset refid="unit-tests"/>
-            </batchtest>
-        </phpunit>
-    </target>
-
-    <target name="attack-tests" description="runs all attack tests">
-        <fail unless="env.CMSIMPLEDIR" message="CMSIMPLEDIR undefined!"/>
-        <phpunit haltonerror="true" haltonfailure="true">
-            <formatter type="plain" usefile="false"/>
-            <batchtest>
-                <fileset refid="attack-tests"/>
-            </batchtest>
-        </phpunit>
-    </target>
-
-    <target name="coverage" description="generates coverage report">
-        <exec command="phpunit --configuration coverage.xml" logoutput="true"/>
     </target>
 
     <target name="doc" description="generates developer documentation">
@@ -89,9 +55,7 @@
             <fileset dir="export">
                 <exclude name="build.xml"/>
                 <exclude name="composer.*"/>
-                <exclude name="coverage.xml"/>
                 <exclude name="phpcompatinfo.json"/>
-                <exclude name="tests/**"/>
             </fileset>
         </move>
         <delete dir="export"/>

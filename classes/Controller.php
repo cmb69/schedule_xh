@@ -68,7 +68,7 @@ class Schedule_Controller
         $o .= print_plugin_admin('off');
         switch ($admin) {
             case '':
-                $o .= $this->about() . tag('hr') . $this->systemCheck();
+                $o .= $this->about() . '<hr>' . $this->systemCheck();
                 break;
             default:
                 $o .= plugin_admin_common($action, $admin, 'schedule');
@@ -87,11 +87,10 @@ class Schedule_Controller
     {
         global $pth, $plugin_tx;
 
-        $icon = tag(
-            'img src="' . $pth['folder']['plugins'] . 'schedule/schedule.png"'
+        $icon =
+            '<img src="' . $pth['folder']['plugins'] . 'schedule/schedule.png"'
             . ' alt="' . $plugin_tx['schedule']['alt_logo']
-            . '" class="schedule_logo"'
-        );
+            . '" class="schedule_logo">';
         $bag = array(
             'heading' => 'Schedule &ndash; ' . $plugin_tx['schedule']['menu_info'],
             'icon' => $icon,
@@ -116,22 +115,22 @@ class Schedule_Controller
         $phpVersion = '5.1.2';
         $ptx = $plugin_tx['schedule'];
         $imgdir = $pth['folder']['plugins'] . 'schedule/images/';
-        $ok = tag('img src="' . $imgdir . 'ok.png" alt="ok"');
-        $warn = tag('img src="' . $imgdir . 'warn.png" alt="warning"');
-        $fail = tag('img src="' . $imgdir . 'fail.png" alt="failure"');
+        $ok = '<img src="' . $imgdir . 'ok.png" alt="ok">';
+        $warn = '<img src="' . $imgdir . 'warn.png" alt="warning">';
+        $fail = '<img src="' . $imgdir . 'fail.png" alt="failure">';
         $o = '<h4>' . $ptx['syscheck_title'] . '</h4>'
             . (version_compare(PHP_VERSION, $phpVersion) >= 0 ? $ok : $fail)
             . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_phpversion'], $phpVersion)
-            . tag('br');
+            . '<br>';
         foreach (array('pcre', 'session', 'spl') as $ext) {
             $o .= (extension_loaded($ext) ? $ok : $fail)
                 . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_extension'], $ext)
-                . tag('br');
+                . '<br>';
         }
         $o .= (!get_magic_quotes_runtime() ? $ok : $fail)
-            . '&nbsp;&nbsp;' . $ptx['syscheck_magic_quotes'] . tag('br') . tag('br');
+            . '&nbsp;&nbsp;' . $ptx['syscheck_magic_quotes'] . '<br><br>';
         $o .= (strtoupper($tx['meta']['codepage']) == 'UTF-8' ? $ok : $warn)
-            . '&nbsp;&nbsp;' . $ptx['syscheck_encoding'] . tag('br'). tag('br');
+            . '&nbsp;&nbsp;' . $ptx['syscheck_encoding'] . '<br><br>';
         foreach (array('config/', 'css/', 'languages/') as $folder) {
             $folders[] = $pth['folder']['plugins'] . 'schedule/' . $folder;
         }
@@ -139,7 +138,7 @@ class Schedule_Controller
         foreach ($folders as $folder) {
             $o .= (is_writable($folder) ? $ok : $warn)
                 . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_writable'], $folder)
-                . tag('br');
+                . '<br>';
         }
         return $o;
     }
@@ -395,19 +394,17 @@ class Schedule_Controller
                 $checked = $ok ? ' checked="checked"' : '';
                 $type = $isMulti ? 'checkbox' : 'radio';
                 $cells[$user][$option] = $user == $currentUser
-                    ? tag(
-                        'input type="' . $type . '" name="schedule_date_' . $name
-                        . '[]" value="' . $option . '"' . $checked
-                    )
+                    ?
+                        '<input type="' . $type . '" name="schedule_date_' . $name
+                        . '[]" value="' . $option . '"' . $checked . '>'
                     : '&nbsp;';
             }
         }
         if ($currentUser) {
             $iname = 'schedule_submit_' . $name;
-            $submit = tag(
-                'input type="submit" class="submit" name="' . $iname
-                . '" value="' . ucfirst($tx['action']['save']) . '"'
-            );
+            $submit =
+                '<input type="submit" class="submit" name="' . $iname
+                . '" value="' . ucfirst($tx['action']['save']) . '">';
         } else {
             $submit = '';
         }

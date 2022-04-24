@@ -19,7 +19,9 @@
  * along with Schedule_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Schedule_Controller
+namespace Schedule;
+
+class Controller
 {
     /**
      * Dispatches on plugin related requests.

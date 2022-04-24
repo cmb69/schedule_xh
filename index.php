@@ -42,9 +42,9 @@ Plugin::dispatch();
 /**
  * The main function.
  *
- * @param string $name A voting name.
+ * @param string $name
  *
- * @return string (X)HTML.
+ * @return string
  */
 function schedule($name)
 {

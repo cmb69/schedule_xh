@@ -54,10 +54,6 @@ final class Plugin
      * Handles the plugin administration.
      *
      * @return void
-     *
-     * @global string The value of the admin GP parameter.
-     * @global string The value of the action GP parameter.
-     * @global string The (X)HTML of the contents area.
      */
     private static function handleAdministration()
     {
@@ -76,10 +72,7 @@ final class Plugin
     /**
      * Returns the plugin's About view.
      *
-     * @return string (X)HTML.
-     *
-     * @global array The paths of system files and folders.
-     * @global array The localization of the plugins.
+     * @return string
      */
     private static function about()
     {
@@ -100,11 +93,7 @@ final class Plugin
     /**
      * Returns the requirements information view.
      *
-     * @return string (X)HTML.
-     *
-     * @global array    The paths of system files and folders.
-     * @global array    The localization of the core.
-     * @global array    The localization of the plugins.
+     * @return string
      */
     private static function systemCheck()
     {
@@ -141,12 +130,9 @@ final class Plugin
     /**
      * The main method.
      *
-     * @param string $name A voting name.
+     * @param string $name
      *
-     * @return string (X)HTML.
-     *
-     * @global array The plugin's configuration.
-     * @global array The plugin's localization.
+     * @return string
      */
     public static function main($name)
     {
@@ -187,9 +173,6 @@ final class Plugin
      * Returns the data folder.
      *
      * @return string
-     *
-     * @global array The paths of system files and folders.
-     * @global array The plugin configuration.
      */
     private static function dataFolder()
     {
@@ -238,12 +221,10 @@ final class Plugin
     /**
      * Locks resp. unlocks the voting file.
      *
-     * @param string $name The voting name.
-     * @param int    $mode The lock operation.
+     * @param string $name
+     * @param int $mode
      *
      * @return void
-     *
-     * @staticvar array The file handles.
      */
     private static function lock($name, $mode)
     {
@@ -267,12 +248,10 @@ final class Plugin
     /**
      * Returns all stored records of the voting.
      *
-     * @param string $name     The name of the voting.
-     * @param bool   $readOnly Whether the planer is read only.
+     * @param string $name
+     * @param bool $readOnly
      *
-     * @return array|false
-     *
-     * @global array The configuration of the plugins.
+     * @return array<string,array<string>>|false
      */
     private static function read($name, $readOnly)
     {
@@ -306,8 +285,8 @@ final class Plugin
     /**
      * Saves the records of the voting.
      *
-     * @param string $name The name of the voting.
-     * @param array  $recs The voting records.
+     * @param string $name
+     * @param array<string,array<string>> $recs
      *
      * @return void
      */
@@ -332,12 +311,10 @@ final class Plugin
     /**
      * Returns the view of a template.
      *
-     * @param string $template Path to the template.
-     * @param array  $bag      The data for the view.
+     * @param string $template
+     * @param array<string,mixed> $bag
      *
-     * @return string (X)HTML.
-     *
-     * @global array The paths of system files and folders.
+     * @return string
      */
     private static function view($template, $bag)
     {
@@ -352,19 +329,14 @@ final class Plugin
     /**
      * Returns the planner view.
      *
-     * @param string $name       The name of the voting.
-     * @param array  $options    The options.
-     * @param array  $recs       The stored votings.
-     * @param bool   $showTotals Whether to show the totals.
-     * @param bool   $readOnly   Whether the planner is read only.
-     * @param bool   $isMulti    Whether the planner allows multiple options.
+     * @param string $name
+     * @param array<string> $options
+     * @param array<string,array<string>> $recs
+     * @param bool $showTotals
+     * @param bool $readOnly
+     * @param bool $isMulti
      *
-     * @return string  (X)HTML.
-     *
-     * @global string   The name of the site.
-     * @global string   The GET parameter of the current page.
-     * @global string   The localization of the core.
-     * @global string   The localization of the plugins.
+     * @return string
      */
     private static function planner($name, $options, $recs, $showTotals, $readOnly, $isMulti)
     {
@@ -418,11 +390,11 @@ final class Plugin
     /**
      * Handles the form submission and returns the current records.
      *
-     * @param string $name    The name of the voting.
-     * @param array  $options The options.
-     * @param array  $recs    The stored votings.
+     * @param string $name
+     * @param array<string> $options
+     * @param array<string,array<string>> $recs
      *
-     * @return array
+     * @return array<string,array<string>>
      */
     private static function submit($name, $options, $recs)
     {

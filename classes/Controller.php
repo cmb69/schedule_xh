@@ -59,7 +59,7 @@ class Controller
      */
     protected function handleAdministration()
     {
-        global $admin, $action, $o;
+        global $admin, $o;
 
         $o .= print_plugin_admin('off');
         switch ($admin) {
@@ -67,7 +67,7 @@ class Controller
                 $o .= $this->about() . '<hr>' . $this->systemCheck();
                 break;
             default:
-                $o .= plugin_admin_common($action, $admin, 'schedule');
+                $o .= plugin_admin_common();
         }
     }
 

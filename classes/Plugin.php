@@ -25,12 +25,7 @@ final class Plugin
 {
     private const VERSION = '2.0-dev';
 
-    /**
-     * Dispatches on plugin related requests.
-     *
-     * @return void
-     */
-    public static function dispatch()
+    public static function dispatch(): void
     {
         if (XH_ADM) { // @phpstan-ignore-line
             XH_registerStandardPluginMenuItems(false);
@@ -40,22 +35,12 @@ final class Plugin
         }
     }
 
-    /**
-     * Returns whether the administration is requested.
-     *
-     * @return bool
-     */
-    private static function isAdministrationRequested()
+    private static function isAdministrationRequested(): bool
     {
         return XH_wantsPluginAdministration('schedule');
     }
 
-    /**
-     * Handles the plugin administration.
-     *
-     * @return void
-     */
-    private static function handleAdministration()
+    private static function handleAdministration(): void
     {
         global $admin, $o;
 
@@ -69,12 +54,7 @@ final class Plugin
         }
     }
 
-    /**
-     * Returns the plugin's About view.
-     *
-     * @return string
-     */
-    private static function about()
+    private static function about(): string
     {
         global $pth, $plugin_tx;
 
@@ -90,12 +70,7 @@ final class Plugin
         return self::view('about', $bag);
     }
 
-    /**
-     * Returns the requirements information view.
-     *
-     * @return string
-     */
-    private static function systemCheck()
+    private static function systemCheck(): string
     {
         global $pth, $plugin_tx;
 
@@ -127,14 +102,7 @@ final class Plugin
         return $o;
     }
 
-    /**
-     * The main method.
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    public static function main($name)
+    public static function main(string $name): string
     {
         global $plugin_cf, $plugin_tx;
 
@@ -169,12 +137,7 @@ final class Plugin
         return self::planner($name, $options, $recs, $showTotals, $readOnly, $isMulti);
     }
 
-    /**
-     * Returns the data folder.
-     *
-     * @return string
-     */
-    private static function dataFolder()
+    private static function dataFolder(): string
     {
         global $pth, $plugin_cf;
 
@@ -201,12 +164,7 @@ final class Plugin
         return $fn;
     }
 
-    /**
-     * Returns the currently logged in user.
-     *
-     * @return string
-     */
-    private static function user()
+    private static function user(): string
     {
         if (session_id() == '') {
             session_start();
@@ -218,15 +176,7 @@ final class Plugin
                 : null);
     }
 
-    /**
-     * Locks resp. unlocks the voting file.
-     *
-     * @param string $name
-     * @param int $mode
-     *
-     * @return void
-     */
-    private static function lock($name, $mode)
+    private static function lock(string $name, int $mode): void
     {
         static $fhs = array();
 
@@ -246,14 +196,9 @@ final class Plugin
     }
 
     /**
-     * Returns all stored records of the voting.
-     *
-     * @param string $name
-     * @param bool $readOnly
-     *
      * @return array<string,array<string>>|false
      */
-    private static function read($name, $readOnly)
+    private static function read(string $name, bool $readOnly)
     {
         global $plugin_cf;
 
@@ -283,14 +228,9 @@ final class Plugin
     }
 
     /**
-     * Saves the records of the voting.
-     *
-     * @param string $name
      * @param array<string,array<string>> $recs
-     *
-     * @return void
      */
-    private static function write($name, $recs)
+    private static function write(string $name, array $recs): void
     {
         $lines = array();
         foreach ($recs as $user => $rec) {
@@ -309,14 +249,9 @@ final class Plugin
     }
 
     /**
-     * Returns the view of a template.
-     *
-     * @param string $template
      * @param array<string,mixed> $bag
-     *
-     * @return string
      */
-    private static function view($template, $bag)
+    private static function view(string $template, array $bag): string
     {
         global $pth;
 
@@ -327,19 +262,17 @@ final class Plugin
     }
 
     /**
-     * Returns the planner view.
-     *
-     * @param string $name
      * @param array<string> $options
      * @param array<string,array<string>> $recs
-     * @param bool $showTotals
-     * @param bool $readOnly
-     * @param bool $isMulti
-     *
-     * @return string
      */
-    private static function planner($name, $options, $recs, $showTotals, $readOnly, $isMulti)
-    {
+    private static function planner(
+        string $name,
+        array $options,
+        array $recs,
+        bool $showTotals,
+        bool $readOnly,
+        bool $isMulti
+    ): string {
         global $sn, $su, $tx, $plugin_tx;
 
         $currentUser = $readOnly ? null : self::user();
@@ -388,15 +321,11 @@ final class Plugin
     }
 
     /**
-     * Handles the form submission and returns the current records.
-     *
-     * @param string $name
      * @param array<string> $options
      * @param array<string,array<string>> $recs
-     *
      * @return array<string,array<string>>
      */
-    private static function submit($name, $options, $recs)
+    private static function submit(string $name, array $options, array $recs): array
     {
         $fields = isset($_POST['schedule_date_' . $name])
             ? $_POST['schedule_date_' . $name]

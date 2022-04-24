@@ -39,14 +39,7 @@ EOT
 
 Plugin::dispatch();
 
-/**
- * The main function.
- *
- * @param string $name
- *
- * @return string
- */
-function schedule($name)
+function schedule(string $name): string
 {
     return call_user_func_array(
         [Plugin::class, 'main'],

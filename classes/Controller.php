@@ -30,7 +30,7 @@ class Controller
      */
     public function dispatch()
     {
-        if (XH_ADM) {
+        if (XH_ADM) { // @phpstan-ignore-line
             XH_registerStandardPluginMenuItems(false);
             if ($this->isAdministrationRequested()) {
                 $this->handleAdministration();
@@ -268,7 +268,7 @@ class Controller
      * @param string $name     The name of the voting.
      * @param bool   $readOnly Whether the planer is read only.
      *
-     * @return array
+     * @return array|false
      *
      * @global array The configuration of the plugins.
      */

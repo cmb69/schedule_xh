@@ -45,7 +45,7 @@ define('SCHEDULE_VERSION', '2.0-dev');
 /**
  * The schedule object.
  *
- * @var Schedule
+ * @var Controller
  */
 $_Schedule_controller = new Controller();
 $_Schedule_controller->dispatch();

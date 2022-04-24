@@ -1,0 +1,8 @@
+parameters:
+  level: 5
+  paths:
+    - classes/
+    - index.php
+  scanFiles:
+    - ../../cmsimple/adminfuncs.php
+    - ../../cmsimple/functions.php

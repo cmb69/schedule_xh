@@ -22,9 +22,9 @@
     </target>
 
     <target name="mess" description="detects code flaws">
-        <phpmd rulesets="codesize,unusedcode">
-            <fileset refid="php-sources"/>
-         </phpmd>
+        <exec executable="phpmd" passthru="true" checkreturn="true">
+            <arg line="index.php,classes ansi codesize,unusedcode --ignore-violations-on-exit"/>
+        </exec>
     </target>
 
     <target name="compat"

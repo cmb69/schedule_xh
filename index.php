@@ -38,11 +38,6 @@ EOT
 }
 
 /**
- * The plugin version.
- */
-define('SCHEDULE_VERSION', '2.0-dev');
-
-/**
  * The schedule object.
  *
  * @var Plugin

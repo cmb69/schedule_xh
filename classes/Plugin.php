@@ -23,6 +23,8 @@ namespace Schedule;
 
 class Plugin
 {
+    private const VERSION = '2.0-dev';
+
     /**
      * Dispatches on plugin related requests.
      *
@@ -90,7 +92,7 @@ class Plugin
         $bag = array(
             'heading' => 'Schedule &ndash; ' . $plugin_tx['schedule']['menu_info'],
             'icon' => $icon,
-            'version' => SCHEDULE_VERSION
+            'version' => self::VERSION
         );
         return $this->view('about', $bag);
     }

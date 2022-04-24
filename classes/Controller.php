@@ -112,7 +112,7 @@ class Schedule_Controller
     {
         global $pth, $tx, $plugin_tx;
 
-        $phpVersion = '5.1.2';
+        $phpVersion = '7.1.0';
         $ptx = $plugin_tx['schedule'];
         $imgdir = $pth['folder']['plugins'] . 'schedule/images/';
         $ok = '<img src="' . $imgdir . 'ok.png" alt="ok">';
@@ -122,13 +122,12 @@ class Schedule_Controller
             . (version_compare(PHP_VERSION, $phpVersion) >= 0 ? $ok : $fail)
             . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_phpversion'], $phpVersion)
             . '<br>';
-        foreach (array('pcre', 'session', 'spl') as $ext) {
+        foreach (array('session') as $ext) {
             $o .= (extension_loaded($ext) ? $ok : $fail)
                 . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_extension'], $ext)
                 . '<br>';
         }
-        $o .= (!get_magic_quotes_runtime() ? $ok : $fail)
-            . '&nbsp;&nbsp;' . $ptx['syscheck_magic_quotes'] . '<br><br>';
+        $o .= '<br>';
         $o .= (strtoupper($tx['meta']['codepage']) == 'UTF-8' ? $ok : $warn)
             . '&nbsp;&nbsp;' . $ptx['syscheck_encoding'] . '<br><br>';
         foreach (array('config/', 'css/', 'languages/') as $folder) {

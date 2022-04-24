@@ -11,7 +11,6 @@ $plugin_tx['schedule']['syscheck_title']="Systemprüfung";
 $plugin_tx['schedule']['syscheck_phpversion']="PHP-Version ≥ %s";
 $plugin_tx['schedule']['syscheck_extension']="Erweiterung '%s' geladen";
 $plugin_tx['schedule']['syscheck_encoding']="'UTF-8' Kodierung eingestellt";
-$plugin_tx['schedule']['syscheck_magic_quotes']="Magic quotes runtime off";
 $plugin_tx['schedule']['syscheck_writable']="Ordner '%s' beschreibbar";
 
 $plugin_tx['schedule']['alt_logo']="Terminkalender";

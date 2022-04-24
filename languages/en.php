@@ -11,7 +11,6 @@ $plugin_tx['schedule']['syscheck_title']="System check";
 $plugin_tx['schedule']['syscheck_phpversion']="PHP version ≥ %s";
 $plugin_tx['schedule']['syscheck_extension']="Extension '%s' loaded";
 $plugin_tx['schedule']['syscheck_encoding']="Encoding 'UTF-8' configured";
-$plugin_tx['schedule']['syscheck_magic_quotes']="Magic quotes runtime off";
 $plugin_tx['schedule']['syscheck_writable']="Folder '%s' writable";
 
 $plugin_tx['schedule']['alt_logo']="Appointment calendar";

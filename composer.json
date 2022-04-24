@@ -1,8 +1,8 @@
 {
     "require-dev": {
-        "phing/phing": "2.10.*",
-        "squizlabs/php_codesniffer": "2.3.*",
-        "phpmd/phpmd": "2.2.*",
+        "phing/phing": "2.17.*",
+        "squizlabs/php_codesniffer": "2.9.*",
+        "phpmd/phpmd": "2.9.*",
         "bartlett/php-compatinfo": "3.7.*"
     }
 }

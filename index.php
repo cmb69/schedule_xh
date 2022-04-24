@@ -37,13 +37,7 @@ EOT
     );
 }
 
-/**
- * The schedule object.
- *
- * @var Plugin
- */
-$_Schedule_controller = new Plugin();
-$_Schedule_controller->dispatch();
+Plugin::dispatch();
 
 /**
  * The main function.
@@ -54,10 +48,8 @@ $_Schedule_controller->dispatch();
  */
 function schedule($name)
 {
-    global $_Schedule_controller;
-
     return call_user_func_array(
-        array($_Schedule_controller, 'main'),
+        [Plugin::class, 'main'],
         func_get_args()
     );
 }

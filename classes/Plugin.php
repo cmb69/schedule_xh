@@ -21,7 +21,7 @@
 
 namespace Schedule;
 
-class Plugin
+final class Plugin
 {
     private const VERSION = '2.0-dev';
 
@@ -30,12 +30,12 @@ class Plugin
      *
      * @return void
      */
-    public function dispatch()
+    public static function dispatch()
     {
         if (XH_ADM) { // @phpstan-ignore-line
             XH_registerStandardPluginMenuItems(false);
-            if ($this->isAdministrationRequested()) {
-                $this->handleAdministration();
+            if (self::isAdministrationRequested()) {
+                self::handleAdministration();
             }
         }
     }
@@ -45,7 +45,7 @@ class Plugin
      *
      * @return bool
      */
-    protected function isAdministrationRequested()
+    private static function isAdministrationRequested()
     {
         return XH_wantsPluginAdministration('schedule');
     }
@@ -59,14 +59,14 @@ class Plugin
      * @global string The value of the action GP parameter.
      * @global string The (X)HTML of the contents area.
      */
-    protected function handleAdministration()
+    private static function handleAdministration()
     {
         global $admin, $o;
 
         $o .= print_plugin_admin('off');
         switch ($admin) {
             case '':
-                $o .= $this->about() . '<hr>' . $this->systemCheck();
+                $o .= self::about() . '<hr>' . self::systemCheck();
                 break;
             default:
                 $o .= plugin_admin_common();
@@ -81,7 +81,7 @@ class Plugin
      * @global array The paths of system files and folders.
      * @global array The localization of the plugins.
      */
-    protected function about()
+    private static function about()
     {
         global $pth, $plugin_tx;
 
@@ -94,7 +94,7 @@ class Plugin
             'icon' => $icon,
             'version' => self::VERSION
         );
-        return $this->view('about', $bag);
+        return self::view('about', $bag);
     }
 
     /**
@@ -106,7 +106,7 @@ class Plugin
      * @global array    The localization of the core.
      * @global array    The localization of the plugins.
      */
-    protected function systemCheck()
+    private static function systemCheck()
     {
         global $pth, $plugin_tx;
 
@@ -129,7 +129,7 @@ class Plugin
         foreach (array('config/', 'css/', 'languages/') as $folder) {
             $folders[] = $pth['folder']['plugins'] . 'schedule/' . $folder;
         }
-        $folders[] = $this->dataFolder();
+        $folders[] = self::dataFolder();
         foreach ($folders as $folder) {
             $o .= (is_writable($folder) ? $ok : $warn)
                 . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_writable'], $folder)
@@ -148,7 +148,7 @@ class Plugin
      * @global array The plugin's configuration.
      * @global array The plugin's localization.
      */
-    public function main($name)
+    public static function main($name)
     {
         global $plugin_cf, $plugin_tx;
 
@@ -174,13 +174,13 @@ class Plugin
         }
 
         $posting = isset($_POST['schedule_submit_' . $name]);
-        $this->lock($name, $posting ? LOCK_EX : LOCK_SH);
-        $recs = $this->read($name, $readOnly);
-        if ($posting && $this->user() && !$readOnly) {
-            $recs = $this->submit($name, $options, $recs);
+        self::lock($name, $posting ? LOCK_EX : LOCK_SH);
+        $recs = self::read($name, $readOnly);
+        if ($posting && self::user() && !$readOnly) {
+            $recs = self::submit($name, $options, $recs);
         }
-        $this->lock($name, LOCK_UN);
-        return $this->planner($name, $options, $recs, $showTotals, $readOnly, $isMulti);
+        self::lock($name, LOCK_UN);
+        return self::planner($name, $options, $recs, $showTotals, $readOnly, $isMulti);
     }
 
     /**
@@ -191,7 +191,7 @@ class Plugin
      * @global array The paths of system files and folders.
      * @global array The plugin configuration.
      */
-    protected function dataFolder()
+    private static function dataFolder()
     {
         global $pth, $plugin_cf;
 
@@ -223,7 +223,7 @@ class Plugin
      *
      * @return string
      */
-    protected function user()
+    private static function user()
     {
         if (session_id() == '') {
             session_start();
@@ -245,11 +245,11 @@ class Plugin
      *
      * @staticvar array The file handles.
      */
-    protected function lock($name, $mode)
+    private static function lock($name, $mode)
     {
         static $fhs = array();
 
-        $fn = $this->dataFolder() . $name . '.lck';
+        $fn = self::dataFolder() . $name . '.lck';
         if ($mode == LOCK_SH || $mode == LOCK_EX) {
             if (isset($fhs[$name])) {
                 $msg = __FUNCTION__ . '(): $fn is already locked by this request!';
@@ -274,12 +274,12 @@ class Plugin
      *
      * @global array The configuration of the plugins.
      */
-    protected function read($name, $readOnly)
+    private static function read($name, $readOnly)
     {
         global $plugin_cf;
 
         $recs = array();
-        $fn = $this->dataFolder() . $name . '.csv';
+        $fn = self::dataFolder() . $name . '.csv';
         if (!file_exists($fn)) {
             touch($fn);
         }
@@ -293,7 +293,7 @@ class Plugin
             $recs[$user] = $rec;
         }
         if (!$readOnly
-            && ($user = $this->user()) !== null && !isset($recs[$user])
+            && ($user = self::user()) !== null && !isset($recs[$user])
         ) {
             $recs[$user] = array();
         }
@@ -311,7 +311,7 @@ class Plugin
      *
      * @return void
      */
-    protected function write($name, $recs)
+    private static function write($name, $recs)
     {
         $lines = array();
         foreach ($recs as $user => $rec) {
@@ -320,7 +320,7 @@ class Plugin
             $lines[] = $line;
         }
         $o = implode("\n", $lines) . "\n";
-        $fn = $this->dataFolder() . $name . '.csv';
+        $fn = self::dataFolder() . $name . '.csv';
         if (($fh = fopen($fn, 'wb')) === false || fwrite($fh, $o) === false) {
             e('cntsave', 'file', $fn);
         }
@@ -339,7 +339,7 @@ class Plugin
      *
      * @global array The paths of system files and folders.
      */
-    protected function view($template, $bag)
+    private static function view($template, $bag)
     {
         global $pth;
 
@@ -366,11 +366,11 @@ class Plugin
      * @global string   The localization of the core.
      * @global string   The localization of the plugins.
      */
-    protected function planner($name, $options, $recs, $showTotals, $readOnly, $isMulti)
+    private static function planner($name, $options, $recs, $showTotals, $readOnly, $isMulti)
     {
         global $sn, $su, $tx, $plugin_tx;
 
-        $currentUser = $readOnly ? null : $this->user();
+        $currentUser = $readOnly ? null : self::user();
         $counts = array();
         foreach ($options as $option) {
             $counts[$option] = 0;
@@ -405,14 +405,14 @@ class Plugin
         }
         $bag = array('showTotals'=> $showTotals,
                      'ptx' => $plugin_tx['schedule'],
-                     'currentUser' => $readOnly ? null : $this->user(),
+                     'currentUser' => $readOnly ? null : self::user(),
                      'url' => "$sn?$su",
                      'options' => $options,
                      'counts' => $counts,
                      'users' => $users,
                      'cells' => $cells,
                      'submit' => $submit);
-        return $this->view('planner', $bag);
+        return self::view('planner', $bag);
     }
 
     /**
@@ -424,7 +424,7 @@ class Plugin
      *
      * @return array
      */
-    protected function submit($name, $options, $recs)
+    private static function submit($name, $options, $recs)
     {
         $fields = isset($_POST['schedule_date_' . $name])
             ? $_POST['schedule_date_' . $name]
@@ -437,9 +437,9 @@ class Plugin
             }
             $rec[] = $field;
         }
-        $recs[$this->user()] = $rec;
+        $recs[self::user()] = $rec;
         ksort($recs);
-        $this->write($name, $recs);
+        self::write($name, $recs);
         return $recs;
     }
 }

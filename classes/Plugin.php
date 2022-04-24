@@ -21,7 +21,7 @@
 
 namespace Schedule;
 
-class Controller
+class Plugin
 {
     /**
      * Dispatches on plugin related requests.

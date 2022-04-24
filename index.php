@@ -19,7 +19,7 @@
  * along with Schedule_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Schedule\Controller;
+use Schedule\Plugin;
 
 /*
  * Prevent direct access and usage from unsupported CMSimple_XH versions.
@@ -45,9 +45,9 @@ define('SCHEDULE_VERSION', '2.0-dev');
 /**
  * The schedule object.
  *
- * @var Controller
+ * @var Plugin
  */
-$_Schedule_controller = new Controller();
+$_Schedule_controller = new Plugin();
 $_Schedule_controller->dispatch();
 
 /**

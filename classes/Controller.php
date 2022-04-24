@@ -112,7 +112,7 @@ class Controller
      */
     protected function systemCheck()
     {
-        global $pth, $tx, $plugin_tx;
+        global $pth, $plugin_tx;
 
         $phpVersion = '7.1.0';
         $ptx = $plugin_tx['schedule'];
@@ -130,8 +130,6 @@ class Controller
                 . '<br>';
         }
         $o .= '<br>';
-        $o .= (strtoupper($tx['meta']['codepage']) == 'UTF-8' ? $ok : $warn)
-            . '&nbsp;&nbsp;' . $ptx['syscheck_encoding'] . '<br><br>';
         foreach (array('config/', 'css/', 'languages/') as $folder) {
             $folders[] = $pth['folder']['plugins'] . 'schedule/' . $folder;
         }

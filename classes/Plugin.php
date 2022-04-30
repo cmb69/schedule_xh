@@ -127,13 +127,19 @@ final class Plugin
                 . '</p>';
         }
 
+        $votingService = new VotingService(self::dataFolder());
         $posting = isset($_POST['schedule_submit_' . $name]);
-        self::lock($name, $posting ? LOCK_EX : LOCK_SH);
-        $recs = self::read($name, $readOnly);
-        if ($posting && self::user() && !$readOnly) {
-            $recs = self::submit($name, $options, $recs);
+        if (!$posting || self::user() === null || $readOnly) {
+            $user = (!$readOnly && self::user() !== null) ? self::user() : null;
+            $recs = $votingService->findAll($name, $user, $pcf['sort_users']);
+        } else {
+            $submission = self::submit($name, $options);
+            $user = self::user();
+            if ($submission !== null) {
+                $votingService->vote($name, $user, $submission);
+            }
+            $recs = $votingService->findAll($name, $user, $pcf['sort_users']);
         }
-        self::lock($name, LOCK_UN);
         return self::planner($name, $options, $recs, $showTotals, $readOnly, $isMulti);
     }
 
@@ -164,7 +170,7 @@ final class Plugin
         return $fn;
     }
 
-    private static function user(): string
+    private static function user(): ?string
     {
         if (session_id() == '') {
             session_start();
@@ -174,78 +180,6 @@ final class Plugin
             : (isset($_SESSION['Name'])
                 ? $_SESSION['Name']
                 : null);
-    }
-
-    private static function lock(string $name, int $mode): void
-    {
-        static $fhs = array();
-
-        $fn = self::dataFolder() . $name . '.lck';
-        if ($mode == LOCK_SH || $mode == LOCK_EX) {
-            if (isset($fhs[$name])) {
-                $msg = __FUNCTION__ . '(): $fn is already locked by this request!';
-                trigger_error($msg, E_USER_WARNING);
-                return;
-            }
-            $fhs[$name] = fopen($fn, 'c');
-            flock($fhs[$name], $mode);
-        } else {
-            flock($fhs[$name], LOCK_UN);
-            unset($fhs[$name]);
-        }
-    }
-
-    /**
-     * @return array<string,array<string>>|false
-     */
-    private static function read(string $name, bool $readOnly)
-    {
-        global $plugin_cf;
-
-        $recs = array();
-        $fn = self::dataFolder() . $name . '.csv';
-        if (!file_exists($fn)) {
-            touch($fn);
-        }
-        if (($lines = file($fn)) === false) {
-            e('cntopen', 'file', $fn);
-            return false;
-        }
-        foreach ($lines as $line) {
-            $rec = explode("\t", rtrim($line));
-            $user = array_shift($rec);
-            $recs[$user] = $rec;
-        }
-        if (!$readOnly
-            && ($user = self::user()) !== null && !isset($recs[$user])
-        ) {
-            $recs[$user] = array();
-        }
-        if ($plugin_cf['schedule']['sort_users']) {
-            ksort($recs);
-        }
-        return $recs;
-    }
-
-    /**
-     * @param array<string,array<string>> $recs
-     */
-    private static function write(string $name, array $recs): void
-    {
-        $lines = array();
-        foreach ($recs as $user => $rec) {
-            array_unshift($rec, $user);
-            $line = implode("\t", $rec);
-            $lines[] = $line;
-        }
-        $o = implode("\n", $lines) . "\n";
-        $fn = self::dataFolder() . $name . '.csv';
-        if (($fh = fopen($fn, 'wb')) === false || fwrite($fh, $o) === false) {
-            e('cntsave', 'file', $fn);
-        }
-        if ($fh !== false) {
-            fclose($fh);
-        }
     }
 
     /**
@@ -322,10 +256,9 @@ final class Plugin
 
     /**
      * @param array<string> $options
-     * @param array<string,array<string>> $recs
-     * @return array<string,array<string>>
+     * @return array<string>
      */
-    private static function submit(string $name, array $options, array $recs): array
+    private static function submit(string $name, array $options): ?array
     {
         $fields = isset($_POST['schedule_date_' . $name])
             ? $_POST['schedule_date_' . $name]
@@ -334,13 +267,10 @@ final class Plugin
         foreach ($fields as $field) {
             if (array_search($field, $options) === false) {
                 // user voted for invalid option, what's normally not possible
-                return $recs;
+                return null;
             }
             $rec[] = $field;
         }
-        $recs[self::user()] = $rec;
-        ksort($recs);
-        self::write($name, $recs);
-        return $recs;
+        return $rec;
     }
 }

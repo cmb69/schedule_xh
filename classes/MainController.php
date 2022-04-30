@@ -129,9 +129,7 @@ final class MainController
      */
     private function submit(string $name, array $options): ?array
     {
-        $fields = isset($_POST['schedule_date_' . $name])
-            ? $_POST['schedule_date_' . $name]
-            : array();
+        $fields = $_POST['schedule_date_' . $name] ?? [];
         $rec = array();
         foreach ($fields as $field) {
             if (array_search($field, $options) === false) {
@@ -145,10 +143,6 @@ final class MainController
 
     private function user(): ?string
     {
-        return isset($_SESSION['username'])
-            ? $_SESSION['username']
-            : (isset($_SESSION['Name'])
-                ? $_SESSION['Name']
-                : null);
+        return $_SESSION['username'] ?? ($_SESSION['Name'] ?? null);
     }
 }

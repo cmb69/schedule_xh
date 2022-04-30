@@ -145,9 +145,6 @@ final class MainController
 
     private function user(): ?string
     {
-        if (session_id() == '') {
-            session_start();
-        }
         return isset($_SESSION['username'])
             ? $_SESSION['username']
             : (isset($_SESSION['Name'])

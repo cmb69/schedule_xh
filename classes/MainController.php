@@ -81,15 +81,15 @@ final class MainController
         global $sn, $su, $plugin_tx;
 
         $currentUser = $readOnly ? null : $this->user();
-        $counts = array();
+        $counts = [];
         foreach ($options as $option) {
             $counts[$option] = 0;
         }
-        $users = array();
-        $cells = array();
+        $users = [];
+        $cells = [];
         foreach ($recs as $user => $rec) {
-            $users[$user] = array();
-            $cells[$user] = array();
+            $users[$user] = [];
+            $cells[$user] = [];
             foreach ($options as $option) {
                 $ok = array_search($option, $rec) !== false;
                 $users[$user][$option] = $ok ? "schedule_green" : "schedule_red";
@@ -113,16 +113,18 @@ final class MainController
         } else {
             $submit = '';
         }
-        $bag = array('showTotals'=> $showTotals,
-                     'ptx' => $plugin_tx['schedule'],
-                     'currentUser' => $readOnly ? null : $this->user(),
-                     'url' => "$sn?$su",
-                     'options' => $options,
-                     'counts' => $counts,
-                     'users' => $users,
-                     'cells' => $cells,
-                     'submit' => $submit,
-                     'columns' => count($options) + 1);
+        $bag = [
+            'showTotals'=> $showTotals,
+            'ptx' => $plugin_tx['schedule'],
+            'currentUser' => $readOnly ? null : $this->user(),
+            'url' => "$sn?$su",
+            'options' => $options,
+            'counts' => $counts,
+            'users' => $users,
+            'cells' => $cells,
+            'submit' => $submit,
+            'columns' => count($options) + 1,
+        ];
         return Plugin::view('planner', $bag);
     }
 
@@ -133,7 +135,7 @@ final class MainController
     private function submit(string $name, array $options): ?array
     {
         $fields = $_POST['schedule_date_' . $name] ?? [];
-        $rec = array();
+        $rec = [];
         foreach ($fields as $field) {
             if (array_search($field, $options) === false) {
                 // user voted for invalid option, what's normally not possible

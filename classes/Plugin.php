@@ -136,7 +136,7 @@ final class Plugin
 
         ob_start();
         extract($bag);
-        include $pth['folder']['plugins'] . 'schedule/views/' . $template . '.htm';
+        include $pth['folder']['plugins'] . 'schedule/views/' . $template . '.php';
         return ob_get_clean();
     }
 }

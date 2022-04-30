@@ -1,3 +1,16 @@
+<?php
+/**
+ * @var bool $showTotals
+ * @var array<string,string> $ptx
+ * @var ?string $currentUser
+ * @var string $url
+ * @var array<string> $options
+ * @var array<string,int> $counts
+ * @var array<string,array<string>> $users
+ * @var array<string,array<string,string>> $cells
+ * @var string $submit
+ */
+?>
 <!-- Schedule_XH planner -->
 <?php if ($currentUser):?>
 <form class="schedule" action="<?=$url?>" method="POST">

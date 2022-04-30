@@ -3,6 +3,7 @@ parameters:
   paths:
     - classes
     - tests
+    - views
     - index.php
   scanDirectories:
     - vendor/phpunit/phpunit

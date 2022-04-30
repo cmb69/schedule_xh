@@ -92,7 +92,7 @@ final class MainController
             $cells[$user] = array();
             foreach ($options as $option) {
                 $ok = array_search($option, $rec) !== false;
-                $users[$user][$option] = $ok;
+                $users[$user][$option] = $ok ? "schedule_green" : "schedule_red";
                 if ($ok) {
                     $counts[$option]++;
                 }
@@ -121,7 +121,8 @@ final class MainController
                      'counts' => $counts,
                      'users' => $users,
                      'cells' => $cells,
-                     'submit' => $submit);
+                     'submit' => $submit,
+                     'columns' => count($options) + 1);
         return Plugin::view('planner', $bag);
     }
 

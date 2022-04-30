@@ -76,7 +76,7 @@ final class MainController
         bool $readOnly,
         bool $isMulti
     ): string {
-        global $sn, $su, $tx, $plugin_tx;
+        global $sn, $su, $plugin_tx;
 
         $currentUser = $readOnly ? null : $this->user();
         $counts = array();
@@ -107,7 +107,7 @@ final class MainController
             $iname = 'schedule_submit_' . $name;
             $submit =
                 '<input type="submit" class="submit" name="' . $iname
-                . '" value="' . ucfirst($tx['action']['save']) . '">';
+                . '" value="' . $plugin_tx['schedule']['label_save'] . '">';
         } else {
             $submit = '';
         }

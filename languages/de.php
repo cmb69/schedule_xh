@@ -4,6 +4,7 @@ $plugin_tx['schedule']['err_invalid_name']="Der Name des Ereignisses darf nur al
 $plugin_tx['schedule']['err_no_option']="Sie müssen wenigstens eine Option angeben!";
 
 $plugin_tx['schedule']['total']="Gesamt";
+$plugin_tx['schedule']['label_save']="Speichern";
 
 $plugin_tx['schedule']['menu_info']="Info";
 

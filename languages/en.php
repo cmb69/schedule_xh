@@ -4,6 +4,7 @@ $plugin_tx['schedule']['err_invalid_name']="The event name may only contain alph
 $plugin_tx['schedule']['err_no_option']="You have to specify at least one option!";
 
 $plugin_tx['schedule']['total']="Total";
+$plugin_tx['schedule']['label_save']="Save";
 
 $plugin_tx['schedule']['menu_info']="Info";
 

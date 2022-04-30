@@ -23,7 +23,10 @@ namespace Schedule;
 
 final class MainController
 {
-    public function execute(string $name): string
+    /**
+     * @param mixed $args
+     */
+    public function execute(string $name, ...$args): string
     {
         global $plugin_cf, $plugin_tx;
 
@@ -35,8 +38,7 @@ final class MainController
                 . '</p>';
         }
 
-        $options = func_get_args();
-        array_shift($options);
+        $options = $args;
         $showTotals = is_bool($options[0])
             ? array_shift($options) : $pcf['default_totals'];
         $readOnly = is_bool($options[0])

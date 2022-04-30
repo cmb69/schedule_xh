@@ -102,10 +102,13 @@ final class Plugin
         return $o;
     }
 
-    public static function main(string $name): string
+    /**
+     * @param mixed $args
+     */
+    public static function main(string $name, ...$args): string
     {
         $controller = new MainController();
-        return $controller->execute(...func_get_args());
+        return $controller->execute($name, ...$args);
     }
 
     public static function dataFolder(): string

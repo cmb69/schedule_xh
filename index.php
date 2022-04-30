@@ -39,10 +39,10 @@ EOT
 
 Plugin::dispatch();
 
-function schedule(string $name): string
+/**
+ * @param mixed $args
+ */
+function schedule(string $name, ...$args): string
 {
-    return call_user_func_array(
-        [Plugin::class, 'main'],
-        func_get_args()
-    );
+    return Plugin::main($name, ...$args);
 }

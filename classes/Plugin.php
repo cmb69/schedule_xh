@@ -47,7 +47,7 @@ final class Plugin
         $o .= print_plugin_admin('off');
         switch ($admin) {
             case '':
-                $o .= self::about() . '<hr>' . self::systemCheck();
+                $o .= self::about() . self::systemCheck();
                 break;
             default:
                 $o .= plugin_admin_common();
@@ -56,18 +56,7 @@ final class Plugin
 
     private static function about(): string
     {
-        global $pth, $plugin_tx;
-
-        $icon =
-            '<img src="' . $pth['folder']['plugins'] . 'schedule/schedule.png"'
-            . ' alt="' . $plugin_tx['schedule']['alt_logo']
-            . '" class="schedule_logo">';
-        $bag = array(
-            'heading' => 'Schedule &ndash; ' . $plugin_tx['schedule']['menu_info'],
-            'icon' => $icon,
-            'version' => self::VERSION
-        );
-        return self::view('about', $bag);
+        return self::view('about', ['version' => self::VERSION]);
     }
 
     private static function systemCheck(): string

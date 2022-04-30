@@ -6,14 +6,10 @@ $plugin_tx['schedule']['err_no_option']="Sie müssen wenigstens eine Option ange
 $plugin_tx['schedule']['total']="Gesamt";
 $plugin_tx['schedule']['label_save']="Speichern";
 
-$plugin_tx['schedule']['menu_info']="Info";
-
 $plugin_tx['schedule']['syscheck_title']="Systemprüfung";
 $plugin_tx['schedule']['syscheck_phpversion']="PHP-Version ≥ %s";
 $plugin_tx['schedule']['syscheck_extension']="Erweiterung '%s' geladen";
 $plugin_tx['schedule']['syscheck_writable']="Ordner '%s' beschreibbar";
-
-$plugin_tx['schedule']['alt_logo']="Terminkalender";
 
 $plugin_tx['schedule']['cf_folder_data']="Der Pfad eines Ordners relativ zum CMSimple_XH-Installationsverzeichnis, in dem die Plugindaten gespeichert werden sollen. Z.B. \"content/schedule/\". Leer lassen, um im data/ Ordner im Pluginverzeichnis zu speichern.";
 $plugin_tx['schedule']['cf_sort_users']="Ob der Planer nach Benutzernamen sortiert werden soll.";

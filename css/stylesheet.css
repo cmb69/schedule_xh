@@ -33,17 +33,3 @@
     margin-top: 0.5em;
     padding: 0.2em 0.5em;
 }
-
-/*
- * Back-end.
- */
-
-.schedule_logo {
-    float: left;
-    margin: 0 16px 0 0;
-    width: 128px;
-    height: 128px;
-}
-.schedule_license {
-    text-align: justify;
-}

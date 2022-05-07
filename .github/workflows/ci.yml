@@ -4,7 +4,7 @@ jobs:
   checks:
     strategy:
       matrix:
-        version: ['7.4', '8.0']
+        version: ['7.4', '8.0', '8.1']
     runs-on: ubuntu-20.04
     steps:
       - name: Setup PHP

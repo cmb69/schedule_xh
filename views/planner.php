@@ -11,7 +11,7 @@ namespace Schedule;
  * @var array<string,int> $counts
  * @var array<string,array<string>> $users
  * @var array<string,array<string,string>> $cells
- * @var string $submit
+ * @var string $iname
  * @var int $columns
  */
 ?>
@@ -51,7 +51,9 @@ namespace Schedule;
 
 <?php if ($currentUser):?>
       <tr class="schedule_buttons">
-        <td colspan="<?=$columns?>"><?=$submit?></td>
+        <td colspan="<?=$columns?>">
+          <input type="submit" class="submit" name="<?=$iname?>" value="<?=$this->text("label_save")?>">
+        </td>
       </tr>
 <?php endif?>
     </tbody>

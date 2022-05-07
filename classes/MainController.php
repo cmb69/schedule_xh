@@ -78,7 +78,7 @@ final class MainController
         bool $readOnly,
         bool $isMulti
     ): string {
-        global $sn, $su, $plugin_tx;
+        global $sn, $su;
 
         $currentUser = $readOnly ? null : $this->user();
         $counts = [];
@@ -105,14 +105,6 @@ final class MainController
                     : '&nbsp;';
             }
         }
-        if ($currentUser) {
-            $iname = 'schedule_submit_' . $name;
-            $submit =
-                '<input type="submit" class="submit" name="' . $iname
-                . '" value="' . $plugin_tx['schedule']['label_save'] . '">';
-        } else {
-            $submit = '';
-        }
         $bag = [
             'showTotals'=> $showTotals,
             'currentUser' => $readOnly ? null : $this->user(),
@@ -121,7 +113,7 @@ final class MainController
             'counts' => $counts,
             'users' => $users,
             'cells' => $cells,
-            'submit' => $submit,
+            'iname' => "schedule_submit_$name",
             'columns' => count($options) + 1,
         ];
         return Plugin::view('planner', $bag);

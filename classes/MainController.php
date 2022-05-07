@@ -54,18 +54,10 @@ final class MainController
         if (!preg_match('/^[a-z\-0-9]+$/i', $name)) {
             return $this->view->fail("err_invalid_name");
         }
-
-        $options = $args;
-        $showTotals = array_key_exists(0, $options) && is_bool($options[0])
-            ? array_shift($options) : $this->conf['default_totals'];
-        $readOnly = array_key_exists(0, $options) && is_bool($options[0])
-            ? array_shift($options) : $this->conf['default_readonly'];
-        $isMulti = array_key_exists(0, $options) && is_bool($options[0])
-            ? array_shift($options) : $this->conf['default_multi'];
+        [$showTotals, $readOnly, $isMulti, $options] = $this->parseArguments($args);
         if (empty($options)) {
             return $this->view->fail("err_no_option");
         }
-
         $posting = isset($_POST['schedule_submit_' . $name]);
         if (!$posting || $this->user() === null || $readOnly) {
             $user = (!$readOnly && $this->user() !== null) ? $this->user() : null;
@@ -79,6 +71,22 @@ final class MainController
             $recs = $this->votingService->findAll($name, $user, (bool) $this->conf['sort_users']);
         }
         return $this->planner($name, $options, $recs, $showTotals, $readOnly, $isMulti);
+    }
+
+    /**
+     * @param array<bool|string> $args
+     * @return array{bool,bool,bool,array<string>}
+     */
+    private function parseArguments(array $args): array
+    {
+        $options = $args;
+        $showTotals = array_key_exists(0, $options) && is_bool($options[0])
+            ? array_shift($options) : $this->conf['default_totals'];
+        $readOnly = array_key_exists(0, $options) && is_bool($options[0])
+            ? array_shift($options) : $this->conf['default_readonly'];
+        $isMulti = array_key_exists(0, $options) && is_bool($options[0])
+            ? array_shift($options) : $this->conf['default_multi'];
+        return [$showTotals, $readOnly, $isMulti, $options];
     }
 
     /**

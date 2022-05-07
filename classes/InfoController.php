@@ -45,36 +45,43 @@ final class InfoController
 
     public function execute(): void
     {
-        echo $this->view->render("about", ["version" => $this->pluginVersion]),
-            $this->systemCheck();
+        echo $this->view->render("info", [
+            "version" => $this->pluginVersion,
+            "checks" => $this->systemChecks(),
+        ]);
     }
 
-    private function systemCheck(): string
+    /**
+     * @return array<array{string,string}>
+     */
+    private function systemChecks(): array
     {
         $phpVersion = '7.1.0';
         $imgdir = "{$this->pluginFolder}/images/";
         $ok = '<img src="' . $imgdir . 'ok.png" alt="ok">';
         $warn = '<img src="' . $imgdir . 'warn.png" alt="warning">';
         $fail = '<img src="' . $imgdir . 'fail.png" alt="failure">';
-        $o = '<h4>' . $this->view->text("syscheck_title") . '</h4>'
-            . (version_compare(PHP_VERSION, $phpVersion) >= 0 ? $ok : $fail)
-            . '&nbsp;&nbsp;' . $this->view->text("syscheck_phpversion", $phpVersion)
-            . '<br>';
+        $checks = [];
+        $checks[] = [
+            $this->view->text("syscheck_phpversion", $phpVersion),
+            version_compare(PHP_VERSION, $phpVersion) >= 0 ? $ok : $fail,
+        ];
         foreach (['session'] as $ext) {
-            $o .= (extension_loaded($ext) ? $ok : $fail)
-                . '&nbsp;&nbsp;' . $this->view->text("syscheck_extension", $ext)
-                . '<br>';
+            $checks[] = [
+                $this->view->text("syscheck_extension", $ext),
+                extension_loaded($ext) ? $ok : $fail,
+            ];
         }
-        $o .= '<br>';
         foreach (['config/', 'css/', 'languages/'] as $folder) {
             $folders[] = "{$this->pluginFolder}/$folder";
         }
         $folders[] = $this->dataFolder;
         foreach ($folders as $folder) {
-            $o .= (is_writable($folder) ? $ok : $warn)
-                . '&nbsp;&nbsp;' . $this->view->text("syscheck_writable", $folder)
-                . '<br>';
+            $checks[] = [
+                $this->view->text("syscheck_writable", $folder),
+                is_writable($folder) ? $ok : $warn,
+            ];
         }
-        return $o;
+        return $checks;
     }
 }

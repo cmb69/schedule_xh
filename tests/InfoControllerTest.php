@@ -28,7 +28,7 @@ final class InfoControllerTest extends TestCase
     public function testIt(): void
     {
         $view = $this->createMock(View::class);
-        $view->expects($this->once())->method("render")->with("about", ["version" => "2.0-dev"]);
+        $view->expects($this->once())->method("render")->with("info");
         $sut = new InfoController("2.0-dev", "", "", $view);
         ob_start();
         $sut->execute();

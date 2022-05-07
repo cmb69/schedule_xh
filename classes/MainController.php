@@ -52,11 +52,11 @@ final class MainController
         }
 
         $options = $args;
-        $showTotals = is_bool($options[0])
+        $showTotals = array_key_exists(0, $options) && is_bool($options[0])
             ? array_shift($options) : $this->conf['default_totals'];
-        $readOnly = is_bool($options[0])
+        $readOnly = array_key_exists(0, $options) && is_bool($options[0])
             ? array_shift($options) : $this->conf['default_readonly'];
-        $isMulti = is_bool($options[0])
+        $isMulti = array_key_exists(0, $options) && is_bool($options[0])
             ? array_shift($options) : $this->conf['default_multi'];
         if (empty($options)) {
             return $this->view->warn("err_no_option");

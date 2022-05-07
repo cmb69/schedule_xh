@@ -29,16 +29,20 @@ final class MainController
     /** @var string */
     private $url;
 
+    /** @var VotingService */
+    private $votingService;
+
     /** @var View */
     private $view;
 
     /**
      * @param array<string,string> $conf
      */
-    public function __construct(array $conf, string $url, View $view)
+    public function __construct(array $conf, string $url, VotingService $votingService, View $view)
     {
         $this->conf = $conf;
         $this->url = $url;
+        $this->votingService = $votingService;
         $this->view = $view;
     }
 
@@ -62,18 +66,17 @@ final class MainController
             return $this->view->warn("err_no_option");
         }
 
-        $votingService = new VotingService(Plugin::dataFolder());
         $posting = isset($_POST['schedule_submit_' . $name]);
         if (!$posting || $this->user() === null || $readOnly) {
             $user = (!$readOnly && $this->user() !== null) ? $this->user() : null;
-            $recs = $votingService->findAll($name, $user, (bool) $this->conf['sort_users']);
+            $recs = $this->votingService->findAll($name, $user, (bool) $this->conf['sort_users']);
         } else {
             $submission = $this->submit($name, $options);
             $user = $this->user();
             if ($submission !== null) {
-                $votingService->vote($name, $user, $submission);
+                $this->votingService->vote($name, $user, $submission);
             }
-            $recs = $votingService->findAll($name, $user, (bool) $this->conf['sort_users']);
+            $recs = $this->votingService->findAll($name, $user, (bool) $this->conf['sort_users']);
         }
         return $this->planner($name, $options, $recs, $showTotals, $readOnly, $isMulti);
     }

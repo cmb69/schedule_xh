@@ -98,7 +98,12 @@ final class Plugin
     {
         global $sn, $su, $plugin_cf;
 
-        $controller = new MainController($plugin_cf["schedule"], "$sn?$su", self::view());
+        $controller = new MainController(
+            $plugin_cf["schedule"],
+            "$sn?$su",
+            new VotingService(self::dataFolder()),
+            self::view()
+        );
         return $controller->execute($name, ...$args);
     }
 

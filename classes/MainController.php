@@ -52,7 +52,7 @@ final class MainController
     public function execute(string $name, ...$args): string
     {
         if (!preg_match('/^[a-z\-0-9]+$/i', $name)) {
-            return $this->view->warn("err_invalid_name");
+            return $this->view->fail("err_invalid_name");
         }
 
         $options = $args;
@@ -63,7 +63,7 @@ final class MainController
         $isMulti = array_key_exists(0, $options) && is_bool($options[0])
             ? array_shift($options) : $this->conf['default_multi'];
         if (empty($options)) {
-            return $this->view->warn("err_no_option");
+            return $this->view->fail("err_no_option");
         }
 
         $posting = isset($_POST['schedule_submit_' . $name]);

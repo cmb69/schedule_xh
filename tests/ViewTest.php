@@ -42,9 +42,9 @@ final class ViewTest extends TestCase
         $this->assertEquals("bar", $sut->text("foo"));
     }
 
-    public function testWarn(): void
+    public function testFail(): void
     {
         $sut = new View("", ["foo" => "bar"]);
-        $this->assertEquals("<p class=\"cmsimplecore_warning\">bar</p>", $sut->warn("foo"));
+        $this->assertEquals("<p class=\"xh_fail\">bar</p>", $sut->fail("foo"));
     }
 }

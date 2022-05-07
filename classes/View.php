@@ -21,7 +21,7 @@
 
 namespace Schedule;
 
-final class View
+class View
 {
     /** @var string */
     private $folder;

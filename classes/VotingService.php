@@ -21,7 +21,7 @@
 
 namespace Schedule;
 
-final class VotingService
+class VotingService
 {
     /** @var string */
     private $folder;

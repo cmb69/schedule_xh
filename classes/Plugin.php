@@ -132,9 +132,9 @@ final class Plugin
      */
     public static function view(string $template, array $bag): string
     {
-        global $pth;
+        global $pth, $plugin_tx;
 
-        $view = new View("{$pth['folder']['plugins']}schedule/views/");
+        $view = new View("{$pth['folder']['plugins']}schedule/views/", $plugin_tx["schedule"]);
         return $view->render($template, $bag);
     }
 }

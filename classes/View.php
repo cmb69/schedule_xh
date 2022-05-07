@@ -26,9 +26,16 @@ final class View
     /** @var string */
     private $folder;
 
-    public function __construct(string $folder)
+    /** @var array<string,string> */
+    private $lang;
+
+    /**
+     * @param array<string,string> $lang
+     */
+    public function __construct(string $folder, array $lang)
     {
         $this->folder = $folder;
+        $this->lang = $lang;
     }
 
     /**
@@ -40,5 +47,10 @@ final class View
         ob_start();
         include "$this->folder/$template.php";
         return ob_get_clean();
+    }
+
+    public function text(string $key): string
+    {
+        return $this->lang[$key];
     }
 }

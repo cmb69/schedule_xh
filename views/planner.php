@@ -1,7 +1,10 @@
 <?php
+
+namespace Schedule;
+
 /**
+ * @var View $this
  * @var bool $showTotals
- * @var array<string,string> $ptx
  * @var ?string $currentUser
  * @var string $url
  * @var array<string> $options
@@ -39,7 +42,7 @@
 
 <?php if ($showTotals):?>
       <tr class="schedule_total">
-        <td class="schedule_user"><?=$ptx['total']?></td>
+        <td class="schedule_user"><?=$this->text("total")?></td>
 <?php   foreach ($counts as $count):?>
         <td><?=$count?></td>
 <?php   endforeach?>

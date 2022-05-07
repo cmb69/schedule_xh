@@ -115,7 +115,6 @@ final class MainController
         }
         $bag = [
             'showTotals'=> $showTotals,
-            'ptx' => $plugin_tx['schedule'],
             'currentUser' => $readOnly ? null : $this->user(),
             'url' => "$sn?$su",
             'options' => $options,

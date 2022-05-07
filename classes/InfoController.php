@@ -57,19 +57,15 @@ final class InfoController
     private function systemChecks(): array
     {
         $phpVersion = '7.1.0';
-        $imgdir = "{$this->pluginFolder}/images/";
-        $ok = '<img src="' . $imgdir . 'ok.png" alt="ok">';
-        $warn = '<img src="' . $imgdir . 'warn.png" alt="warning">';
-        $fail = '<img src="' . $imgdir . 'fail.png" alt="failure">';
         $checks = [];
         $checks[] = [
             $this->view->text("syscheck_phpversion", $phpVersion),
-            version_compare(PHP_VERSION, $phpVersion) >= 0 ? $ok : $fail,
+            version_compare(PHP_VERSION, $phpVersion) >= 0 ? "xh_success" : "xh_fail",
         ];
         foreach (['session'] as $ext) {
             $checks[] = [
                 $this->view->text("syscheck_extension", $ext),
-                extension_loaded($ext) ? $ok : $fail,
+                extension_loaded($ext) ? "xh_success" : "xh_fail",
             ];
         }
         foreach (['config/', 'css/', 'languages/'] as $folder) {
@@ -79,7 +75,7 @@ final class InfoController
         foreach ($folders as $folder) {
             $checks[] = [
                 $this->view->text("syscheck_writable", $folder),
-                is_writable($folder) ? $ok : $warn,
+                is_writable($folder) ? "xh_success" : "xh_warning",
             ];
         }
         return $checks;

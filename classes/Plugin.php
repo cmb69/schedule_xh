@@ -56,7 +56,7 @@ final class Plugin
 
     private static function about(): string
     {
-        return self::view('about', ['version' => self::VERSION]);
+        return self::view()->render('about', ['version' => self::VERSION]);
     }
 
     private static function systemCheck(): string
@@ -96,7 +96,7 @@ final class Plugin
      */
     public static function main(string $name, ...$args): string
     {
-        $controller = new MainController();
+        $controller = new MainController(self::view());
         return $controller->execute($name, ...$args);
     }
 
@@ -127,14 +127,10 @@ final class Plugin
         return $fn;
     }
 
-    /**
-     * @param array<string,mixed> $bag
-     */
-    public static function view(string $template, array $bag): string
+    public static function view(): View
     {
         global $pth, $plugin_tx;
 
-        $view = new View("{$pth['folder']['plugins']}schedule/views/", $plugin_tx["schedule"]);
-        return $view->render($template, $bag);
+        return new View("{$pth['folder']['plugins']}schedule/views/", $plugin_tx["schedule"]);
     }
 }

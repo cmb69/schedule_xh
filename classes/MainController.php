@@ -23,6 +23,14 @@ namespace Schedule;
 
 final class MainController
 {
+    /** @var View */
+    private $view;
+
+    public function __construct(View $view)
+    {
+        $this->view = $view;
+    }
+
     /**
      * @param mixed $args
      */
@@ -116,7 +124,7 @@ final class MainController
             'iname' => "schedule_submit_$name",
             'columns' => count($options) + 1,
         ];
-        return Plugin::view('planner', $bag);
+        return $this->view->render('planner', $bag);
     }
 
     /**

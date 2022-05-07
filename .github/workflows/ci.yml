@@ -2,12 +2,15 @@ name: checks
 on: [push, pull_request]
 jobs:
   checks:
+    strategy:
+      matrix:
+        version: ['7.4']
     runs-on: ubuntu-20.04
     steps:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: ${{matrix.version}}
       - name: Install CMSimple_XH
         run: |
           curl -fsSL -o CMSimple_XH-1.7.5.zip https://github.com/cmsimple-xh/cmsimple-xh/releases/download/1.7.5/CMSimple_XH-1.7.5.zip

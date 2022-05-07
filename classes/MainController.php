@@ -85,7 +85,6 @@ final class MainController
     ): string {
         global $sn, $su;
 
-        $currentUser = $readOnly ? null : $this->user();
         $counts = [];
         foreach ($options as $option) {
             $counts[$option] = 0;
@@ -101,13 +100,6 @@ final class MainController
                 if ($ok) {
                     $counts[$option]++;
                 }
-                $checked = $ok ? ' checked="checked"' : '';
-                $type = $isMulti ? 'checkbox' : 'radio';
-                $cells[$user][$option] = $user == $currentUser
-                    ?
-                        '<input type="' . $type . '" name="schedule_date_' . $name
-                        . '[]" value="' . $option . '"' . $checked . '>'
-                    : '&nbsp;';
             }
         }
         $bag = [
@@ -117,8 +109,9 @@ final class MainController
             'options' => $options,
             'counts' => $counts,
             'users' => $users,
-            'cells' => $cells,
-            'iname' => "schedule_submit_$name",
+            'itype' => $isMulti ? 'checkbox' : 'radio',
+            'iname' => "schedule_date_$name",
+            'sname' => "schedule_submit_$name",
             'columns' => count($options) + 1,
         ];
         return $this->view->render('planner', $bag);

@@ -47,7 +47,7 @@ final class Plugin
         $o .= print_plugin_admin('off');
         switch ($admin) {
             case '':
-                $o .= self::about() . self::systemCheck();
+                $o .= self::about();
                 break;
             default:
                 $o .= plugin_admin_common();
@@ -56,39 +56,17 @@ final class Plugin
 
     private static function about(): string
     {
-        return self::view()->render('about', ['version' => self::VERSION]);
-    }
+        global $pth;
 
-    private static function systemCheck(): string
-    {
-        global $pth, $plugin_tx;
-
-        $phpVersion = '7.1.0';
-        $ptx = $plugin_tx['schedule'];
-        $imgdir = $pth['folder']['plugins'] . 'schedule/images/';
-        $ok = '<img src="' . $imgdir . 'ok.png" alt="ok">';
-        $warn = '<img src="' . $imgdir . 'warn.png" alt="warning">';
-        $fail = '<img src="' . $imgdir . 'fail.png" alt="failure">';
-        $o = '<h4>' . $ptx['syscheck_title'] . '</h4>'
-            . (version_compare(PHP_VERSION, $phpVersion) >= 0 ? $ok : $fail)
-            . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_phpversion'], $phpVersion)
-            . '<br>';
-        foreach (['session'] as $ext) {
-            $o .= (extension_loaded($ext) ? $ok : $fail)
-                . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_extension'], $ext)
-                . '<br>';
-        }
-        $o .= '<br>';
-        foreach (['config/', 'css/', 'languages/'] as $folder) {
-            $folders[] = $pth['folder']['plugins'] . 'schedule/' . $folder;
-        }
-        $folders[] = self::dataFolder();
-        foreach ($folders as $folder) {
-            $o .= (is_writable($folder) ? $ok : $warn)
-                . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_writable'], $folder)
-                . '<br>';
-        }
-        return $o;
+        $controller = new InfoController(
+            self::VERSION,
+            "{$pth['folder']['plugins']}schedule",
+            self::dataFolder(),
+            self::view()
+        );
+        ob_start();
+        $controller->execute();
+        return ob_get_clean();
     }
 
     /**

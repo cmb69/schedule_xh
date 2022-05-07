@@ -49,9 +49,12 @@ class View
         return ob_get_clean();
     }
 
-    public function text(string $key): string
+    /**
+     * @param mixed $args
+     */
+    public function text(string $key, ...$args): string
     {
-        return $this->lang[$key];
+        return vsprintf($this->lang[$key], $args);
     }
 
     public function fail(string $key): string

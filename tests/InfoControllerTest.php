@@ -21,30 +21,17 @@
 
 namespace Schedule;
 
-use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 
-final class ViewTest extends TestCase
+final class InfoControllerTest extends TestCase
 {
-    public function testRender(): void
+    public function testIt(): void
     {
-        $root = vfsStream::setup("home");
-        vfsStream::newFile("foo.php")->at($root)->setContent(
-            "<p><?=\$bar?></p>"
-        );
-        $sut = new View($root->url(), []);
-        $this->assertXmlStringEqualsXmlString("<p>baz</p>", $sut->render("foo", ["bar" => "baz"]));
-    }
-
-    public function testText(): void
-    {
-        $sut = new View("", ["foo" => "bar%dbaz"]);
-        $this->assertEquals("bar42baz", $sut->text("foo", 42));
-    }
-
-    public function testFail(): void
-    {
-        $sut = new View("", ["foo" => "bar"]);
-        $this->assertEquals("<p class=\"xh_fail\">bar</p>", $sut->fail("foo"));
+        $view = $this->createMock(View::class);
+        $view->expects($this->once())->method("render")->with("about", ["version" => "2.0-dev"]);
+        $sut = new InfoController("2.0-dev", "", "", $view);
+        ob_start();
+        $sut->execute();
+        ob_end_clean();
     }
 }

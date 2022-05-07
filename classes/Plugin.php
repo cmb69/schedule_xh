@@ -134,9 +134,7 @@ final class Plugin
     {
         global $pth;
 
-        ob_start();
-        extract($bag);
-        include $pth['folder']['plugins'] . 'schedule/views/' . $template . '.php';
-        return ob_get_clean();
+        $view = new View("{$pth['folder']['plugins']}schedule/views/");
+        return $view->render($template, $bag);
     }
 }

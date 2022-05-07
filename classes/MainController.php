@@ -36,14 +36,12 @@ final class MainController
      */
     public function execute(string $name, ...$args): string
     {
-        global $plugin_cf, $plugin_tx;
+        global $plugin_cf;
 
         $pcf = $plugin_cf['schedule'];
-        $ptx = $plugin_tx['schedule'];
 
         if (!preg_match('/^[a-z\-0-9]+$/i', $name)) {
-            return '<p class="cmsimplecore_warning">' . $ptx['err_invalid_name']
-                . '</p>';
+            return $this->view->warn("err_invalid_name");
         }
 
         $options = $args;
@@ -54,8 +52,7 @@ final class MainController
         $isMulti = is_bool($options[0])
             ? array_shift($options) : $pcf['default_multi'];
         if (empty($options)) {
-            return '<p class="cmsimplecore_warning">' . $ptx['err_no_option']
-                . '</p>';
+            return $this->view->warn("err_no_option");
         }
 
         $votingService = new VotingService(Plugin::dataFolder());

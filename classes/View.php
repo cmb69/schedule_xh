@@ -53,4 +53,9 @@ final class View
     {
         return $this->lang[$key];
     }
+
+    public function warn(string $key): string
+    {
+        return "<p class=\"cmsimplecore_warning\">{$this->text($key)}</p>";
+    }
 }

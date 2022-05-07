@@ -23,11 +23,22 @@ namespace Schedule;
 
 final class MainController
 {
+    /** @var array<string,string> */
+    private $conf;
+
+    /** @var string */
+    private $url;
+
     /** @var View */
     private $view;
 
-    public function __construct(View $view)
+    /**
+     * @param array<string,string> $conf
+     */
+    public function __construct(array $conf, string $url, View $view)
     {
+        $this->conf = $conf;
+        $this->url = $url;
         $this->view = $view;
     }
 
@@ -36,21 +47,17 @@ final class MainController
      */
     public function execute(string $name, ...$args): string
     {
-        global $plugin_cf;
-
-        $pcf = $plugin_cf['schedule'];
-
         if (!preg_match('/^[a-z\-0-9]+$/i', $name)) {
             return $this->view->warn("err_invalid_name");
         }
 
         $options = $args;
         $showTotals = is_bool($options[0])
-            ? array_shift($options) : $pcf['default_totals'];
+            ? array_shift($options) : $this->conf['default_totals'];
         $readOnly = is_bool($options[0])
-            ? array_shift($options) : $pcf['default_readonly'];
+            ? array_shift($options) : $this->conf['default_readonly'];
         $isMulti = is_bool($options[0])
-            ? array_shift($options) : $pcf['default_multi'];
+            ? array_shift($options) : $this->conf['default_multi'];
         if (empty($options)) {
             return $this->view->warn("err_no_option");
         }
@@ -59,14 +66,14 @@ final class MainController
         $posting = isset($_POST['schedule_submit_' . $name]);
         if (!$posting || $this->user() === null || $readOnly) {
             $user = (!$readOnly && $this->user() !== null) ? $this->user() : null;
-            $recs = $votingService->findAll($name, $user, $pcf['sort_users']);
+            $recs = $votingService->findAll($name, $user, (bool) $this->conf['sort_users']);
         } else {
             $submission = $this->submit($name, $options);
             $user = $this->user();
             if ($submission !== null) {
                 $votingService->vote($name, $user, $submission);
             }
-            $recs = $votingService->findAll($name, $user, $pcf['sort_users']);
+            $recs = $votingService->findAll($name, $user, (bool) $this->conf['sort_users']);
         }
         return $this->planner($name, $options, $recs, $showTotals, $readOnly, $isMulti);
     }
@@ -83,8 +90,6 @@ final class MainController
         bool $readOnly,
         bool $isMulti
     ): string {
-        global $sn, $su;
-
         $counts = [];
         foreach ($options as $option) {
             $counts[$option] = 0;
@@ -105,7 +110,7 @@ final class MainController
         $bag = [
             'showTotals'=> $showTotals,
             'currentUser' => $readOnly ? null : $this->user(),
-            'url' => "$sn?$su",
+            'url' => $this->url,
             'options' => $options,
             'counts' => $counts,
             'users' => $users,

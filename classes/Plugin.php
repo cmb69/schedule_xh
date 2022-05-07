@@ -96,7 +96,9 @@ final class Plugin
      */
     public static function main(string $name, ...$args): string
     {
-        $controller = new MainController(self::view());
+        global $sn, $su, $plugin_cf;
+
+        $controller = new MainController($plugin_cf["schedule"], "$sn?$su", self::view());
         return $controller->execute($name, ...$args);
     }
 

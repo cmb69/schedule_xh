@@ -17,7 +17,7 @@
     text-align: center;
 }
 .schedule_green {
-    background: #cec url("ok.png") no-repeat center;
+    background: #cec;
 }
 .schedule_red {
     background-color: #ecc;

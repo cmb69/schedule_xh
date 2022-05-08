@@ -43,8 +43,8 @@ namespace Schedule;
 <?php       else:?>
           <input type="<?=$itype?>" name="<?=$iname?>[]" value="<?=$option?>">
 <?php       endif?>
-<?php     else:?>
-          &nbsp;
+<?php     elseif ($class === "schedule_green"):?>
+            ✓
 <?php     endif?>
         </td>
 <?php   endforeach?>

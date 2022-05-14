@@ -66,7 +66,7 @@ final class Plugin
         );
         ob_start();
         $controller->execute();
-        return ob_get_clean();
+        return (string) ob_get_clean();
     }
 
     /**

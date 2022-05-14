@@ -41,9 +41,10 @@ class VotingService
             return [];
         }
         $file = fopen($filename, "r");
+        assert($file !== false);
         flock($file, LOCK_SH);
         $records = [];
-        while (($record = fgetcsv($file, 0, "\t", "\"", "\0")) !== false) {
+        while (($record = $this->readRecord($file)) !== false) {
             $records[$record[0]] = array_slice($record, 1);
         }
         flock($file, LOCK_UN);
@@ -60,13 +61,20 @@ class VotingService
     /**
      * @param array<string> $options
      */
-    public function vote(string $name, string $user, array $options): void
+    public function vote(string $name, string $user, array $options): bool
     {
         $filename = "{$this->folder}/{$name}.csv";
+        if (!is_writeable($filename)) {
+            return false;
+        }
         $file = fopen($filename, "c+");
+        assert($file !== false);
         flock($file, LOCK_EX);
         $temp = fopen("php://temp", "w+");
-        while (($record = fgetcsv($file, 0, "\t", "\"", "\0")) !== false) {
+        if ($temp === false) {
+            return false;
+        }
+        while (($record = $this->readRecord($file)) !== false) {
             if ($record[0] !== $user) {
                 fputcsv($temp, $record, "\t", "\"", "\0");
             }
@@ -76,8 +84,20 @@ class VotingService
         rewind($file);
         stream_copy_to_stream($temp, $file);
         fclose($temp);
-        ftruncate($file, ftell($file));
+        $pos = ftell($file);
+        assert($pos !== false && $pos > 0);
+        ftruncate($file, $pos);
         flock($file, LOCK_UN);
         fclose($file);
+        return true;
+    }
+
+    /**
+     * @param resource $stream
+     * @return array<string>|false
+     */
+    private function readRecord($stream)
+    {
+        return fgetcsv($stream, 0, "\t", "\"", "\0") ?? false;
     }
 }

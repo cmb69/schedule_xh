@@ -74,18 +74,18 @@ final class MainController
     }
 
     /**
-     * @param array<bool|string> $args
+     * @param array<bool|mixed> $args
      * @return array{bool,bool,bool,array<string>}
      */
     private function parseArguments(array $args): array
     {
-        $options = $args;
-        $showTotals = array_key_exists(0, $options) && is_bool($options[0])
-            ? array_shift($options) : $this->conf['default_totals'];
-        $readOnly = array_key_exists(0, $options) && is_bool($options[0])
-            ? array_shift($options) : $this->conf['default_readonly'];
-        $isMulti = array_key_exists(0, $options) && is_bool($options[0])
-            ? array_shift($options) : $this->conf['default_multi'];
+        $showTotals = array_key_exists(0, $args) && is_bool($args[0])
+            ? (bool) array_shift($args) : (bool) $this->conf['default_totals'];
+        $readOnly = array_key_exists(0, $args) && is_bool($args[0])
+            ? (bool) array_shift($args) : (bool) $this->conf['default_readonly'];
+        $isMulti = array_key_exists(0, $args) && is_bool($args[0])
+            ? (bool) array_shift($args) : (bool) $this->conf['default_multi'];
+        $options = array_map("strval", $args);
         return [$showTotals, $readOnly, $isMulti, $options];
     }
 

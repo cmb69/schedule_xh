@@ -98,6 +98,8 @@ class VotingService
      */
     private function readRecord($stream)
     {
-        return fgetcsv($stream, 0, "\t", "\"", "\0") ?? false;
+        $result = fgetcsv($stream, 0, "\t", "\"", "\0");
+        assert($result !== null);
+        return $result;
     }
 }

@@ -1,174 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<meta http-equiv="content-type" content="text/html;charset=utf-8">
-<title>Schedule_XH &ndash; Manual</title>
-<link rel="stylesheet" type="text/css" href="./stylesheet.css">
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Schedule_XH – User Manual</title>
+  <style type="text/css">
+    body {
+        font-family: Georgia, serif;
+        line-height: 1.5;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+        background: #ffffe1;
+        max-width: 40em;
+    }
+    p {
+        text-align: justify;
+    }
+    pre {
+        color: black;
+        background: #ffe;
+        overflow: auto;
+        padding: 0.2em 0.5em;
+        border: 1px solid silver;
+    }
+  </style>
 </head>
-
 <body>
-
-<h1>Schedule_XH &ndash; a CMSimple_XH Plugin</h1>
-<img src="../schedule.png" alt="Appointment calendar"
-     style="float: left; margin-right: 16px; width: 128px; height: 128px">
-<p style="text-align:justify">Schedule_XH facilitates the coordination of
-meetings for members (registered through <a
-href="http://3-magi.net/?CMSimple_XH/Register_XH">Register_XH</a> or <a
-href="http://frankziesing.de/cmsimple/en/?Welcome:Memberpages">Memberpages_XH</a>)
-of your CMSimple_XH site. It is similar to Doodle's service, but as the
-appointment dates have no semantic meaning to Schedule_XH, it can be used for
-other votings as well.</p>
-
-<ul id="nav">
+<h1 id="schedule_xh">Schedule_XH</h1>
+<p>Schedule_XH facilitates the coordination of meetings for members (registered through <a href="https://github.com/cmb69/register_xh">Register_XH</a> or <a href="https://github.com/cmsimple-xh/memberpages">Memberpages</a> of your CMSimple_XH site. It is similar to the Doodle service, but as the appointment dates have no semantic meaning to Schedule_XH, it can be used for other votings as well.</p>
+<ul>
 <li><a href="#requirements">Requirements</a></li>
+<li><a href="#download">Download</a></li>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#settings">Settings</a></li>
 <li><a href="#usage">Usage</a></li>
-<!--<li><a href="#limitations">Limitations</a></li>-->
+<li><a href="#troubleshooting">Troubleshooting</a></li>
 <li><a href="#license">License</a></li>
 <li><a href="#credits">Credits</a></li>
 </ul>
-
-<div id="body">
-
-<p><strong>Please do read this documentation <em>before</em> you encounter any
-problems!</strong></p>
-
 <h2 id="requirements">Requirements</h2>
-<p>Schedule_XH is a plugin for CMSimple_XH. It requires CMSimple_XH &ge; 1.7.0 and
-PHP &ge; 7.1.0.</p>
-<div class="toplink"><a href="#">back to top</a></div>
-
+<p>Schedule_XH is a plugin for CMSimple_XH. It requires CMSimple_XH ≥ 1.7.0 and PHP ≥ 7.1.0.</p>
+<h2 id="download">Download</h2>
+<p>The <a href="https://github.com/cmb69/schedule_xh/releases/latest">lastest release</a> is available for download on Github.</p>
 <h2 id="installation">Installation</h2>
-<p>The installation is done as with many other CMSimple_XH plugins. See the <a
-href="http://www.cmsimple-xh.org/wiki/doku.php/installation"> CMSimple_XH
-wiki</a> for further details.</p>
-<ol>
-<li>Backup the data on your server.</li>
+<p>The installation is done as with many other CMSimple_XH plugins. See the <a href="https://wiki.cmsimple-xh.org/doku.php/installation#plugins">CMSimple_XH wiki</a> for further details.</p>
+<ol type="1">
+<li><strong>Backup the data on your server.</strong></li>
 <li>Unzip the distribution on your computer.</li>
-<li>Upload the whole directory schedule/ to your server into CMSimple_XH's
-plugins directory.</li>
-<li>Set write permissions to the subdirectories config/, css/, languages/ and
-the plugin's data folder.</li>
-<li>Switch to "Schedule" in the back-end to check if all requirements are
-fulfilled.</li>
+<li>Upload the whole directory <code>schedule/</code> to your server into the <code>plugins/</code> directory of CMSimple_XH.</li>
+<li>Set write permissions to the subdirectories <code>config/</code>, <code>css/</code>, <code>languages/</code> and the data directory of the plugin.</li>
+<li>Switch to <code>Schedule</code> in the back-end to check if all requirements are fulfilled.</li>
 </ol>
-<p>Note that Schedule_XH's data files could be accessed directly by calling
-their URL. A .htaccess file to prohibit this is already contained in the default
-data folder. For other servers or for custom data folders you have to take care
-for yourself, that the data are protected from non authorized access.</p>
-<div class="toplink"><a href="#">back to top</a></div>
-
+<p>Note that the data files of Schedule_XH could be accessed directly by calling their URL. A <code>.htaccess</code> file to prohibit this is already contained in the default data folder. For other servers or for custom data folders you have to take care for yourself, that the data are protected from non authorized access.</p>
 <h2 id="settings">Settings</h2>
-<p>The plugin's configuration is done as with many other CMSimple_XH plugins in
-the website's back-end. Select Plugins &rarr; Schedule.</p>
-<p>You can change the default settings of Schedule_XH under "Config". Hints for
-the options will be displayed when hovering over the help icons with your
-mouse.</p>
-<p>Localization is done under "Language". You can translate the character
-strings to your own language if there is no appropriate language file available,
-or customize them according to your needs.</p>
-<p>The look of Schedule_XH can be customized under "Stylesheet".</p>
-<div class="toplink"><a href="#">back to top</a></div>
-
+<p>The configuration of the plugin is done as with many other CMSimple_XH plugins in the back-end of the website. Select <code>Plugins</code> → <code>Schedule</code>.</p>
+<p>You can change the default settings of Schedule_XH under <code>Config</code>. Hints for the options will be displayed when hovering over the help icons with your mouse.</p>
+<p>Localization is done under <code>Language</code>. You can translate the character strings to your own language if there is no appropriate language file available, or customize them according to your needs.</p>
+<p>The look of Schedule_XH can be customized under <code>Stylesheet</code>.</p>
 <h2 id="usage">Usage</h2>
-<p>To set up a planning/voting on a CMSimple page, use the following plugin
-call:</p>
-<pre>{{{PLUGIN:schedule('%NAME%', %SHOW_TOTALS%, %READ_ONLY%, %MULTI%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');}}}</pre>
+<p>To set up a planning/voting on a CMSimple_XH page, use the following plugin call:</p>
+<pre><code>{{{schedule(&#39;%NAME%&#39;, %SHOW_TOTALS%, %READ_ONLY%, %MULTI%, &#39;%OPTION_1%&#39;, &#39;%OPTION_2%&#39;, &#39;%OPTION_N%&#39;)}}}</code></pre>
 <p>The parameters have the following meaning:</p>
-<dl>
-<dt>%NAME%</dt>
-<dd>The name of the event or other voting. This is used as basename of the CSV
-file in which the results are stored, so it may contain lowercase letters (a-z),
-digits (0-9) and minus signs (-) only.</dd>
-<dt>%SHOW_TOTALS%</dt>
-<dd>Whether the totals should be displayed: <em>true</em> (means yes) or
-<em>false</em> (means no). It's important to write this parameter without
-quotes. If you want to use the default value from the plugin configuration, you
-can omit this parameter, if you also omit the %READ_ONLY% and the %MULTI%
-parameter.</dd>
-<dt>%READ_ONLY%</dt>
-<dd>Whether the planner should be read only: <em>true</em> (means yes) or
-<em>false</em> (means no). It's important to write this parameter without
-quotes. If you want to use the default value from the plugin configuration, you
-can omit this parameter, if you also omit the %MULTI% parameter.</dd>
-<dt>%MULTI%</dt>
-<dd>Whether multiple options may be chosen for a single planner: <em>true</em>
-(means yes) or <em>false</em> (means no). It's important to write this parameter
-without quotes. If you want to use the default value from the plugin
-configuration, simply omit this parameter.</dd>
-<dt>%OPTION_X%</dt>
-<dd>The name of the option, which will be displayed as heading of the respective
-table column. This is typically a date, but as it has no semantic meaning to
-Schedule_XH, it can actually be any string. Basically you can have as many
-options as you like.</dd>
-</dl>
-<p>It is not necessary to restrict access to this page to members; if a visitor
-of your site is not logged in, he will just see the current results, without
-being able to vote. So you can even place the planner in the template:</p>
-<pre>&lt;?php echo schedule('%NAME%', %SHOW_TOTALS%, %READ_ONLY%, %MULTI%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');?&gt;</pre>
-<p>However, if you want to restrict the voting to a certain user group resp.
-access level, you have to place the planner on a page, which can only be
-accessed by members with the respective authorization.</p>
-<h4>Examples</h4>
 <ul>
-<li>
+<li><code>%NAME%</code>: The name of the event or other voting. This is used as basename of the CSV file in which the results are stored, so it may contain lowercase letters (<code>a</code>-<code>z</code>), digits (<code>0</code>-<code>9</code>) and dashes (<code>-</code>) only.</li>
+<li><code>%SHOW_TOTALS%</code>: Whether the totals should be displayed: <code>true</code> (means yes) or <code>false</code> (means no). It is important to write this parameter without quotes. If you want to use the default value from the plugin configuration, you can omit this parameter, if you also omit the <code>%READ_ONLY%</code> and the <code>%MULTI%</code> parameter.</li>
+<li><code>%READ_ONLY%</code>: Whether the planner should be read only: <code>true</code> (means yes) or <code>false</code> (means no). It is important to write this parameter without quotes. If you want to use the default value from the plugin configuration, you can omit this parameter, if you also omit the <code>%MULTI%</code> parameter.</li>
+<li><code>%MULTI%</code>: Whether multiple options may be chosen for a single planner: <code>true</code> (means yes) or <code>false</code> (means no). It is important to write this parameter without quotes. If you want to use the default value from the plugin configuration, simply omit this parameter.</li>
+<li><code>%OPTION_X%</code>: The name of the option, which will be displayed as heading of the respective table column. This is typically a date, but as it has no semantic meaning to Schedule_XH, it can actually be any string. Basically you can have as many options as you like.</li>
+</ul>
+<p>It is not necessary to restrict access to this page to members; if visitors of your site are not logged in, they will just see the current results, without being able to vote. So you can even place the planner in the template:</p>
+<pre><code>&lt;?=schedule(&#39;%NAME%&#39;, %SHOW_TOTALS%, %READ_ONLY%, %MULTI%, &#39;%OPTION_1%&#39;, &#39;%OPTION_2%&#39;, &#39;%OPTION_N%&#39;);?&gt;</code></pre>
+<p>However, if you want to restrict the voting to a certain user group or access level, you have to place the planner on a page, which can only be accessed by members with the respective authorization.</p>
+<h3 id="examples">Examples</h3>
 <p>To schedule a Christmas staff party:</p>
-<pre>{{{PLUGIN:schedule('christmas', 'Dec. 18th', 'Dec. 19th', 'Dec. 22nd');}}}</pre>
-<div style="text-align: center"><img src="./schedule.jpg" alt="Screenshot"></div>
-<p>After the voting for the party date, you want to keep the planer, so
-everybody can see the results. In this case you'll want to set it read only. To
-use the %READ_ONLY% parameter, you also have to specify the %SHOW_TOTALS%
-parameter:</p>
-<pre>{{{PLUGIN:schedule('christmas', false, true, 'Dec. 18th', 'Dec. 19th', 'Dec. 22nd');}}}</pre>
-</li>
-<li>
-<p>To set up a voting about the color of the new team shirts, that displays the
-voting totals below the table independently of the respective configuration
-option:</p>
-<pre>{{{PLUGIN:schedule('shirts', true, 'red', 'green', 'blue');}}}</pre>
-</li>
-</ul>
-<h4>Notes</h4>
+<pre><code>{{{schedule(&#39;christmas&#39;, &#39;Dec. 18th&#39;, &#39;Dec. 19th&#39;, &#39;Dec. 22nd&#39;)}}}</code></pre>
+<figure>
+<img src="https://raw.githubusercontent.com/cmb69/schedule_xh/master/help/schedule.jpg" alt="" /><figcaption>Screenshot of the voting widget</figcaption>
+</figure>
+<p>After the voting for the party date, you want to keep the planer, so everybody can see the results. In this case you want to set it read only. To use the <code>%READ_ONLY%</code> parameter, you also have to specify the <code>%SHOW_TOTALS%</code> parameter:</p>
+<pre><code>{{{schedule(&#39;christmas&#39;, false, true, &#39;Dec. 18th&#39;, &#39;Dec. 19th&#39;, &#39;Dec. 22nd&#39;)}}}</code></pre>
+<p>To set up a voting about the color of the new team shirts, that displays the voting totals below the table regardless of the respective configuration option:</p>
+<pre><code>{{{schedule(&#39;shirts&#39;, true, &#39;red&#39;, &#39;green&#39;, &#39;blue&#39;)}}}</code></pre>
+<h3 id="notes">Notes</h3>
 <ul>
-<li>You can have as many planners as you like; just give them different
-names.</li>
-<li>You can place the same planner on different pages; just use the same
-name.</li>
+<li>You can have as many planners as you like; just give them different names.</li>
+<li>You can place the same planner on different pages; just use the same name.</li>
 <li>Your members can change their votes as often as they like.</li>
-<li>You can change the options even after some members have already voted. As
-the votes are assigned to the name of the option (not by position), this should
-work reasonably well.</li>
+<li>You can change the options even after some members have already voted. As the votes are assigned to the name of the option (not by position), this should work reasonably well.</li>
 </ul>
-<div class="toplink"><a href="#">back to top</a></div>
-
-<!--<h2 id="limitations">Limitations</h2>-->
-<!--<div class="toplink"><a href="#">back to top</a></div>-->
-
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>Report bugs and ask for support either on <a href="https://github.com/cmb69/schedule_xh/issues">Github</a> or in the <a href="https://cmsimpleforum.com/">CMSimple_XH Forum</a>.</p>
 <h2 id="license">License</h2>
-<p>Schedule_XH is licensed under <a
-href="http://www.gnu.org/licenses/gpl.html">GPLv3</a>.</p>
-<p>&copy; 2012-2015 Christoph M. Becker</p>
-<div class="toplink"><a href="#">back to top</a></div>
-
+<p>Schedule_XH is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
+<p>Schedule_XH is distributed in the hope that it will be useful, but <em>without any warranty</em>; without even the implied warranty of <em>merchantibility</em> or <em>fitness for a particular purpose</em>. See the GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License along with Schedule_XH. If not, see <a href="https://www.gnu.org/licenses/" class="uri">https://www.gnu.org/licenses/</a>.</p>
+<p>Copyright 2012-2022 Christoph M. Becker</p>
 <h2 id="credits">Credits</h2>
-<p>The plugin was inspired by Roymcavoy.</p>
-<p>The plugin icon is designed by <a
-href="http://schollidesign.deviantart.com/">schollidesign</a>. Many thanks for
-publishing this icon under GPL.</p>
-<p>Many thanks to the community at the <a
-href="http://www.cmsimpleforum.com/">CMSimple_XH-Forum</a> for tips, suggestions
-and testing. Particularly I want to thank Ele for beta testing and suggesting
-improvements.</p>
-<p>And last but not least many thanks to <a href="http://www.harteg.dk">Peter
-Harteg</a>, the "father" of CMSimple, and all developers of <a
-href="http://www.cmsimple-xh.org/">CMSimple_XH</a> without whom this amazing CMS
-wouldn't exist.</p>
-<div class="toplink"><a href="#">back to top</a></div>
-
-</div>
-
+<p>The plugin was inspired by <em>Roymcavoy</em>.</p>
+<p>The plugin icon is designed by <a href="https://www.deviantart.com/schollidesign">schollidesign</a>. Many thanks for publishing this icon under GPL.</p>
+<p>Many thanks to the community at the <a href="https://www.cmsimpleforum.com/">CMSimple_XH Forum</a> for tips, suggestions and testing. Particularly I want to thank <em>Ele</em> for beta testing and suggesting improvements.</p>
+<p>And last but not least many thanks to <a href="https://www.harteg.dk/">Peter Harteg</a>, the “father” of CMSimple, and all developers of <a href="https://www.cmsimple-xh.org/">CMSimple_XH</a> without whom this amazing CMS would not exist.</p>
 </body>
-
 </html>

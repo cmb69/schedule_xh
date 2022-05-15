@@ -111,7 +111,7 @@ To schedule a Christmas staff party:
 
     {{{schedule('christmas', 'Dec. 18th', 'Dec. 19th', 'Dec. 22nd')}}}
 
-![Screenshot of the voting widget](https://raw.githubusercontent.com/cmb69/schedule_xh/master/help/schedule.jpg)
+![Screenshot of the voting widget](https://raw.githubusercontent.com/cmb69/schedule_xh/master/help/christmas.gif)
 
 After the voting for the party date, you want to keep the planer, so
 everybody can see the results. In this case you want to set it read only. To

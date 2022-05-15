@@ -120,11 +120,7 @@ Um eine Weihnachtsfeier für die Belegschaft zu terminieren:
 
     {{{schedule('Weihnachten', '18.12.', '19.12.', '22.12.')}}}
 
-![Screenshot des Abstimmungs-Widgets](https://raw.githubusercontent.com/cmb69/schedule_xh/master/help/schedule.jpg)
-
-Der Screenshot ist dem englischen Handbuch entnommen,
-weswegen die Spaltenüberschriften nicht den angegebenen Optionen
-entsprechen.
+![Screenshot des Abstimmungs-Widgets](https://raw.githubusercontent.com/cmb69/schedule_xh/master/help/christmas_de.gif)
 
 Nachdem die Abstimmung für die Weihnachtsfeier beendet ist, möchten Sie den
 Planer vielleicht weiterhin angezeigt lassen, so dass jeder das Ergebnis sehen

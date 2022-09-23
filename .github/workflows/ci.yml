@@ -19,13 +19,15 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: 'cmsimplexh/plugins/schedule'
+      - name: phive install
+        run: cd cmsimplexh/plugins/register && phive --no-progress install --trust-gpg-keys 0x2420BAE0A3BE25C6,0x31C7E470E2138192,0x0F9684B8B16B7AB0,0xCF1A108D0E7AE720
       - name: composer install
         run: cd cmsimplexh/plugins/schedule && composer install
       - name: phing sniff
-        run: cd cmsimplexh/plugins/schedule && PATH=vendor/bin:$PATH phing sniff
+        run: cd cmsimplexh/plugins/schedule && PATH=tools:vendor/bin:$PATH phing sniff
       - name: phing mess
-        run: cd cmsimplexh/plugins/schedule && PATH=vendor/bin:$PATH phing mess
+        run: cd cmsimplexh/plugins/schedule && PATH=tools:vendor/bin:$PATH phing mess
       - name: phing stan
-        run: cd cmsimplexh/plugins/schedule && PATH=vendor/bin:$PATH phing stan
+        run: cd cmsimplexh/plugins/schedule && PATH=tools:vendor/bin:$PATH phing stan
       - name: phing test
-        run: cd cmsimplexh/plugins/schedule && PATH=vendor/bin:$PATH phing test
+        run: cd cmsimplexh/plugins/schedule && PATH=tools:vendor/bin:$PATH phing test

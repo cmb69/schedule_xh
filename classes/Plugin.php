@@ -89,17 +89,13 @@ final class Plugin
 
     public static function dataFolder(): string
     {
-        global $pth, $plugin_cf;
+        global $pth, $cf, $sl;
 
-        $pcf = $plugin_cf['schedule'];
-        if (!empty($pcf['folder_data'])) {
-            $fn = $pth['folder']['base'] . $pcf['folder_data'];
-        } else {
-            $fn = $pth['folder']['plugins'] . 'schedule/data/';
+        $fn = $pth['folder']['content'];
+        if ($sl !== $cf['language']['default']) {
+            $fn = dirname($fn) . "/";
         }
-        if (substr($fn, -1) != '/') {
-            $fn .= '/';
-        }
+        $fn .= "schedule/";
         if (file_exists($fn)) {
             if (!is_dir($fn)) {
                 e('cntopen', 'folder', $fn);

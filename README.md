@@ -40,11 +40,6 @@ for further details.
 1. Switch to `Schedule` in the back-end to check if all requirements are
    fulfilled.
 
-Note that the data files of Schedule_XH could be accessed directly by calling
-their URL. A `.htaccess` file to prohibit this is already contained in the default
-data folder. For other servers or for custom data folders you have to take care
-for yourself, that the data are protected from non authorized access.
-
 ## Settings
 
 The configuration of the plugin is done as with many other CMSimple_XH plugins in

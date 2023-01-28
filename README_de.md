@@ -42,12 +42,6 @@ finden Sie weitere Details.
 1. Gehen Sie zu `Schedule` im Administrationsbereich, um zu prüfen, ob alle
    Voraussetzungen erfüllt sind.
 
-Beachten Sie, dass die Datendateien von Schedule_XH durch direkten Aufruf
-ihrer URL eingesehen werden können. Eine `.htaccess` Datei um das zu verhindern
-befindet sich bereits im voreingestellten Datenordner. Für andere Server oder
-für angepasste Datenordner müssen Sie selbst darauf achten, dass diese Daten vor
-nicht autorisiertem Zugriff geschützt sind.
-
 ## Einstellungen
 
 Die Plugin-Konfiguration erfolgt wie bei vielen anderen CMSimple_XH-Plugins

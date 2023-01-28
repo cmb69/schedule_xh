@@ -95,18 +95,13 @@ final class Plugin
         if ($sl !== $cf['language']['default']) {
             $fn = dirname($fn) . "/";
         }
-        $fn .= "schedule/";
-        if (file_exists($fn)) {
-            if (!is_dir($fn)) {
-                e('cntopen', 'folder', $fn);
-            }
-        } else {
+        $fn .= "schedule";
+        if (!file_exists($fn)) {
             if (mkdir($fn, 0777, true)) {
                 chmod($fn, 0777);
-            } else {
-                e('cntwriteto', 'folder', $fn);
             }
         }
+        $fn .= "/";
         return $fn;
     }
 }

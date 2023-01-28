@@ -168,7 +168,7 @@ bestimmten Zweck. Details finden Sie in der GNU General Public License.
 Sie sollten ein Exemplar der GNU General Public License zusammen mit
 Schedule_XH erhalten haben. Falls nicht, siehe <https://www.gnu.org/licenses/>.
 
-Copyright 2012-2022 Christoph M. Becker
+Copyright © Christoph M. Becker
 
 ## Danksagung
 

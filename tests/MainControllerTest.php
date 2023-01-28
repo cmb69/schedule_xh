@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2022 Christoph M. Becker
+ * Copyright (c) Christoph M. Becker
  *
  * This file is part of Schedule_XH.
  *

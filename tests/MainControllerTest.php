@@ -38,12 +38,9 @@ final class MainControllerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->conf = [
-            "default_totals" => "",
-            "default_readonly" => "",
-            "default_multi" => "1",
-            "sort_users" => "true",
-        ];
+        $plugin_cf = XH_includeVar("./config/config.php", 'plugin_cf');
+        assert(is_array($plugin_cf));
+        $this->conf = $plugin_cf['schedule'];
         $plugin_tx = XH_includeVar("./languages/en.php", 'plugin_tx');
         assert(is_array($plugin_tx));
         $this->lang = $plugin_tx['schedule'];
@@ -77,6 +74,19 @@ final class MainControllerTest extends TestCase
         ]);
 
         $response = $sut->execute("color", "red", "green", "blue");
+
+        Approvals::verifyHtml($response);
+    }
+
+    public function testRendersTotalsIfConfigured(): void
+    {
+        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang);
+        $this->votingService->method("findAll")->willReturn([
+            "cmb" => ["red"],
+            "other" => ["blue"],
+        ]);
+
+        $response = $sut->execute("color", true, "red", "green", "blue");
 
         Approvals::verifyHtml($response);
     }

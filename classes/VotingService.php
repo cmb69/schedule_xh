@@ -45,7 +45,10 @@ class VotingService
         flock($file, LOCK_SH);
         $records = [];
         while (($record = $this->readRecord($file)) !== false) {
-            $records[$record[0]] = array_slice($record, 1);
+            if ($record[0] !== null) {
+                assert($this->containsOnlyStrings($record));
+                $records[$record[0]] = array_slice($record, 1);
+            }
         }
         flock($file, LOCK_UN);
         fclose($file);
@@ -75,8 +78,11 @@ class VotingService
             return false;
         }
         while (($record = $this->readRecord($file)) !== false) {
-            if ($record[0] !== $user) {
-                fputcsv($temp, $record, "\t", "\"", "\0");
+            if ($record[0] !== null) {
+                assert($this->containsOnlyStrings($record));
+                if ($record[0] !== $user) {
+                    fputcsv($temp, $record, "\t", "\"", "\0");
+                }
             }
         }
         fputcsv($temp, array_merge([$user], $options), "\t", "\"", "\0");
@@ -94,12 +100,26 @@ class VotingService
 
     /**
      * @param resource $stream
-     * @return array<string>|false
+     * @return array<string|null>|false
      */
     private function readRecord($stream)
     {
         $result = fgetcsv($stream, 0, "\t", "\"", "\0");
         assert($result !== null);
         return $result;
+    }
+
+    /**
+     * @param array<string|null> $record
+     * @phpstan-assert-if-true array<string> $record
+     */
+    private function containsOnlyStrings(array $record): bool
+    {
+        foreach ($record as $field) {
+            if (!is_string($field)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

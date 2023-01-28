@@ -36,24 +36,13 @@
     </target>
 
     <target name="test" description="runs all tests">
-        <exec executable="phpunit" passthru="true" checkreturn="true">
-            <arg value="--bootstrap"/>
-            <arg file="tests/bootstrap.php"/>
-            <arg value="--colors=always"/>
-            <arg file="tests"/>
-        </exec>
+        <exec executable="phpunit" passthru="true" checkreturn="true"/>
     </target>
 
     <target name="coverage" description="generates coverage report">
         <exec executable="phpunit" passthru="true" checkreturn="true">
-            <arg value="--bootstrap"/>
-            <arg file="tests/bootstrap.php"/>
-            <arg value="--colors=always"/>
             <arg value="--coverage-html"/>
             <arg file="coverage"/>
-            <arg value="--whitelist"/>
-            <arg file="classes"/>
-            <arg file="tests"/>
         </exec>
     </target>
 
@@ -74,6 +63,7 @@
                 <exclude name="build.xml"/>
                 <exclude name="composer.*"/>
                 <exclude name="phpstan.neon"/>
+                <exclude name="phpunit.xml"/>
                 <exclude name="README*.md"/>
                 <exclude name="teplad.xml"/>
             </fileset>

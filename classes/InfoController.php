@@ -38,6 +38,9 @@ final class InfoController
     /** @var SystemChecker */
     private $systemChecker;
 
+    /** @var array<string,string> */
+    private $lang;
+
     /**
      * @param array<string> $lang
      */
@@ -52,6 +55,7 @@ final class InfoController
         $this->pluginFolder = $pluginFolder;
         $this->votingService = $votingService;
         $this->view = new View("{$this->pluginFolder}views/", $lang);
+        $this->lang = $lang;
         $this->systemChecker = $systemChecker;
     }
 
@@ -71,12 +75,12 @@ final class InfoController
         $phpVersion = '7.1.0';
         $checks = [];
         $checks[] = [
-            $this->view->text("syscheck_phpversion", $phpVersion),
+            sprintf($this->lang['syscheck_phpversion'], $phpVersion),
             $this->systemChecker->checkVersion(PHP_VERSION, $phpVersion) >= 0 ? "xh_success" : "xh_fail",
         ];
         foreach (['session'] as $ext) {
             $checks[] = [
-                $this->view->text("syscheck_extension", $ext),
+                sprintf($this->lang['syscheck_extension'], $ext),
                 $this->systemChecker->checkExtension($ext) ? "xh_success" : "xh_fail",
             ];
         }
@@ -86,7 +90,7 @@ final class InfoController
         $folders[] = $this->votingService->dataFolder();
         foreach ($folders as $folder) {
             $checks[] = [
-                $this->view->text("syscheck_writable", $folder),
+                sprintf($this->lang['syscheck_writable'], $folder),
                 $this->systemChecker->checkWritability($folder) ? "xh_success" : "xh_warning",
             ];
         }

@@ -23,7 +23,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {
 ?>
 <!-- Schedule_XH planner -->
 <?php if ($currentUser):?>
-<form class="schedule" action="<?=$url?>" method="POST">
+<form class="schedule" action="<?=$this->esc($url)?>" method="POST">
 <?php else:?>
 <div class="schedule">
 <?php endif?>
@@ -32,21 +32,21 @@ if (!defined("CMSIMPLE_XH_VERSION")) {
       <tr>
         <th></th>
 <?php foreach ($options as $option):?>
-        <th><?=$option?></th>
+        <th><?=$this->esc($option)?></th>
 <?php endforeach?>
       </tr>
     </thead>
     <tbody>
 <?php foreach ($users as $user => $votes):?>
       <tr>
-        <td class="schedule_user"><?=$user?></td>
+        <td class="schedule_user"><?=$this->esc($user)?></td>
 <?php   foreach ($votes as $option => $class):?>
-        <td class="<?=$class?>">
+        <td class="<?=$this->esc($class)?>">
 <?php     if ($user === $currentUser):?>
 <?php       if ($class === "schedule_green"):?>
-          <input type="<?=$itype?>" name="<?=$iname?>[]" value="<?=$option?>" checked>
+          <input type="<?=$this->esc($itype)?>" name="<?=$this->esc($iname)?>[]" value="<?=$this->esc($option)?>" checked>
 <?php       else:?>
-          <input type="<?=$itype?>" name="<?=$iname?>[]" value="<?=$option?>">
+          <input type="<?=$this->esc($itype)?>" name="<?=$this->esc($iname)?>[]" value="<?=$this->esc($option)?>">
 <?php       endif?>
 <?php     elseif ($class === "schedule_green"):?>
             ✓
@@ -60,15 +60,15 @@ if (!defined("CMSIMPLE_XH_VERSION")) {
       <tr class="schedule_total">
         <td class="schedule_user"><?=$this->text("total")?></td>
 <?php   foreach ($counts as $count):?>
-        <td><?=$count?></td>
+        <td><?=$this->esc($count)?></td>
 <?php   endforeach?>
       </tr>
 <?php endif?>
 
 <?php if ($currentUser):?>
       <tr class="schedule_buttons">
-        <td colspan="<?=$columns?>">
-          <input type="submit" class="submit" name="<?=$sname?>" value="<?=$this->text("label_save")?>">
+        <td colspan="<?=$this->esc($columns)?>">
+          <input type="submit" class="submit" name="<?=$this->esc($sname)?>" value="<?=$this->text("label_save")?>">
         </td>
       </tr>
 <?php endif?>

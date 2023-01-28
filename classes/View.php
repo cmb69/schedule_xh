@@ -50,15 +50,23 @@ class View
     }
 
     /**
-     * @param mixed $args
+     * @param string|int $args
      */
     public function text(string $key, ...$args): string
     {
-        return vsprintf($this->lang[$key], $args);
+        return vsprintf($this->esc($this->lang[$key]), array_map([$this, 'esc'], $args));
     }
 
     public function fail(string $key): string
     {
         return "<p class=\"xh_fail\">{$this->text($key)}</p>";
+    }
+
+    /**
+     * @param string|int $value
+     */
+    public function esc($value): string
+    {
+        return XH_hsc((string) $value);
     }
 }

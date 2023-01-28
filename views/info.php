@@ -14,8 +14,8 @@ if (!defined("CMSIMPLE_XH_VERSION")) {
  */
 ?>
 
-<h1>Schedule <?=$version?></h1>
+<h1>Schedule <?=$this->esc($version)?></h1>
 <h2><?=$this->text("syscheck_title")?></h2>
 <?php foreach ($checks as [$text, $class]):?>
-<p class="<?=$class?>"><?=$text?></p>
+<p class="<?=$this->esc($class)?>"><?=$this->esc($text)?></p>
 <?php endforeach?>

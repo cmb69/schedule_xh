@@ -6,6 +6,7 @@
         "bartlett/php-compatinfo": "5.4.*",
         "phpstan/phpstan": "^1.9",
         "phpunit/phpunit": "^8.5",
-        "mikey179/vfsstream": "^1.6"
+        "mikey179/vfsstream": "^1.6",
+        "approvals/approval-tests": "*@dev"
     }
 }

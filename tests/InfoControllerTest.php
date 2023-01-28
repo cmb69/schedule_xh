@@ -23,15 +23,23 @@ namespace Schedule;
 
 use function XH_includeVar;
 
+use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
 
 final class InfoControllerTest extends TestCase
 {
-    public function testIt(): void
+    public function testRendersPluginInfo(): void
     {
         $plugin_tx = XH_includeVar("./languages/en.php", "plugin_tx");
         assert(is_array($plugin_tx));
-        $sut = new InfoController("2.0-dev", "", "", $plugin_tx['schedule'], new SystemChecker());
-        $sut->execute();
+        $systemChecker = $this->createStub(SystemChecker::class);
+        $systemChecker->method('checkVersion')->willReturn(true);
+        $systemChecker->method('checkExtension')->willReturn(true);
+        $systemChecker->method('checkWritability')->willReturn(true);
+        $sut = new InfoController("2.0-dev", "", "", $plugin_tx['schedule'], $systemChecker);
+
+        $response = $sut->execute();
+
+        Approvals::verifyHtml($response);
     }
 }

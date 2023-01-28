@@ -29,8 +29,8 @@ final class InfoController
     /** @var string */
     private $pluginFolder;
 
-    /** @var string */
-    private $dataFolder;
+    /** @var VotingService */
+    private $votingService;
 
     /** @var View */
     private $view;
@@ -44,13 +44,13 @@ final class InfoController
     public function __construct(
         string $pluginVersion,
         string $pluginFolder,
-        string $dataFolder,
+        VotingService $votingService,
         array $lang,
         SystemChecker $systemChecker
     ) {
         $this->pluginVersion = $pluginVersion;
         $this->pluginFolder = $pluginFolder;
-        $this->dataFolder = $dataFolder;
+        $this->votingService = $votingService;
         $this->view = new View("{$this->pluginFolder}views/", $lang);
         $this->systemChecker = $systemChecker;
     }
@@ -83,7 +83,7 @@ final class InfoController
         foreach (['config/', 'css/', 'languages/'] as $folder) {
             $folders[] = "{$this->pluginFolder}/$folder";
         }
-        $folders[] = $this->dataFolder;
+        $folders[] = $this->votingService->dataFolder();
         foreach ($folders as $folder) {
             $checks[] = [
                 $this->view->text("syscheck_writable", $folder),

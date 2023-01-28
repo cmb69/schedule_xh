@@ -58,12 +58,12 @@ final class Plugin
 
     private static function about(): string
     {
-        global $pth, $plugin_tx;
+        global $pth, $cf, $plugin_tx, $sl;
 
         $controller = new InfoController(
             self::VERSION,
             "{$pth['folder']['plugins']}schedule/",
-            self::dataFolder(),
+            new VotingService($pth['folder']['content'], $sl === $cf['language']['default']),
             $plugin_tx['schedule'],
             new SystemChecker()
         );
@@ -75,33 +75,15 @@ final class Plugin
      */
     public static function main(string $name, ...$args): string
     {
-        global $pth, $sn, $su, $plugin_cf, $plugin_tx;
+        global $pth, $sn, $sl, $su, $cf, $plugin_cf, $plugin_tx;
 
         $controller = new MainController(
             $plugin_cf["schedule"],
             "$sn?$su",
-            new VotingService(self::dataFolder()),
+            new VotingService($pth['folder']['content'], $sl === $cf['language']['default']),
             "{$pth['folder']['plugins']}schedule/",
             $plugin_tx['schedule']
         );
         return $controller->execute($name, ...$args);
-    }
-
-    public static function dataFolder(): string
-    {
-        global $pth, $cf, $sl;
-
-        $fn = $pth['folder']['content'];
-        if ($sl !== $cf['language']['default']) {
-            $fn = dirname($fn) . "/";
-        }
-        $fn .= "schedule";
-        if (!file_exists($fn)) {
-            if (mkdir($fn, 0777, true)) {
-                chmod($fn, 0777);
-            }
-        }
-        $fn .= "/";
-        return $fn;
     }
 }

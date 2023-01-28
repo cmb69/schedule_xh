@@ -36,7 +36,9 @@ final class InfoControllerTest extends TestCase
         $systemChecker->method('checkVersion')->willReturn(true);
         $systemChecker->method('checkExtension')->willReturn(true);
         $systemChecker->method('checkWritability')->willReturn(true);
-        $sut = new InfoController("2.0-dev", "", "", $plugin_tx['schedule'], $systemChecker);
+        $votingService = $this->createStub(VotingService::class);
+        $votingService->method('dataFolder')->willReturn("");
+        $sut = new InfoController("2.0-dev", "", $votingService, $plugin_tx['schedule'], $systemChecker);
 
         $response = $sut->execute();
 

@@ -38,7 +38,7 @@ final class VotingServiceTest extends TestCase
 
     public function testFindNothing(): void
     {
-        $sut = new VotingService($this->root->url());
+        $sut = new VotingService($this->root->url() . "/", true);
         $actual = $sut->findAll("test", null, false);
         $this->assertEquals($actual, []);
     }
@@ -46,7 +46,7 @@ final class VotingServiceTest extends TestCase
     public function testFindAll(): void
     {
         $this->csvFixture();
-        $sut = new VotingService($this->root->url());
+        $sut = new VotingService($this->root->url() . "/", true);
         $actual = $sut->findAll("test", "userC", true);
         $expected = [
             "userA" => ["optA"],
@@ -59,7 +59,7 @@ final class VotingServiceTest extends TestCase
     public function testVote(): void
     {
         $file = $this->csvFixture();
-        $sut = new VotingService($this->root->url());
+        $sut = new VotingService($this->root->url() . "/", true);
         $sut->vote("test", "userC", ["optC"]);
         $expected =
             "userA\toptA\n"
@@ -71,7 +71,7 @@ final class VotingServiceTest extends TestCase
     public function testVoteAgain(): void
     {
         $file = $this->csvFixture();
-        $sut = new VotingService($this->root->url());
+        $sut = new VotingService($this->root->url() . "/", true);
         $sut->vote("test", "userA", ["optC"]);
         $expected =
             "userB\toptB\n"
@@ -81,7 +81,7 @@ final class VotingServiceTest extends TestCase
 
     private function csvFixture(): vfsStreamFile
     {
-        return vfsStream::newFile("test.csv")->at($this->root)->setContent(
+        return vfsStream::newFile("schedule/test.csv")->at($this->root)->setContent(
             "userA\toptA\n"
             . "userB\toptB\n"
         );

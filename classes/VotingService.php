@@ -24,11 +24,31 @@ namespace Schedule;
 class VotingService
 {
     /** @var string */
-    private $folder;
+    private $contentFolder;
 
-    public function __construct(string $folder)
+    /** @var bool */
+    private $isMainLanguage;
+
+    public function __construct(string $contentFolder, bool $isMainLanguage)
     {
-        $this->folder = $folder;
+        $this->contentFolder = $contentFolder;
+        $this->isMainLanguage = $isMainLanguage;
+    }
+
+    public function dataFolder(): string
+    {
+        $fn = $this->contentFolder;
+        if (!$this->isMainLanguage) {
+            $fn = dirname($fn) . "/";
+        }
+        $fn .= "schedule";
+        if (!file_exists($fn)) {
+            if (mkdir($fn, 0777, true)) {
+                chmod($fn, 0777);
+            }
+        }
+        $fn .= "/";
+        return $fn;
     }
 
     /**
@@ -36,7 +56,7 @@ class VotingService
      */
     public function findAll(string $name, ?string $user, bool $sorted): array
     {
-        $filename = "{$this->folder}/{$name}.csv";
+        $filename = "{$this->dataFolder()}{$name}.csv";
         if (!is_readable($filename)) {
             return [];
         }
@@ -66,7 +86,7 @@ class VotingService
      */
     public function vote(string $name, string $user, array $options): bool
     {
-        $filename = "{$this->folder}/{$name}.csv";
+        $filename = "{$this->dataFolder()}{$name}.csv";
         if (!is_writeable($filename)) {
             return false;
         }

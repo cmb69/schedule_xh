@@ -64,9 +64,7 @@ final class Plugin
             self::dataFolder(),
             $plugin_tx['schedule']
         );
-        ob_start();
-        $controller->execute();
-        return (string) ob_get_clean();
+        return $controller->execute();
     }
 
     /**

@@ -46,9 +46,9 @@ final class InfoController
         $this->view = new View("{$this->pluginFolder}views/", $lang);
     }
 
-    public function execute(): void
+    public function execute(): string
     {
-        echo $this->view->render("info", [
+        return $this->view->render("info", [
             "version" => $this->pluginVersion,
             "checks" => $this->systemChecks(),
         ]);

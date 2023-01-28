@@ -35,6 +35,9 @@ final class MainController
     /** @var View */
     private $view;
 
+    /** @var string|null */
+    private $currentUser;
+
     /**
      * @param array<string,string> $conf
      * @param array<string,string> $lang
@@ -44,12 +47,14 @@ final class MainController
         string $url,
         VotingService $votingService,
         string $pluginFolder,
-        array $lang
+        array $lang,
+        ?string $currentUser
     ) {
         $this->conf = $conf;
         $this->url = $url;
         $this->votingService = $votingService;
         $this->view = new View("{$pluginFolder}views/", $lang);
+        $this->currentUser = $currentUser;
     }
 
     /**
@@ -65,12 +70,12 @@ final class MainController
             return $this->view->fail("err_no_option");
         }
         $posting = isset($_POST['schedule_submit_' . $name]);
-        if (!$posting || $this->user() === null || $readOnly) {
-            $user = (!$readOnly && $this->user() !== null) ? $this->user() : null;
+        if (!$posting || $this->currentUser === null || $readOnly) {
+            $user = (!$readOnly && $this->currentUser !== null) ? $this->currentUser : null;
             $recs = $this->votingService->findAll($name, $user, (bool) $this->conf['sort_users']);
         } else {
             $submission = $this->submit($name, $options);
-            $user = $this->user();
+            $user = $this->currentUser;
             if ($submission !== null) {
                 $this->votingService->vote($name, $user, $submission);
             }
@@ -126,7 +131,7 @@ final class MainController
         }
         $bag = [
             'showTotals'=> $showTotals,
-            'currentUser' => $readOnly ? null : $this->user(),
+            'currentUser' => $readOnly ? null : $this->currentUser,
             'url' => $this->url,
             'options' => $options,
             'counts' => $counts,
@@ -155,10 +160,5 @@ final class MainController
             $rec[] = $field;
         }
         return $rec;
-    }
-
-    private function user(): ?string
-    {
-        return $_SESSION['username'] ?? ($_SESSION['Name'] ?? null);
     }
 }

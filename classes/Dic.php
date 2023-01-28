@@ -45,7 +45,8 @@ class Dic
             "$sn?$su",
             self::makeVotingService(),
             "{$pth['folder']['plugins']}schedule/",
-            $plugin_tx['schedule']
+            $plugin_tx['schedule'],
+            $_SESSION['username'] ?? ($_SESSION['Name'] ?? null)
         );
     }
 

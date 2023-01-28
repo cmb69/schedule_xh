@@ -49,7 +49,7 @@ final class MainControllerTest extends TestCase
 
     public function testInvalidNameFails(): void
     {
-        $sut = new MainController([], "", $this->votingService, "./", $this->lang);
+        $sut = new MainController([], "", $this->votingService, "./", $this->lang, null);
 
         $response = $sut->execute("christ!mas");
 
@@ -58,7 +58,7 @@ final class MainControllerTest extends TestCase
 
     public function testNoOptionsFails(): void
     {
-        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang);
+        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang, null);
 
         $response = $sut->execute("christmas");
 
@@ -67,7 +67,7 @@ final class MainControllerTest extends TestCase
 
     public function testRender(): void
     {
-        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang);
+        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang, null);
         $this->votingService->method("findAll")->willReturn([
             "cmb" => ["red"],
             "other" => ["blue"],
@@ -80,7 +80,7 @@ final class MainControllerTest extends TestCase
 
     public function testRendersTotalsIfConfigured(): void
     {
-        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang);
+        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang, null);
         $this->votingService->method("findAll")->willReturn([
             "cmb" => ["red"],
             "other" => ["blue"],
@@ -93,12 +93,11 @@ final class MainControllerTest extends TestCase
 
     public function testSubmissionSuccess(): void
     {
-        $_SESSION['username'] = "cmb";
         $_POST = [
             "schedule_date_color" => ["blue", "green"],
             "schedule_submit_color" => "Save",
         ];
-        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang);
+        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang, "cmb");
         $this->votingService->method("findAll")->willReturn([
             "cmb" => ["red"],
             "other" => ["blue"],
@@ -113,12 +112,11 @@ final class MainControllerTest extends TestCase
 
     public function testSubmissionFailure(): void
     {
-        $_SESSION['username'] = "cmb";
         $_POST = [
             "schedule_date_color" => ["yellow", "green"],
             "schedule_submit_color" => "Save",
         ];
-        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang);
+        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang, "cmb");
         $this->votingService->method("findAll")->willReturn([
             "cmb" => ["red"],
             "other" => ["blue"],

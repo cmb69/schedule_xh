@@ -35,15 +35,24 @@ final class InfoController
     /** @var View */
     private $view;
 
+    /** @var SystemChecker */
+    private $systemChecker;
+
     /**
      * @param array<string> $lang
      */
-    public function __construct(string $pluginVersion, string $pluginFolder, string $dataFolder, array $lang)
-    {
+    public function __construct(
+        string $pluginVersion,
+        string $pluginFolder,
+        string $dataFolder,
+        array $lang,
+        SystemChecker $systemChecker
+    ) {
         $this->pluginVersion = $pluginVersion;
         $this->pluginFolder = $pluginFolder;
         $this->dataFolder = $dataFolder;
         $this->view = new View("{$this->pluginFolder}views/", $lang);
+        $this->systemChecker = $systemChecker;
     }
 
     public function execute(): string
@@ -63,12 +72,12 @@ final class InfoController
         $checks = [];
         $checks[] = [
             $this->view->text("syscheck_phpversion", $phpVersion),
-            version_compare(PHP_VERSION, $phpVersion) >= 0 ? "xh_success" : "xh_fail",
+            $this->systemChecker->checkVersion(PHP_VERSION, $phpVersion) >= 0 ? "xh_success" : "xh_fail",
         ];
         foreach (['session'] as $ext) {
             $checks[] = [
                 $this->view->text("syscheck_extension", $ext),
-                extension_loaded($ext) ? "xh_success" : "xh_fail",
+                $this->systemChecker->checkExtension($ext) ? "xh_success" : "xh_fail",
             ];
         }
         foreach (['config/', 'css/', 'languages/'] as $folder) {
@@ -78,7 +87,7 @@ final class InfoController
         foreach ($folders as $folder) {
             $checks[] = [
                 $this->view->text("syscheck_writable", $folder),
-                is_writable($folder) ? "xh_success" : "xh_warning",
+                $this->systemChecker->checkWritability($folder) ? "xh_success" : "xh_warning",
             ];
         }
         return $checks;

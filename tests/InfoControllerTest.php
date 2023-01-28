@@ -31,7 +31,7 @@ final class InfoControllerTest extends TestCase
     {
         $plugin_tx = XH_includeVar("./languages/en.php", "plugin_tx");
         assert(is_array($plugin_tx));
-        $sut = new InfoController("2.0-dev", "", "", $plugin_tx['schedule']);
+        $sut = new InfoController("2.0-dev", "", "", $plugin_tx['schedule'], new SystemChecker());
         $sut->execute();
     }
 }

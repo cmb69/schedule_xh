@@ -21,6 +21,8 @@
 
 namespace Schedule;
 
+use Schedule\SystemChecker;
+
 final class Plugin
 {
     private const VERSION = '2.0-dev';
@@ -62,7 +64,8 @@ final class Plugin
             self::VERSION,
             "{$pth['folder']['plugins']}schedule",
             self::dataFolder(),
-            $plugin_tx['schedule']
+            $plugin_tx['schedule'],
+            new SystemChecker()
         );
         return $controller->execute();
     }

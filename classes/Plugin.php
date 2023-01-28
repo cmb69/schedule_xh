@@ -21,11 +21,9 @@
 
 namespace Schedule;
 
-use Schedule\SystemChecker;
-
 final class Plugin
 {
-    private const VERSION = '2.0-dev';
+    const VERSION = '2.0-dev';
 
     public static function dispatch(): void
     {
@@ -58,15 +56,7 @@ final class Plugin
 
     private static function about(): string
     {
-        global $pth, $cf, $plugin_tx, $sl;
-
-        $controller = new InfoController(
-            self::VERSION,
-            "{$pth['folder']['plugins']}schedule/",
-            new VotingService($pth['folder']['content'], $sl === $cf['language']['default']),
-            $plugin_tx['schedule'],
-            new SystemChecker()
-        );
+        $controller = Dic::makeInfoController();
         return $controller->execute();
     }
 
@@ -75,15 +65,7 @@ final class Plugin
      */
     public static function main(string $name, ...$args): string
     {
-        global $pth, $sn, $sl, $su, $cf, $plugin_cf, $plugin_tx;
-
-        $controller = new MainController(
-            $plugin_cf["schedule"],
-            "$sn?$su",
-            new VotingService($pth['folder']['content'], $sl === $cf['language']['default']),
-            "{$pth['folder']['plugins']}schedule/",
-            $plugin_tx['schedule']
-        );
+        $controller = Dic::makeMainController();
         return $controller->execute($name, ...$args);
     }
 }

@@ -62,7 +62,7 @@ final class Plugin
 
         $controller = new InfoController(
             self::VERSION,
-            "{$pth['folder']['plugins']}schedule",
+            "{$pth['folder']['plugins']}schedule/",
             self::dataFolder(),
             $plugin_tx['schedule'],
             new SystemChecker()

@@ -2,6 +2,11 @@
 
 use Schedule\Dic;
 
+if (!defined("CMSIMPLE_XH_VERSION")) {
+    header("HTTP/1.1 403 Forbidden");
+    exit;
+}
+
 /**
  * @var string $admin
  * @var string $o

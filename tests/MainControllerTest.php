@@ -33,7 +33,7 @@ final class MainControllerTest extends TestCase
     /** @var array<string,string> */
     private $lang;
 
-    /** @var VotingService&MockObject */
+    /** @var VotingService */
     private $votingService;
 
     public function setUp(): void
@@ -44,7 +44,27 @@ final class MainControllerTest extends TestCase
         $plugin_tx = XH_includeVar("./languages/en.php", 'plugin_tx');
         assert(is_array($plugin_tx));
         $this->lang = $plugin_tx['schedule'];
-        $this->votingService = $this->createMock(VotingService::class);
+        $this->votingService = new class extends VotingService
+        {
+            /** @var array<array<string,array<string>>> */
+            private $votes;
+            public function __construct()
+            {
+            }
+            public function dataFolder(): string
+            {
+                return "no_folder/";
+            }
+            public function findAll(string $name, ?string $user, bool $sorted): array
+            {
+                return $this->votes[$name];
+            }
+            public function vote(string $name, string $user, array $options): bool
+            {
+                $this->votes[$name][$user] = $options;
+                return true;
+            }
+        };
     }
 
     public function testInvalidNameFails(): void
@@ -67,11 +87,9 @@ final class MainControllerTest extends TestCase
 
     public function testRender(): void
     {
+        $this->votingService->vote("color", "cmb", ["red"]);
+        $this->votingService->vote("color", "other", ["blue"]);
         $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang, null);
-        $this->votingService->method("findAll")->willReturn([
-            "cmb" => ["red"],
-            "other" => ["blue"],
-        ]);
 
         $response = $sut->execute("color", "red", "green", "blue");
 
@@ -80,11 +98,9 @@ final class MainControllerTest extends TestCase
 
     public function testRendersTotalsIfConfigured(): void
     {
+        $this->votingService->vote("color", "cmb", ["red"]);
+        $this->votingService->vote("color", "other", ["blue"]);
         $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang, null);
-        $this->votingService->method("findAll")->willReturn([
-            "cmb" => ["red"],
-            "other" => ["blue"],
-        ]);
 
         $response = $sut->execute("color", true, "red", "green", "blue");
 
@@ -97,17 +113,15 @@ final class MainControllerTest extends TestCase
             "schedule_date_color" => ["blue", "green"],
             "schedule_submit_color" => "Save",
         ];
+        $this->votingService->vote("color", "cmb", ["red"]);
+        $this->votingService->vote("color", "other", ["blue"]);
         $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang, "cmb");
-        $this->votingService->method("findAll")->willReturn([
-            "cmb" => ["red"],
-            "other" => ["blue"],
-        ]);
-        $this->votingService->expects($this->once())->method("vote")->with(
-            "color",
-            "cmb",
-            ["blue", "green"]
-        );
         $sut->execute("color", "red", "green", "blue");
+
+        $this->assertEquals(
+            ["cmb" => ["blue", "green"], "other" => ["blue"]],
+            $this->votingService->findAll("color", null, true)
+        );
     }
 
     public function testSubmissionFailure(): void
@@ -116,12 +130,15 @@ final class MainControllerTest extends TestCase
             "schedule_date_color" => ["yellow", "green"],
             "schedule_submit_color" => "Save",
         ];
+        $this->votingService->vote("color", "cmb", ["red"]);
+        $this->votingService->vote("color", "other", ["blue"]);
         $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang, "cmb");
-        $this->votingService->method("findAll")->willReturn([
-            "cmb" => ["red"],
-            "other" => ["blue"],
-        ]);
-        $this->votingService->expects($this->never())->method("vote");
+
         $sut->execute("color", "red", "green", "blue");
+
+        $this->assertEquals(
+            ["cmb" => ["red"], "other" => ["blue"]],
+            $this->votingService->findAll("color", null, true)
+        );
     }
 }

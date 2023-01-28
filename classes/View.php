@@ -45,7 +45,7 @@ class View
     {
         extract($data);
         ob_start();
-        include "$this->folder/$template.php";
+        include "{$this->folder}$template.php";
         return (string) ob_get_clean();
     }
 

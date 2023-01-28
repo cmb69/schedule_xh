@@ -32,7 +32,7 @@ final class ViewTest extends TestCase
         vfsStream::newFile("foo.php")->at($root)->setContent(
             "<p><?=\$bar?></p>"
         );
-        $sut = new View($root->url(), []);
+        $sut = new View("{$root->url()}/", []);
         $this->assertXmlStringEqualsXmlString("<p>baz</p>", $sut->render("foo", ["bar" => "baz"]));
     }
 

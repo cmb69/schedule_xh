@@ -21,8 +21,8 @@
 
 namespace Schedule;
 
+use ApprovalTests\Approvals;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 
 final class MainControllerTest extends TestCase
@@ -30,11 +30,11 @@ final class MainControllerTest extends TestCase
     /** @var array<string,string> */
     private $conf;
 
+    /** @var array<string,string> */
+    private $lang;
+
     /** @var VotingService&MockObject */
     private $votingService;
-
-    /** @var View&MockObject */
-    private $view;
 
     public function setUp(): void
     {
@@ -44,55 +44,41 @@ final class MainControllerTest extends TestCase
             "default_multi" => "1",
             "sort_users" => "true",
         ];
+        $plugin_tx = XH_includeVar("./languages/en.php", 'plugin_tx');
+        assert(is_array($plugin_tx));
+        $this->lang = $plugin_tx['schedule'];
         $this->votingService = $this->createMock(VotingService::class);
-        $this->view = $this->createMock(View::class);
     }
 
     public function testInvalidNameFails(): void
     {
-        $sut = new MainController([], "", $this->votingService, $this->view);
-        $this->view->expects($this->once())->method("fail")->with($this->equalTo("err_invalid_name"));
-        $sut->execute("christ!mas");
+        $sut = new MainController([], "", $this->votingService, "./", $this->lang);
+
+        $response = $sut->execute("christ!mas");
+
+        Approvals::verifyHtml($response);
     }
 
     public function testNoOptionsFails(): void
     {
-        $sut = new MainController($this->conf, "", $this->votingService, $this->view);
-        $this->view->expects($this->once())->method("fail")->with($this->equalTo("err_no_option"));
-        $sut->execute("christmas");
+        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang);
+
+        $response = $sut->execute("christmas");
+
+        Approvals::verifyHtml($response);
     }
 
     public function testRender(): void
     {
-        $sut = new MainController($this->conf, "", $this->votingService, $this->view);
+        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang);
         $this->votingService->method("findAll")->willReturn([
             "cmb" => ["red"],
             "other" => ["blue"],
         ]);
-        $this->view->expects($this->once())->method("render")->with("planner", [
-            "showTotals" => false,
-            "currentUser" => null,
-            "url" => "",
-            "options" => ["red", "green", "blue"],
-            "iname" => "schedule_date_color",
-            "sname" => "schedule_submit_color",
-            "itype" => "checkbox",
-            "columns" => 4,
-            "counts" => ["red" => 1, "green" => 0, "blue" => 1],
-            "users" => [
-                "cmb" => [
-                    "red" => "schedule_green",
-                    "green" => "schedule_red",
-                    "blue" => "schedule_red",
-                ],
-                "other" => [
-                    "red" => "schedule_red",
-                    "green" => "schedule_red",
-                    "blue" => "schedule_green",
-                ],
-            ],
-        ]);
-        $sut->execute("color", "red", "green", "blue");
+
+        $response = $sut->execute("color", "red", "green", "blue");
+
+        Approvals::verifyHtml($response);
     }
 
     public function testSubmissionSuccess(): void
@@ -102,7 +88,7 @@ final class MainControllerTest extends TestCase
             "schedule_date_color" => ["blue", "green"],
             "schedule_submit_color" => "Save",
         ];
-        $sut = new MainController($this->conf, "", $this->votingService, $this->view);
+        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang);
         $this->votingService->method("findAll")->willReturn([
             "cmb" => ["red"],
             "other" => ["blue"],
@@ -122,7 +108,7 @@ final class MainControllerTest extends TestCase
             "schedule_date_color" => ["yellow", "green"],
             "schedule_submit_color" => "Save",
         ];
-        $sut = new MainController($this->conf, "", $this->votingService, $this->view);
+        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang);
         $this->votingService->method("findAll")->willReturn([
             "cmb" => ["red"],
             "other" => ["blue"],

@@ -37,13 +37,19 @@ final class MainController
 
     /**
      * @param array<string,string> $conf
+     * @param array<string,string> $lang
      */
-    public function __construct(array $conf, string $url, VotingService $votingService, View $view)
-    {
+    public function __construct(
+        array $conf,
+        string $url,
+        VotingService $votingService,
+        string $pluginFolder,
+        array $lang
+    ) {
         $this->conf = $conf;
         $this->url = $url;
         $this->votingService = $votingService;
-        $this->view = $view;
+        $this->view = new View("{$pluginFolder}views/", $lang);
     }
 
     /**

@@ -75,13 +75,14 @@ final class Plugin
      */
     public static function main(string $name, ...$args): string
     {
-        global $sn, $su, $plugin_cf;
+        global $pth, $sn, $su, $plugin_cf, $plugin_tx;
 
         $controller = new MainController(
             $plugin_cf["schedule"],
             "$sn?$su",
             new VotingService(self::dataFolder()),
-            self::view()
+            "{$pth['folder']['plugins']}schedule/",
+            $plugin_tx['schedule']
         );
         return $controller->execute($name, ...$args);
     }
@@ -111,12 +112,5 @@ final class Plugin
             }
         }
         return $fn;
-    }
-
-    public static function view(): View
-    {
-        global $pth, $plugin_tx;
-
-        return new View("{$pth['folder']['plugins']}schedule/views/", $plugin_tx["schedule"]);
     }
 }

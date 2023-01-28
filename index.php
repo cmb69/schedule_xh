@@ -19,7 +19,6 @@
  * along with Schedule_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Schedule\Plugin;
 use Schedule\Dic;
 
 /*

@@ -56,13 +56,13 @@ final class Plugin
 
     private static function about(): string
     {
-        global $pth;
+        global $pth, $plugin_tx;
 
         $controller = new InfoController(
             self::VERSION,
             "{$pth['folder']['plugins']}schedule",
             self::dataFolder(),
-            self::view()
+            $plugin_tx['schedule']
         );
         ob_start();
         $controller->execute();

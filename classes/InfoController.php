@@ -35,12 +35,15 @@ final class InfoController
     /** @var View */
     private $view;
 
-    public function __construct(string $pluginVersion, string $pluginFolder, string $dataFolder, View $view)
+    /**
+     * @param array<string> $lang
+     */
+    public function __construct(string $pluginVersion, string $pluginFolder, string $dataFolder, array $lang)
     {
         $this->pluginVersion = $pluginVersion;
         $this->pluginFolder = $pluginFolder;
         $this->dataFolder = $dataFolder;
-        $this->view = $view;
+        $this->view = new View("{$this->pluginFolder}views/", $lang);
     }
 
     public function execute(): void

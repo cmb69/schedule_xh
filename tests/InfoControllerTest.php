@@ -21,15 +21,17 @@
 
 namespace Schedule;
 
+use function XH_includeVar;
+
 use PHPUnit\Framework\TestCase;
 
 final class InfoControllerTest extends TestCase
 {
     public function testIt(): void
     {
-        $view = $this->createMock(View::class);
-        $view->expects($this->once())->method("render")->with("info");
-        $sut = new InfoController("2.0-dev", "", "", $view);
+        $plugin_tx = XH_includeVar("./languages/en.php", "plugin_tx");
+        assert(is_array($plugin_tx));
+        $sut = new InfoController("2.0-dev", "", "", $plugin_tx['schedule']);
         ob_start();
         $sut->execute();
         ob_end_clean();

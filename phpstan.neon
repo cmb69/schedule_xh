@@ -4,6 +4,7 @@ parameters:
     - classes
     - tests
     - views
+    - admin.php
     - index.php
   scanDirectories:
     - vendor/phpunit/phpunit

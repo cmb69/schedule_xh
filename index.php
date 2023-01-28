@@ -20,6 +20,7 @@
  */
 
 use Schedule\Plugin;
+use Schedule\Dic;
 
 /*
  * Prevent direct access and usage from unsupported CMSimple_XH versions.
@@ -37,12 +38,12 @@ EOT
     );
 }
 
-Plugin::dispatch();
+const SCHEDULE_VERSION = '2.0-dev';
 
 /**
  * @param mixed $args
  */
 function schedule(string $name, ...$args): string
 {
-    return Plugin::main($name, ...$args);
+    return Dic::makeMainController()->execute($name, ...$args);
 }

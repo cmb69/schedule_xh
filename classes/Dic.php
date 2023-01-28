@@ -28,7 +28,7 @@ class Dic
         global $pth, $plugin_tx;
 
         return new InfoController(
-            Plugin::VERSION,
+            SCHEDULE_VERSION,
             "{$pth['folder']['plugins']}schedule/",
             self::makeVotingService(),
             $plugin_tx['schedule'],

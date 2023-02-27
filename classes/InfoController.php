@@ -52,13 +52,14 @@ final class InfoController
         string $pluginVersion,
         string $pluginFolder,
         VotingService $votingService,
+        View $view,
         array $lang,
         SystemChecker $systemChecker
     ) {
         $this->pluginVersion = $pluginVersion;
         $this->pluginFolder = $pluginFolder;
         $this->votingService = $votingService;
-        $this->view = new View("{$this->pluginFolder}views/", $lang);
+        $this->view = $view;
         $this->lang = $lang;
         $this->systemChecker = $systemChecker;
     }

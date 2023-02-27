@@ -23,6 +23,7 @@ namespace Schedule;
 
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
+use Schedule\Infra\View;
 use Schedule\Infra\VotingService;
 
 final class MainControllerTest extends TestCase
@@ -69,7 +70,7 @@ final class MainControllerTest extends TestCase
 
     public function testInvalidNameFails(): void
     {
-        $sut = new MainController([], "", $this->votingService, "./", $this->lang, null);
+        $sut = new MainController([], "", $this->votingService, new View("./views/", $this->lang), null);
 
         $response = $sut->execute("christ!mas");
 
@@ -78,7 +79,7 @@ final class MainControllerTest extends TestCase
 
     public function testNoOptionsFails(): void
     {
-        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang, null);
+        $sut = new MainController($this->conf, "", $this->votingService, new View("./views/", $this->lang), null);
 
         $response = $sut->execute("christmas");
 
@@ -89,7 +90,7 @@ final class MainControllerTest extends TestCase
     {
         $this->votingService->vote("color", "cmb", ["red"]);
         $this->votingService->vote("color", "other", ["blue"]);
-        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang, null);
+        $sut = new MainController($this->conf, "", $this->votingService, new View("./views/", $this->lang), null);
 
         $response = $sut->execute("color", "red", "green", "blue");
 
@@ -100,7 +101,7 @@ final class MainControllerTest extends TestCase
     {
         $this->votingService->vote("color", "cmb", ["red"]);
         $this->votingService->vote("color", "other", ["blue"]);
-        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang, null);
+        $sut = new MainController($this->conf, "", $this->votingService, new View("./views/", $this->lang), null);
 
         $response = $sut->execute("color", true, "red", "green", "blue");
 
@@ -115,7 +116,7 @@ final class MainControllerTest extends TestCase
         ];
         $this->votingService->vote("color", "cmb", ["red"]);
         $this->votingService->vote("color", "other", ["blue"]);
-        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang, "cmb");
+        $sut = new MainController($this->conf, "", $this->votingService, new View("./views/", $this->lang), "cmb");
         $sut->execute("color", "red", "green", "blue");
 
         $this->assertEquals(
@@ -132,7 +133,7 @@ final class MainControllerTest extends TestCase
         ];
         $this->votingService->vote("color", "cmb", ["red"]);
         $this->votingService->vote("color", "other", ["blue"]);
-        $sut = new MainController($this->conf, "", $this->votingService, "./", $this->lang, "cmb");
+        $sut = new MainController($this->conf, "", $this->votingService, new View("./views/", $this->lang), "cmb");
 
         $sut->execute("color", "red", "green", "blue");
 

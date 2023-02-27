@@ -22,6 +22,7 @@
 namespace Schedule;
 
 use Schedule\Infra\SystemChecker;
+use Schedule\Infra\View;
 use Schedule\Infra\VotingService;
 
 class Dic
@@ -34,6 +35,7 @@ class Dic
             SCHEDULE_VERSION,
             "{$pth['folder']['plugins']}schedule/",
             self::makeVotingService(),
+            self::makeView(),
             $plugin_tx['schedule'],
             new SystemChecker()
         );
@@ -41,14 +43,13 @@ class Dic
 
     public static function makeMainController(): MainController
     {
-        global $pth, $sn, $su, $plugin_cf, $plugin_tx;
+        global $pth, $sn, $su, $plugin_cf;
 
         return new MainController(
             $plugin_cf["schedule"],
             "$sn?$su",
             self::makeVotingService(),
-            "{$pth['folder']['plugins']}schedule/",
-            $plugin_tx['schedule'],
+            self::makeView(),
             $_SESSION['username'] ?? ($_SESSION['Name'] ?? null)
         );
     }
@@ -58,5 +59,12 @@ class Dic
         global $pth, $cf, $sl;
 
         return new VotingService($pth['folder']['content'], $sl === $cf['language']['default']);
+    }
+
+    private static function makeView(): View
+    {
+        global $plugin_tx, $pth;
+
+        return new View($pth["folder"]["plugins"] . "schedule/views/", $plugin_tx["schedule"]);
     }
 }

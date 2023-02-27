@@ -26,6 +26,7 @@ use function XH_includeVar;
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
 use Schedule\Infra\SystemChecker;
+use Schedule\Infra\View;
 use Schedule\Infra\VotingService;
 
 final class InfoControllerTest extends TestCase
@@ -40,7 +41,8 @@ final class InfoControllerTest extends TestCase
         $systemChecker->method('checkWritability')->willReturn(true);
         $votingService = $this->createStub(VotingService::class);
         $votingService->method('dataFolder')->willReturn("");
-        $sut = new InfoController("2.0-dev", "./", $votingService, $plugin_tx['schedule'], $systemChecker);
+        $view = new View("./views/", $plugin_tx["schedule"]);
+        $sut = new InfoController("2.0-dev", "./", $votingService, $view, $plugin_tx['schedule'], $systemChecker);
 
         $response = $sut->execute();
 

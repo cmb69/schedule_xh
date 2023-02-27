@@ -1,43 +1,40 @@
 <?php
 
 /**
- * Copyright 2012-2023 Christoph M. Becker
+ * Copyright (c) Christoph M. Becker
  *
- * This file is part of Webcamviewer_XH.
+ * This file is part of Schedule_XH.
  *
- * Webcamviewer_XH is free software: you can redistribute it and/or modify
+ * Schedule_XH is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Webcamviewer_XH is distributed in the hope that it will be useful,
+ * Schedule_XH is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Webcamviewer_XH.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Schedule_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace Schedule\Infra;
 
-class SystemChecker
+class FakeSystemChecker extends SystemChecker
 {
-    /** @codeCoverageIgnore */
     public function checkVersion(string $actual, string $minimum): bool
     {
-        return version_compare($actual, $minimum) >= 0;
+        return false;
     }
 
-    /** @codeCoverageIgnore */
     public function checkExtension(string $extension): bool
     {
-        return extension_loaded($extension);
+        return false;
     }
 
-    /** @codeCoverageIgnore */
     public function checkWritability(string $path): bool
     {
-        return is_writable($path);
+        return false;
     }
 }

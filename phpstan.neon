@@ -2,7 +2,6 @@ parameters:
   level: 9
   paths:
     - classes
-    - tests
     - views
     - admin.php
     - index.php

@@ -29,21 +29,16 @@ class Dic
 {
     public static function makeInfoController(): InfoController
     {
-        global $pth, $plugin_tx;
-
         return new InfoController(
-            SCHEDULE_VERSION,
-            "{$pth['folder']['plugins']}schedule/",
             self::makeVotingService(),
             self::makeView(),
-            $plugin_tx['schedule'],
             new SystemChecker()
         );
     }
 
     public static function makeMainController(): MainController
     {
-        global $pth, $sn, $su, $plugin_cf;
+        global $sn, $su, $plugin_cf;
 
         return new MainController(
             $plugin_cf["schedule"],

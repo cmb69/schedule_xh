@@ -10,12 +10,12 @@ if (!defined("CMSIMPLE_XH_VERSION")) {
 /**
  * @var View $this
  * @var string $version
- * @var array<array{string,string}> $checks
+ * @var list<array{key:string,arg:string,class:string}> $checks
  */
 ?>
 
 <h1>Schedule <?=$this->esc($version)?></h1>
 <h2><?=$this->text("syscheck_title")?></h2>
-<?php foreach ($checks as [$text, $class]):?>
-<p class="<?=$this->esc($class)?>"><?=$this->esc($text)?></p>
+<?php foreach ($checks as $check):?>
+<p class="<?=$this->esc($check['class'])?>"><?=$this->text($check['key'], $check['arg'])?></p>
 <?php endforeach?>

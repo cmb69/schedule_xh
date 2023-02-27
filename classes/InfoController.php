@@ -21,18 +21,13 @@
 
 namespace Schedule;
 
+use Schedule\Infra\Request;
 use Schedule\Infra\SystemChecker;
 use Schedule\Infra\View;
 use Schedule\Infra\VotingService;
 
 final class InfoController
 {
-    /** @var string */
-    private $pluginVersion;
-
-    /** @var string */
-    private $pluginFolder;
-
     /** @var VotingService */
     private $votingService;
 
@@ -42,61 +37,52 @@ final class InfoController
     /** @var SystemChecker */
     private $systemChecker;
 
-    /** @var array<string,string> */
-    private $lang;
-
-    /**
-     * @param array<string> $lang
-     */
     public function __construct(
-        string $pluginVersion,
-        string $pluginFolder,
         VotingService $votingService,
         View $view,
-        array $lang,
         SystemChecker $systemChecker
     ) {
-        $this->pluginVersion = $pluginVersion;
-        $this->pluginFolder = $pluginFolder;
         $this->votingService = $votingService;
         $this->view = $view;
-        $this->lang = $lang;
         $this->systemChecker = $systemChecker;
     }
 
-    public function execute(): string
+    public function execute(Request $request): string
     {
         return $this->view->render("info", [
-            "version" => $this->pluginVersion,
-            "checks" => $this->systemChecks(),
+            "version" => SCHEDULE_VERSION,
+            "checks" => $this->systemChecks($request->pluginsFolder()),
         ]);
     }
 
     /**
-     * @return array<array{string,string}>
+     * @return list<array{key:string,arg:string,class:string}>
      */
-    private function systemChecks(): array
+    private function systemChecks(string $pluginsFolder): array
     {
         $phpVersion = '7.1.0';
         $checks = [];
         $checks[] = [
-            sprintf($this->lang['syscheck_phpversion'], $phpVersion),
-            $this->systemChecker->checkVersion(PHP_VERSION, $phpVersion) >= 0 ? "xh_success" : "xh_fail",
+            "key" => "syscheck_phpversion",
+            "arg" => $phpVersion,
+            "class" => $this->systemChecker->checkVersion(PHP_VERSION, $phpVersion) >= 0 ? "xh_success" : "xh_fail",
         ];
         foreach (['session'] as $ext) {
             $checks[] = [
-                sprintf($this->lang['syscheck_extension'], $ext),
-                $this->systemChecker->checkExtension($ext) ? "xh_success" : "xh_fail",
+                "key" => "syscheck_extension",
+                "arg" => $ext,
+                "class" => $this->systemChecker->checkExtension($ext) ? "xh_success" : "xh_fail",
             ];
         }
         foreach (['config/', 'css/', 'languages/'] as $folder) {
-            $folders[] = "{$this->pluginFolder}$folder";
+            $folders[] = $pluginsFolder . "realblog/" . $folder;
         }
         $folders[] = $this->votingService->dataFolder();
         foreach ($folders as $folder) {
             $checks[] = [
-                sprintf($this->lang['syscheck_writable'], $folder),
-                $this->systemChecker->checkWritability($folder) ? "xh_success" : "xh_warning",
+                "key" => "syscheck_writable",
+                "arg" => $folder,
+                "class" => $this->systemChecker->checkWritability($folder) ? "xh_success" : "xh_warning",
             ];
         }
         return $checks;

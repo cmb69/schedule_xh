@@ -25,7 +25,8 @@ use function XH_includeVar;
 
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
-use Schedule\Infra\SystemChecker;
+use Schedule\Infra\FakeRequest;
+use Schedule\Infra\FakeSystemChecker;
 use Schedule\Infra\View;
 use Schedule\Infra\VotingService;
 
@@ -33,19 +34,21 @@ final class InfoControllerTest extends TestCase
 {
     public function testRendersPluginInfo(): void
     {
-        $plugin_tx = XH_includeVar("./languages/en.php", "plugin_tx");
-        assert(is_array($plugin_tx));
-        $systemChecker = $this->createStub(SystemChecker::class);
-        $systemChecker->method('checkVersion')->willReturn(true);
-        $systemChecker->method('checkExtension')->willReturn(true);
-        $systemChecker->method('checkWritability')->willReturn(true);
-        $votingService = $this->createStub(VotingService::class);
-        $votingService->method('dataFolder')->willReturn("");
-        $view = new View("./views/", $plugin_tx["schedule"]);
-        $sut = new InfoController("2.0-dev", "./", $votingService, $view, $plugin_tx['schedule'], $systemChecker);
-
-        $response = $sut->execute();
-
+        $sut = new InfoController($this->votingService(), $this->view(), new FakeSystemChecker);
+        $request = new FakeRequest(["pth" => ["folder" => ["plugins" => "./plugins/"]]]);
+        $response = $sut->execute($request);
         Approvals::verifyHtml($response);
+    }
+
+    private function votingService()
+    {
+        $votingService = $this->createStub(VotingService::class);
+        $votingService->method('dataFolder')->willReturn("./content/schedule/");
+        return $votingService;
+    }
+
+    private function view()
+    {
+        return new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["schedule"]);
     }
 }

@@ -22,8 +22,8 @@
 namespace Schedule;
 
 use ApprovalTests\Approvals;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Schedule\Infra\VotingService;
 
 final class MainControllerTest extends TestCase
 {

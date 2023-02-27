@@ -21,6 +21,9 @@
 
 namespace Schedule;
 
+use Schedule\Infra\SystemChecker;
+use Schedule\Infra\VotingService;
+
 class Dic
 {
     public static function makeInfoController(): InfoController

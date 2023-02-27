@@ -21,6 +21,10 @@
 
 namespace Schedule;
 
+use Schedule\Infra\SystemChecker;
+use Schedule\Infra\View;
+use Schedule\Infra\VotingService;
+
 final class InfoController
 {
     /** @var string */

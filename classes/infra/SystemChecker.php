@@ -19,7 +19,7 @@
  * along with Webcamviewer_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Schedule;
+namespace Schedule\Infra;
 
 class SystemChecker
 {

@@ -1,6 +1,6 @@
 <?php
 
-use Schedule\View;
+use Schedule\Infra\View;
 
 if (!defined("CMSIMPLE_XH_VERSION")) {
     header("HTTP/1.1 403 Forbidden");

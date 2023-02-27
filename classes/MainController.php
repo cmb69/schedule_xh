@@ -21,6 +21,9 @@
 
 namespace Schedule;
 
+use Schedule\Infra\View;
+use Schedule\Infra\VotingService;
+
 final class MainController
 {
     /** @var array<string,string> */

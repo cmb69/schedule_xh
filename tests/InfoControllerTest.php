@@ -25,6 +25,8 @@ use function XH_includeVar;
 
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
+use Schedule\Infra\SystemChecker;
+use Schedule\Infra\VotingService;
 
 final class InfoControllerTest extends TestCase
 {

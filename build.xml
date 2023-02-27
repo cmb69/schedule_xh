@@ -2,79 +2,79 @@
 
 <project name="Schedule" default="help">
 
-    <target name="help" description="lists available targets">
-        <exec command="phing -l" outputProperty="help"/>
-        <echo>${help}</echo>
-    </target>
+  <target name="help" description="lists available targets">
+    <exec executable="phing" outputProperty="help">
+      <arg value="-l"/>
+    </exec>
+    <echo>${help}</echo>
+  </target>
 
-    <target name="sniff" description="checks adherence to PSR-2">
-        <exec executable="phpcs" passthru="true" checkreturn="true">
-            <arg value="--standard=PSR2"/>
-            <arg line="--runtime-set ignore_warnings_on_exit true"/>
-            <arg file="admin.php"/>
-            <arg file="index.php"/>
-            <arg file="classes"/>
-            <arg file="tests"/>
-        </exec>
-    </target>
+  <target name="sniff" description="checks adherence to PSR-2">
+    <exec executable="phpcs" passthru="true" checkreturn="true">
+      <arg value="--standard=PSR2"/>
+      <arg line="--runtime-set ignore_warnings_on_exit true"/>
+      <arg file="admin.php"/>
+      <arg file="index.php"/>
+      <arg file="classes"/>
+      <arg file="tests"/>
+    </exec>
+  </target>
 
-    <target name="stan" description="run static analysis">
-        <exec executable="phpstan" passthru="true" checkreturn="true">
-            <arg value="--ansi"/>
-            <arg value="analyze"/>
-        </exec>
-    </target>
+  <target name="stan" description="run static analysis">
+    <exec executable="phpstan" passthru="true" checkreturn="true">
+      <arg value="--ansi"/>
+      <arg value="analyze"/>
+    </exec>
+  </target>
 
-    <target name="mess" description="detects code flaws">
-        <exec executable="phpmd" passthru="true" checkreturn="true">
-            <arg line="admin.php,index.php,classes ansi codesize"/>
-        </exec>
-    </target>
+  <target name="test" description="runs all tests">
+    <exec executable="phpunit" passthru="true" checkreturn="true"/>
+  </target>
 
-    <target name="compat" description="checks compatibility with PHP_CompatInfo">
-        <exec command="phpcompatinfo analyser:run --ansi classes" passthru="true" checkreturn="true"/>
-    </target>
+  <target name="coverage" description="generates coverage report">
+    <exec executable="phpunit" passthru="true" checkreturn="true">
+      <arg value="--coverage-html"/>
+      <arg file="coverage"/>
+    </exec>
+  </target>
 
-    <target name="test" description="runs all tests">
-        <exec executable="phpunit" passthru="true" checkreturn="true"/>
-    </target>
+  <target name="sat" description="runs all checks" depends="sniff,stan,test"/>
 
-    <target name="coverage" description="generates coverage report">
-        <exec executable="phpunit" passthru="true" checkreturn="true">
-            <arg value="--coverage-html"/>
-            <arg file="coverage"/>
-        </exec>
-    </target>
+  <target name="gen-help" description="builds help.htm from README.md">
+    <exec executable="pandoc" passthru="true" checkreturn="true">
+      <arg line="-s --eol=lf --template=help/template.htm -Vlang=en -Vpagetitle=&quot;User Manual&quot; -o help/help.htm README.md -t html"/>
+    </exec>
+    <exec executable="pandoc" passthru="true" checkreturn="true">
+      <arg line="-s --eol=lf --template=help/template.htm -Vlang=de -Vpagetitle=&quot;Benutzerhandbuch&quot; -o help/help_de.htm README_DE.md -t html"/>
+    </exec>
+  </target>
 
-    <target name="gen-help" description="builds help.htm from README.md">
-        <exec command="pandoc -s --eol=lf --template=help/template.htm -Vlang=en -Vpagetitle=&quot;User Manual&quot; -o help/help.htm README.md -t html" logoutput="true"/>
-        <exec command="pandoc -s --eol=lf --template=help/template.htm -Vlang=de -Vpagetitle=&quot;Benutzerhandbuch&quot; -o help/help_de.htm README_DE.md -t html" logoutput="true"/>
-    </target>
-
-    <target name="build" description="builds distributable ZIP archive">
-        <exec command="git archive -o export.zip HEAD" checkreturn="true"/>
-        <unzip file="export.zip" todir="export"/>
-        <delete file="export.zip"/>
-        <move todir="dist">
-            <fileset dir="export">
-                <exclude name=".github/**"/>
-                <exclude name="help/template.htm"/>
-                <exclude name="tests/**"/>
-                <exclude name="build.xml"/>
-                <exclude name="composer.*"/>
-                <exclude name="phpstan.neon"/>
-                <exclude name="phpunit.xml"/>
-                <exclude name="README*.md"/>
-                <exclude name="teplad.xml"/>
-            </fileset>
-        </move>
-        <delete dir="export"/>
-        <copy file="dist/config/config.php"
-              tofile="dist/config/defaultconfig.php"/>
-        <copy file="dist/languages/en.php" tofile="dist/languages/default.php"/>
-        <zip destfile="Schedule_XH-2.0-dev.zip" basedir="dist"
-             prefix="schedule/"/>
-        <delete dir="dist"/>
-    </target>
+  <target name="build" description="builds distributable ZIP archive">
+    <exec executable="git" passthru="true" checkreturn="true">
+      <arg line="archive -o export.zip HEAD"/>
+    </exec>
+    <unzip file="export.zip" todir="export"/>
+    <delete file="export.zip"/>
+    <move todir="dist">
+      <fileset dir="export">
+        <exclude name=".github/**"/>
+        <exclude name=".phive/**"/>
+        <exclude name="help/template.htm"/>
+        <exclude name="tests/**"/>
+        <exclude name="build.xml"/>
+        <exclude name="composer.*"/>
+        <exclude name="phpstan.neon"/>
+        <exclude name="phpunit.xml"/>
+        <exclude name="README*.md"/>
+        <exclude name="teplad.xml"/>
+      </fileset>
+    </move>
+    <delete dir="export"/>
+    <copy file="dist/config/config.php" tofile="dist/config/defaultconfig.php"/>
+    <copy file="dist/languages/en.php" tofile="dist/languages/default.php"/>
+    <zip destfile="Schedule_XH-2.0-dev.zip" basedir="dist"
+       prefix="schedule/"/>
+    <delete dir="dist"/>
+  </target>
 
 </project>

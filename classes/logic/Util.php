@@ -29,7 +29,7 @@ class Util
      * @param array<bool|mixed> $args
      * @param array{totals:bool,readonly:bool,multi:bool} $defaults
      */
-    public static function parseArguments(array $args, array $defaults): Arguments
+    public static function parseArguments(array $args, array $defaults): ?Arguments
     {
         $showTotals = array_key_exists(0, $args) && is_bool($args[0])
             ? (bool) array_shift($args) : $defaults["totals"];
@@ -38,6 +38,9 @@ class Util
         $isMulti = array_key_exists(0, $args) && is_bool($args[0])
             ? (bool) array_shift($args) : $defaults["multi"];
         $options = array_map("strval", $args);
+        if (empty($options)) {
+            return null;
+        }
         return new Arguments($showTotals, $readOnly, $isMulti, $options);
     }
 }

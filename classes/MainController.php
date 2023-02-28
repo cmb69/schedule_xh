@@ -39,6 +39,9 @@ final class MainController
     /** @var View */
     private $view;
 
+    /** @var Request */
+    private $request;
+
     /** @param array<string,string> $conf */
     public function __construct(
         array $conf,
@@ -53,45 +56,45 @@ final class MainController
     /** @param bool|string $args */
     public function __invoke(Request $request, string $name, ...$args): string
     {
+        $this->request = $request;
+
         if (!preg_match('/^[a-z\-0-9]+$/i', $name)) {
             return $this->view->fail("err_invalid_name");
         }
-
-        $args = array_map(function ($arg) {
-            return !is_string($arg) ? $arg : html_entity_decode($arg, ENT_QUOTES, "UTF-8");
-        }, $args);
-        $args = Util::parseArguments($args, [
-            "totals" => (bool) $this->conf['default_totals'],
-            "readonly" => (bool) $this->conf['default_readonly'],
-            "multi" => (bool) $this->conf['default_multi'],
-        ]);
-        if (empty($args->options())) {
+        if (($args = $this->parseArguments($args)) === null) {
             return $this->view->fail("err_no_option");
         }
 
-        $posting = isset($_POST['schedule_submit_' . $name]);
-        if (!$posting || $request->user() === null || $args->readOnly()) {
-            $user = (!$args->readOnly() && $request->user() !== null) ? $request->user() : null;
-            $votes = $this->votingService->findAll($name, $user, (bool) $this->conf['sort_users']);
+        $posting = isset($_POST["schedule_submit_" . $name]);
+        if (!$posting || $this->request->user() === null || $args->readOnly()) {
+            $user = (!$args->readOnly() && $this->request->user() !== null) ? $this->request->user() : null;
+            $votes = $this->votingService->findAll($name, $user, (bool) $this->conf["sort_users"]);
         } else {
-            $submission = $this->submit($name, $args->options());
-            $user = $request->user();
-            if ($submission !== null) {
-                $vote = new Vote($user, $submission);
+            $vote = $this->parseVote($name, $args->options());
+            if ($vote !== null) {
                 $this->votingService->vote($name, $vote);
             }
-            $votes = $this->votingService->findAll($name, $user, (bool) $this->conf['sort_users']);
+            $votes = $this->votingService->findAll($name, $this->request->user(), (bool) $this->conf["sort_users"]);
         }
-        return $this->planner($name, $args, $votes, $request);
+        return $this->renderWidget($name, $args, $votes);
+    }
+
+    /** @param list<bool|string> $args */
+    private function parseArguments(array $args): ?Arguments
+    {
+        $args = array_map(function ($arg) {
+            return !is_string($arg) ? $arg : html_entity_decode($arg, ENT_QUOTES, "UTF-8");
+        }, $args);
+        return Util::parseArguments($args, [
+            "totals" => (bool) $this->conf["default_totals"],
+            "readonly" => (bool) $this->conf["default_readonly"],
+            "multi" => (bool) $this->conf["default_multi"],
+        ]);
     }
 
     /** @param list<Vote> $votes */
-    private function planner(
-        string $name,
-        Arguments $args,
-        array $votes,
-        Request $request
-    ): string {
+    private function renderWidget(string $name, Arguments $args, array $votes): string
+    {
         $counts = [];
         foreach ($args->options() as $option) {
             $counts[$option] = 0;
@@ -109,36 +112,33 @@ final class MainController
                 }
             }
         }
-        $bag = [
-            'showTotals'=> $args->totals(),
-            'currentUser' => $args->readonly() ? null : $request->user(),
-            'url' => $request->url(),
-            'options' => $args->options(),
-            'counts' => $counts,
-            'users' => $users,
-            'itype' => $args->multi() ? 'checkbox' : 'radio',
-            'iname' => "schedule_date_$name",
-            'sname' => "schedule_submit_$name",
-            'columns' => count($args->options()) + 1,
-        ];
-        return $this->view->render('planner', $bag);
+        return $this->view->render("planner", [
+            "showTotals"=> $args->totals(),
+            "currentUser" => $args->readonly() ? null : $this->request->user(),
+            "url" => $this->request->url(),
+            "options" => $args->options(),
+            "counts" => $counts,
+            "users" => $users,
+            "itype" => $args->multi() ? "checkbox" : "radio",
+            "iname" => "schedule_date_$name",
+            "sname" => "schedule_submit_$name",
+            "columns" => count($args->options()) + 1,
+        ]);
     }
 
-    /**
-     * @param array<string> $options
-     * @return array<string>
-     */
-    private function submit(string $name, array $options): ?array
+    /** @param list<string> $options */
+    private function parseVote(string $name, array $options): ?Vote
     {
-        $fields = $_POST['schedule_date_' . $name] ?? [];
-        $rec = [];
+        assert($this->request->user() !== null);
+        $fields = $_POST["schedule_date_" . $name] ?? [];
+        $choices = [];
         foreach ($fields as $field) {
             if (array_search($field, $options) === false) {
                 // user voted for invalid option, what's normally not possible
                 return null;
             }
-            $rec[] = $field;
+            $choices[] = $field;
         }
-        return $rec;
+        return new Vote($this->request->user(), $choices);
     }
 }

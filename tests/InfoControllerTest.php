@@ -37,6 +37,7 @@ final class InfoControllerTest extends TestCase
         $sut = new InfoController(new FakeVoteRepo(), $this->view(), new FakeSystemChecker);
         $request = new FakeRequest(["pth" => ["folder" => ["plugins" => "./plugins/"]]]);
         $response = $sut($request);
+        $this->assertEquals("Schedule 2.0-dev", $response->title());
         Approvals::verifyHtml($response->output());
     }
 

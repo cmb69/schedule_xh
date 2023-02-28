@@ -21,16 +21,16 @@
 
 namespace Schedule;
 
+use Schedule\Infra\Request;
 use Schedule\Infra\View;
 use Schedule\Infra\VotingService;
+use Schedule\Logic\Util;
+use Schedule\Value\Arguments;
 
 final class MainController
 {
     /** @var array<string,string> */
     private $conf;
-
-    /** @var string */
-    private $url;
 
     /** @var VotingService */
     private $votingService;
@@ -38,81 +38,57 @@ final class MainController
     /** @var View */
     private $view;
 
-    /** @var string|null */
-    private $currentUser;
-
     /** @param array<string,string> $conf */
     public function __construct(
         array $conf,
-        string $url,
         VotingService $votingService,
-        View $view,
-        ?string $currentUser
+        View $view
     ) {
         $this->conf = $conf;
-        $this->url = $url;
         $this->votingService = $votingService;
         $this->view = $view;
-        $this->currentUser = $currentUser;
     }
 
-    /**
-     * @param mixed $args
-     */
-    public function execute(string $name, ...$args): string
+    /** @param bool|string $args */
+    public function __invoke(Request $request, string $name, ...$args): string
     {
         if (!preg_match('/^[a-z\-0-9]+$/i', $name)) {
             return $this->view->fail("err_invalid_name");
         }
-        [$showTotals, $readOnly, $isMulti, $options] = $this->parseArguments($args);
-        if (empty($options)) {
+    
+        $args = Util::parseArguments($args, [
+            "totals" => (bool) $this->conf['default_totals'],
+            "readonly" => (bool) $this->conf['default_readonly'],
+            "multi" => (bool) $this->conf['default_multi'],
+        ]);
+        if (empty($args->options())) {
             return $this->view->fail("err_no_option");
         }
+
         $posting = isset($_POST['schedule_submit_' . $name]);
-        if (!$posting || $this->currentUser === null || $readOnly) {
-            $user = (!$readOnly && $this->currentUser !== null) ? $this->currentUser : null;
+        if (!$posting || $request->user() === null || $args->readOnly()) {
+            $user = (!$args->readOnly() && $request->user() !== null) ? $request->user() : null;
             $recs = $this->votingService->findAll($name, $user, (bool) $this->conf['sort_users']);
         } else {
-            $submission = $this->submit($name, $options);
-            $user = $this->currentUser;
+            $submission = $this->submit($name, $args->options());
+            $user = $request->user();
             if ($submission !== null) {
                 $this->votingService->vote($name, $user, $submission);
             }
             $recs = $this->votingService->findAll($name, $user, (bool) $this->conf['sort_users']);
         }
-        return $this->planner($name, $options, $recs, $showTotals, $readOnly, $isMulti);
+        return $this->planner($name, $args, $recs, $request);
     }
 
-    /**
-     * @param array<bool|mixed> $args
-     * @return array{bool,bool,bool,array<string>}
-     */
-    private function parseArguments(array $args): array
-    {
-        $showTotals = array_key_exists(0, $args) && is_bool($args[0])
-            ? (bool) array_shift($args) : (bool) $this->conf['default_totals'];
-        $readOnly = array_key_exists(0, $args) && is_bool($args[0])
-            ? (bool) array_shift($args) : (bool) $this->conf['default_readonly'];
-        $isMulti = array_key_exists(0, $args) && is_bool($args[0])
-            ? (bool) array_shift($args) : (bool) $this->conf['default_multi'];
-        $options = array_map("strval", $args);
-        return [$showTotals, $readOnly, $isMulti, $options];
-    }
-
-    /**
-     * @param array<string> $options
-     * @param array<string,array<string>> $recs
-     */
+    /** @param array<string,array<string>> $recs */
     private function planner(
         string $name,
-        array $options,
+        Arguments $args,
         array $recs,
-        bool $showTotals,
-        bool $readOnly,
-        bool $isMulti
+        Request $request
     ): string {
         $counts = [];
-        foreach ($options as $option) {
+        foreach ($args->options() as $option) {
             $counts[$option] = 0;
         }
         $users = [];
@@ -120,7 +96,7 @@ final class MainController
         foreach ($recs as $user => $rec) {
             $users[$user] = [];
             $cells[$user] = [];
-            foreach ($options as $option) {
+            foreach ($args->options() as $option) {
                 $ok = array_search($option, $rec) !== false;
                 $users[$user][$option] = $ok ? "schedule_green" : "schedule_red";
                 if ($ok) {
@@ -129,16 +105,16 @@ final class MainController
             }
         }
         $bag = [
-            'showTotals'=> $showTotals,
-            'currentUser' => $readOnly ? null : $this->currentUser,
-            'url' => $this->url,
-            'options' => $options,
+            'showTotals'=> $args->totals(),
+            'currentUser' => $args->readonly() ? null : $request->user(),
+            'url' => $request->url(),
+            'options' => $args->options(),
             'counts' => $counts,
             'users' => $users,
-            'itype' => $isMulti ? 'checkbox' : 'radio',
+            'itype' => $args->multi() ? 'checkbox' : 'radio',
             'iname' => "schedule_date_$name",
             'sname' => "schedule_submit_$name",
-            'columns' => count($options) + 1,
+            'columns' => count($args->options()) + 1,
         ];
         return $this->view->render('planner', $bag);
     }

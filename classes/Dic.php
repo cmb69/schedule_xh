@@ -38,14 +38,12 @@ class Dic
 
     public static function makeMainController(): MainController
     {
-        global $sn, $su, $plugin_cf;
+        global $plugin_cf;
 
         return new MainController(
             $plugin_cf["schedule"],
-            "$sn?$su",
             self::makeVotingService(),
-            self::makeView(),
-            $_SESSION['username'] ?? ($_SESSION['Name'] ?? null)
+            self::makeView()
         );
     }
 

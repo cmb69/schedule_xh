@@ -19,20 +19,27 @@
  * along with Schedule_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Schedule\Dic;
-use Schedule\Infra\Request;
+namespace Schedule\Infra;
 
-if (!defined("CMSIMPLE_XH_VERSION")) {
-    header("HTTP/1.1 403 Forbidden");
-    exit;
-}
-
-const SCHEDULE_VERSION = '2.0-dev';
-
-/**
- * @param bool|string $args
- */
-function schedule(string $name, ...$args): string
+class FakeVotingService extends VotingService
 {
-    return Dic::makeMainController()(new Request, $name, ...$args);
+    private $votes;
+
+    public function __construct() {}
+
+    public function dataFolder(): string
+    {
+        return "./content/schedule/";
+    }
+
+    public function findAll(string $name, ?string $user, bool $sorted): array
+    {
+        return $this->votes[$name];
+    }
+
+    public function vote(string $name, string $user, array $options): bool
+    {
+        $this->votes[$name][$user] = $options;
+        return true;
+    }
 }

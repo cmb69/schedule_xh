@@ -28,6 +28,19 @@ class Request
         return $this->pth()["folder"]["plugins"];
     }
 
+    /** @codeCoverageIgnore */
+    public function url(): string
+    {
+        global $sn, $su;
+        return $sn . "?" . $su;
+    }
+
+    /** @codeCoverageIgnore */
+    public function user(): ?string
+    {
+        return $_SESSION['username'] ?? ($_SESSION['Name'] ?? null);
+    }
+
     /**
      * @codeCoverageIgnore
      * @return array{folder:array<string,string>,file:array<string,string>}

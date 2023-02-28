@@ -23,88 +23,43 @@ namespace Schedule;
 
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
+use Schedule\Infra\FakeRequest;
+use Schedule\Infra\FakeVotingService;
 use Schedule\Infra\View;
-use Schedule\Infra\VotingService;
 
 final class MainControllerTest extends TestCase
 {
-    /** @var array<string,string> */
-    private $conf;
-
-    /** @var array<string,string> */
-    private $lang;
-
-    /** @var VotingService */
-    private $votingService;
-
-    public function setUp(): void
-    {
-        $plugin_cf = XH_includeVar("./config/config.php", 'plugin_cf');
-        assert(is_array($plugin_cf));
-        $this->conf = $plugin_cf['schedule'];
-        $plugin_tx = XH_includeVar("./languages/en.php", 'plugin_tx');
-        assert(is_array($plugin_tx));
-        $this->lang = $plugin_tx['schedule'];
-        $this->votingService = new class extends VotingService
-        {
-            /** @var array<array<string,array<string>>> */
-            private $votes;
-            public function __construct()
-            {
-            }
-            public function dataFolder(): string
-            {
-                return "no_folder/";
-            }
-            public function findAll(string $name, ?string $user, bool $sorted): array
-            {
-                return $this->votes[$name];
-            }
-            public function vote(string $name, string $user, array $options): bool
-            {
-                $this->votes[$name][$user] = $options;
-                return true;
-            }
-        };
-    }
-
     public function testInvalidNameFails(): void
     {
-        $sut = new MainController([], "", $this->votingService, new View("./views/", $this->lang), null);
-
-        $response = $sut->execute("christ!mas");
-
+        $sut = $this->sut();
+        $response = $sut(new FakeRequest, "christ!mas");
         Approvals::verifyHtml($response);
     }
 
     public function testNoOptionsFails(): void
     {
-        $sut = new MainController($this->conf, "", $this->votingService, new View("./views/", $this->lang), null);
-
-        $response = $sut->execute("christmas");
-
+        $sut = $this->sut();
+        $response = $sut(new FakeRequest, "christmas");
         Approvals::verifyHtml($response);
     }
 
     public function testRender(): void
     {
-        $this->votingService->vote("color", "cmb", ["red"]);
-        $this->votingService->vote("color", "other", ["blue"]);
-        $sut = new MainController($this->conf, "", $this->votingService, new View("./views/", $this->lang), null);
-
-        $response = $sut->execute("color", "red", "green", "blue");
-
+        $votingService = new FakeVotingService;
+        $votingService->vote("color", "cmb", ["red"]);
+        $votingService->vote("color", "other", ["blue"]);
+        $sut = $this->sut(["votingService" => $votingService]);
+        $response = $sut(new FakeRequest, "color", "red", "green", "blue");
         Approvals::verifyHtml($response);
     }
 
     public function testRendersTotalsIfConfigured(): void
     {
-        $this->votingService->vote("color", "cmb", ["red"]);
-        $this->votingService->vote("color", "other", ["blue"]);
-        $sut = new MainController($this->conf, "", $this->votingService, new View("./views/", $this->lang), null);
-
-        $response = $sut->execute("color", true, "red", "green", "blue");
-
+        $votingService = new FakeVotingService;
+        $votingService->vote("color", "cmb", ["red"]);
+        $votingService->vote("color", "other", ["blue"]);
+        $sut = $this->sut(["votingService" => $votingService]);
+        $response = $sut(new FakeRequest, "color", true, "red", "green", "blue");
         Approvals::verifyHtml($response);
     }
 
@@ -114,14 +69,15 @@ final class MainControllerTest extends TestCase
             "schedule_date_color" => ["blue", "green"],
             "schedule_submit_color" => "Save",
         ];
-        $this->votingService->vote("color", "cmb", ["red"]);
-        $this->votingService->vote("color", "other", ["blue"]);
-        $sut = new MainController($this->conf, "", $this->votingService, new View("./views/", $this->lang), "cmb");
-        $sut->execute("color", "red", "green", "blue");
+        $votingService = new FakeVotingService;
+        $votingService->vote("color", "cmb", ["red"]);
+        $votingService->vote("color", "other", ["blue"]);
+        $sut = $this->sut(["votingService" => $votingService]);
+        $sut(new FakeRequest(["user" => "cmb"]), "color", "red", "green", "blue");
 
         $this->assertEquals(
             ["cmb" => ["blue", "green"], "other" => ["blue"]],
-            $this->votingService->findAll("color", null, true)
+            $votingService->findAll("color", null, true)
         );
     }
 
@@ -131,15 +87,33 @@ final class MainControllerTest extends TestCase
             "schedule_date_color" => ["yellow", "green"],
             "schedule_submit_color" => "Save",
         ];
-        $this->votingService->vote("color", "cmb", ["red"]);
-        $this->votingService->vote("color", "other", ["blue"]);
-        $sut = new MainController($this->conf, "", $this->votingService, new View("./views/", $this->lang), "cmb");
-
-        $sut->execute("color", "red", "green", "blue");
-
+        $votingService = new FakeVotingService;
+        $votingService->vote("color", "cmb", ["red"]);
+        $votingService->vote("color", "other", ["blue"]);
+        $sut = $this->sut(["votingService" => $votingService]);
+        $sut(new FakeRequest(["user" => "cmb"]), "color", "red", "green", "blue");
         $this->assertEquals(
             ["cmb" => ["red"], "other" => ["blue"]],
-            $this->votingService->findAll("color", null, true)
+            $votingService->findAll("color", null, true)
         );
+    }
+
+    private function sut($options = [])
+    {
+        return new MainController(
+            $this->conf(),
+            $options["votingService"] ?? new FakeVotingService,
+            $this->view()
+        );
+    }
+
+    private function conf()
+    {
+        return XH_includeVar("./config/config.php", "plugin_cf")['schedule'];
+    }
+
+    private function view()
+    {
+        return new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")['schedule']);
     }
 }

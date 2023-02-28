@@ -19,29 +19,49 @@
  * along with Schedule_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Schedule\Infra;
+namespace Schedule\Value;
 
-class FakeRequest extends Request
+class Arguments
 {
+    /** @var bool */
+    private $totals;
+
+    /** @var bool */
+    private $readonly;
+
+    /** @var bool */
+    private $multi;
+
+    /** @var list<string> */
     private $options;
 
-    public function __construct($options = [])
+    /** @param list<string> $options */
+    public function __construct(bool $totals, bool $readonly, bool $multi, array $options)
     {
+        $this->totals = $totals;
+        $this->readonly = $readonly;
+        $this->multi = $multi;
         $this->options = $options;
     }
 
-    public function url(): string
+    public function totals(): bool
     {
-        return "http://example.com/?Schedule";
+        return $this->totals;
     }
 
-    public function user(): ?string
+    public function readonly(): bool
     {
-        return $this->options["user"] ?? null;
+        return $this->readonly;
     }
 
-    protected function pth(): array
+    public function multi(): bool
     {
-        return $this->options["pth"] ?? [];
+        return $this->multi;
+    }
+
+    /** @return list<string> */
+    public function options(): array
+    {
+        return $this->options;
     }
 }

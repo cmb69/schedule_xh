@@ -40,9 +40,6 @@ final class MainController
     /** @var View */
     private $view;
 
-    /** @var Request */
-    private $request;
-
     /** @param array<string,string> $conf */
     public function __construct(
         array $conf,
@@ -57,23 +54,21 @@ final class MainController
     /** @param bool|string $args */
     public function __invoke(Request $request, string $name, ...$args): Response
     {
-        $this->request = $request;
-
         if (!preg_match('/^[a-z\-0-9]+$/i', $name)) {
-            return (new Response)->addOutput($this->view->fail("err_invalid_name"));
+            return Response::create($this->view->fail("err_invalid_name"));
         }
         if (($args = $this->parseArguments(array_values($args))) === null) {
-            return (new Response)->addOutput($this->view->fail("err_no_option"));
+            return Response::create($this->view->fail("err_no_option"));
         }
         if ($request->postFor($name) !== null) {
-            return $this->vote($name, $args);
+            return $this->vote($request, $name, $args);
         }
-        return $this->widget($name, $args);
+        return $this->widget($request, $name, $args);
     }
 
-    private function widget(string $name, Arguments $args): Response
+    private function widget(Request $request, string $name, Arguments $args): Response
     {
-        $user = (!$args->readOnly() && $this->request->user() !== null) ? $this->request->user() : null;
+        $user = (!$args->readOnly() && $request->user() !== null) ? $request->user() : null;
         $votes = $this->voteRepo->findAll($name);
         if ($user && !Util::hasVoted($user, $votes)) {
             $votes[] = new Vote($user, []);
@@ -81,27 +76,24 @@ final class MainController
         if ($this->conf["sort_users"]) {
             $votes = Util::sortVotesByVoter($votes);
         }
-        return (new Response)->addOutput($this->renderWidget($name, $args, $votes));
+        return Response::create($this->renderWidget($request, $name, $args, $votes));
     }
 
-    private function vote(string $name, Arguments $args): Response
+    private function vote(Request $request, string $name, Arguments $args): Response
     {
-        if ($this->request->user() === null || $args->readOnly()) {
-            return (new Response)
-                ->addOutput($this->view->fail("err_vote"))
-                ->merge($this->widget($name, $args));
+        if ($request->user() === null || $args->readOnly()) {
+            return Response::create($this->view->fail("err_vote"))
+                ->merge($this->widget($request, $name, $args));
         }
-        if (($vote = $this->parseVote($name, $args->options())) === null) {
-            return (new Response)
-                ->addOutput($this->view->fail("err_vote"))
-                ->merge($this->widget($name, $args));
+        if (($vote = $this->parseVote($request, $name, $args->options())) === null) {
+            return Response::create($this->view->fail("err_vote"))
+                ->merge($this->widget($request, $name, $args));
         }
         if (!$this->voteRepo->save($name, $vote)) {
-            return (new Response)
-                ->addOutput($this->view->fail("err_save"))
-                ->merge($this->widget($name, $args));
+            return Response::create($this->view->fail("err_save"))
+                ->merge($this->widget($request, $name, $args));
         }
-        return (new Response)->redirect($this->request->url());
+        return Response::redirect($request->url());
     }
 
     /** @param list<bool|string> $args */
@@ -118,11 +110,11 @@ final class MainController
     }
 
     /** @param list<string> $options */
-    private function parseVote(string $name, array $options): ?Vote
+    private function parseVote(Request $request, string $name, array $options): ?Vote
     {
-        assert($this->request->user() !== null);
-        assert($this->request->postFor($name) !== null);
-        $fields = $this->request->postFor($name)["dates"];
+        assert($request->user() !== null);
+        assert($request->postFor($name) !== null);
+        $fields = $request->postFor($name)["dates"];
         $choices = [];
         foreach ($fields as $field) {
             if (array_search($field, $options) === false) {
@@ -131,19 +123,19 @@ final class MainController
             }
             $choices[] = $field;
         }
-        return new Vote($this->request->user(), $choices);
+        return new Vote($request->user(), $choices);
     }
 
     /** @param list<Vote> $votes */
-    private function renderWidget(string $name, Arguments $args, array $votes): string
+    private function renderWidget(Request $request, string $name, Arguments $args, array $votes): string
     {
         return $this->view->render("planner", [
             "show_totals"=> $args->totals(),
-            "voting" => $args->readonly() ? null : $this->request->user(),
-            "url" => $this->request->url(),
+            "voting" => $args->readonly() ? null : $request->user(),
+            "url" => $request->url(),
             "options" => $args->options(),
             "totals" => $this->totals($args, $votes),
-            "users" => $this->users($name, $args, $votes),
+            "users" => $this->users($request, $name, $args, $votes),
             "button" => "schedule_submit_$name",
             "columns" => count($args->options()) + 1,
         ]);
@@ -168,7 +160,7 @@ final class MainController
      * @param list<Vote> $votes
      * @return array<string,list<array{class:string,content:string}>>
      */
-    private function users(string $name, Arguments $args, array $votes): array
+    private function users(Request $request, string $name, Arguments $args, array $votes): array
     {
         $users = [];
         foreach ($votes as $vote) {
@@ -177,7 +169,7 @@ final class MainController
                 $ok = in_array($option, $vote->choices(), true);
                 $users[$vote->voter()][] = [
                     "class" => $ok ? "schedule_green" : "schedule_red",
-                    "content" => $vote->voter() === $this->request->user()
+                    "content" => $vote->voter() === $request->user()
                         ? $this->input($name, $args, $option, $ok)
                         : ($ok ? $this->view->text("label_checked") : $this->view->text("label_unchecked")),
                 ];

@@ -23,30 +23,33 @@ namespace Schedule\Infra;
 
 class Response
 {
+    public static function create(string $output): self
+    {
+        $that = new Response;
+        $that->output = $output;
+        return $that;
+    }
+
+    public static function redirect(string $location): self
+    {
+        $that = new Response;
+        $that->location = $location;
+        return $that;
+    }
+
     /** @var string */
     private $output = "";
 
     /** @var string|null */
     private $location = null;
 
-    public function addOutput(string $string): self
-    {
-        $this->output .= $string;
-        return $this;
-    }
-
-    public function redirect(string $url): self
-    {
-        $this->location = $url;
-        return $this;
-    }
-
     public function merge(Response $other): self
     {
-        $this->output .= $other->output;
+        $that = clone $this;
+        $that->output .= $other->output;
         assert($this->location === null); // must not merge into redirect response
-        $this->location = $other->location;
-        return $this;
+        $that->location = $other->location;
+        return $that;
     }
 
     public function output(): string

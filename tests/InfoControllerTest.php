@@ -37,7 +37,7 @@ final class InfoControllerTest extends TestCase
         $sut = new InfoController($this->voteRepo(), $this->view(), new FakeSystemChecker);
         $request = new FakeRequest(["pth" => ["folder" => ["plugins" => "./plugins/"]]]);
         $response = $sut->execute($request);
-        Approvals::verifyHtml($response);
+        Approvals::verifyHtml($response->output());
     }
 
     private function voteRepo()

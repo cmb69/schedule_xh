@@ -19,7 +19,7 @@ if (XH_wantsPluginAdministration('schedule')) {
     $o .= print_plugin_admin('off');
     switch ($admin) {
         case '':
-            $o .= Dic::makeInfoController()->execute(new Request);
+            $o .= Dic::makeInfoController()->execute(new Request)->fire();
             break;
         default:
             $o .= plugin_admin_common();

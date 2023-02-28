@@ -22,6 +22,7 @@
 namespace Schedule;
 
 use Schedule\Infra\Request;
+use Schedule\Infra\Response;
 use Schedule\Infra\SystemChecker;
 use Schedule\Infra\View;
 use Schedule\Infra\VoteRepo;
@@ -47,12 +48,12 @@ final class InfoController
         $this->systemChecker = $systemChecker;
     }
 
-    public function execute(Request $request): string
+    public function execute(Request $request): Response
     {
-        return $this->view->render("info", [
+        return Response::create($this->view->render("info", [
             "version" => SCHEDULE_VERSION,
             "checks" => $this->systemChecks($request->pluginsFolder()),
-        ]);
+        ]));
     }
 
     /**

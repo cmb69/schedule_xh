@@ -34,14 +34,14 @@ final class MainControllerTest extends TestCase
     {
         $sut = $this->sut();
         $response = $sut(new FakeRequest, "christ!mas");
-        Approvals::verifyHtml($response);
+        Approvals::verifyHtml($response->output());
     }
 
     public function testNoOptionsFails(): void
     {
         $sut = $this->sut();
         $response = $sut(new FakeRequest, "christmas");
-        Approvals::verifyHtml($response);
+        Approvals::verifyHtml($response->output());
     }
 
     public function testRender(): void
@@ -51,14 +51,14 @@ final class MainControllerTest extends TestCase
         $votingService->vote("color", new Vote("other", ["blue"]));
         $sut = $this->sut(["votingService" => $votingService]);
         $response = $sut(new FakeRequest, "color", "red", "green", "blue");
-        Approvals::verifyHtml($response);
+        Approvals::verifyHtml($response->output());
     }
 
     public function testRendersOptionsWithSpecialChars(): void
     {
         $sut = $this->sut();
         $response = $sut(new FakeRequest(["user" => "cmb"]), "special", "1 &lt; 2", "1 &gt; 2", "1 &amp; 2");
-        Approvals::verifyHtml($response);
+        Approvals::verifyHtml($response->output());
     }
 
     public function testRendersTotalsIfConfigured(): void
@@ -68,7 +68,7 @@ final class MainControllerTest extends TestCase
         $votingService->vote("color", new Vote("other", ["blue"]));
         $sut = $this->sut(["votingService" => $votingService]);
         $response = $sut(new FakeRequest, "color", true, "red", "green", "blue");
-        Approvals::verifyHtml($response);
+        Approvals::verifyHtml($response->output());
     }
 
     public function testSubmissionSuccess(): void
@@ -81,12 +81,12 @@ final class MainControllerTest extends TestCase
         $votingService->vote("color", new Vote("cmb", ["red"]));
         $votingService->vote("color", new Vote("other", ["blue"]));
         $sut = $this->sut(["votingService" => $votingService]);
-        $sut(new FakeRequest(["user" => "cmb"]), "color", "red", "green", "blue");
-
+        $response = $sut(new FakeRequest(["user" => "cmb"]), "color", "red", "green", "blue");
         $this->assertEquals(
             ["cmb" => new Vote("cmb", ["blue", "green"]), "other" => new Vote("other", ["blue"])],
             $votingService->findAll("color", null, true)
         );
+        $this->assertEquals("http://example.com/?Schedule", $response->location());
     }
 
     public function testSubmissionFailure(): void

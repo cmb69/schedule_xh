@@ -22,6 +22,7 @@
 namespace Schedule;
 
 use Schedule\Infra\Request;
+use Schedule\Infra\Response;
 use Schedule\Infra\View;
 use Schedule\Infra\VotingService;
 use Schedule\Logic\Util;
@@ -42,6 +43,9 @@ final class MainController
     /** @var Request */
     private $request;
 
+    /** @var Response */
+    private $response;
+
     /** @param array<string,string> $conf */
     public function __construct(
         array $conf,
@@ -54,15 +58,16 @@ final class MainController
     }
 
     /** @param bool|string $args */
-    public function __invoke(Request $request, string $name, ...$args): string
+    public function __invoke(Request $request, string $name, ...$args): Response
     {
         $this->request = $request;
+        $this->response = new Response;
 
         if (!preg_match('/^[a-z\-0-9]+$/i', $name)) {
-            return $this->view->fail("err_invalid_name");
+            return $this->response->addOutput($this->view->fail("err_invalid_name"));
         }
         if (($args = $this->parseArguments($args)) === null) {
-            return $this->view->fail("err_no_option");
+            return $this->response->addOutput($this->view->fail("err_no_option"));
         }
 
         $posting = isset($_POST["schedule_submit_" . $name]);
@@ -73,10 +78,11 @@ final class MainController
             $vote = $this->parseVote($name, $args->options());
             if ($vote !== null) {
                 $this->votingService->vote($name, $vote);
+                return $this->response->redirect($request->url());
             }
             $votes = $this->votingService->findAll($name, $this->request->user(), (bool) $this->conf["sort_users"]);
         }
-        return $this->renderWidget($name, $args, $votes);
+        return $this->response->addOutput($this->renderWidget($name, $args, $votes));
     }
 
     /** @param list<bool|string> $args */

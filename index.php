@@ -34,5 +34,5 @@ const SCHEDULE_VERSION = '2.0-dev';
  */
 function schedule(string $name, ...$args): string
 {
-    return Dic::makeMainController()(new Request, $name, ...$args);
+    return Dic::makeMainController()(new Request, $name, ...$args)->fire();
 }

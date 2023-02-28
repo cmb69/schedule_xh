@@ -1,32 +1,32 @@
-<!-- Schedule_XH planner -->
+<p class="xh_fail">Something went wrong with voting! Please try again.</p><!-- Schedule_XH planner -->
 <form class="schedule" action="http://example.com/?Schedule" method="POST">
   <table class="schedule">
     <thead>
       <tr>
         <th></th>
-        <th>1 &lt; 2</th>
-        <th>1 &gt; 2</th>
-        <th>1 &amp; 2</th>
+        <th>red</th>
+        <th>green</th>
+        <th>blue</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td class="schedule_user">cmb</td>
         <td class="schedule_red">
-          <input type="checkbox" name="schedule_date_special[]" value="1 &lt; 2">
+          <input type="checkbox" name="schedule_date_color[]" value="red">
         </td>
         <td class="schedule_red">
-          <input type="checkbox" name="schedule_date_special[]" value="1 &gt; 2">
+          <input type="checkbox" name="schedule_date_color[]" value="green">
         </td>
         <td class="schedule_red">
-          <input type="checkbox" name="schedule_date_special[]" value="1 &amp; 2">
+          <input type="checkbox" name="schedule_date_color[]" value="blue">
         </td>
       </tr>
 
 
       <tr class="schedule_buttons">
         <td colspan="4">
-          <button name="schedule_submit_special" value="vote">Save</button>
+          <button name="schedule_submit_color" value="vote">Save</button>
         </td>
       </tr>
     </tbody>

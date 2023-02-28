@@ -2,6 +2,7 @@
 
 $plugin_tx['schedule']['err_invalid_name']="Der Name des Ereignisses darf nur alphanumerische und Minus-Zeichen enthalten!";
 $plugin_tx['schedule']['err_no_option']="Sie müssen wenigstens eine Option angeben!";
+$plugin_tx['schedule']['err_vote']="Etwas hat bei der Abstimmung nicht funktioniert! Bitte versuchen Sie es erneut.";
 $plugin_tx['schedule']['err_save']="Die Abstimmung konnte nicht gespeichert werden!";
 
 $plugin_tx['schedule']['total']="Gesamt";

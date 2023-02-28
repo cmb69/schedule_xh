@@ -41,6 +41,14 @@ class Response
         return $this;
     }
 
+    public function merge(Response $other): self
+    {
+        $this->output .= $other->output;
+        assert($this->location === null); // must not merge into redirect response
+        $this->location = $other->location;
+        return $this;
+    }
+
     public function output(): string
     {
         return $this->output;

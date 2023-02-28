@@ -2,6 +2,7 @@
 
 $plugin_tx['schedule']['err_invalid_name']="The event name may only contain alphanumeric characters and minus signs!";
 $plugin_tx['schedule']['err_no_option']="You have to specify at least one option!";
+$plugin_tx['schedule']['err_vote']="Something went wrong with voting! Please try again.";
 $plugin_tx['schedule']['err_save']="The vote could not be saved!";
 
 $plugin_tx['schedule']['total']="Total";

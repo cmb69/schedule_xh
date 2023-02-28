@@ -52,7 +52,7 @@ class Dic
         global $pth, $cf, $sl;
 
         $folder = $pth['folder']['content'];
-        if ($sl === $cf['language']['default']) {
+        if ($sl !== $cf['language']['default']) {
             $folder = dirname($folder) . "/";
         }
         return new VoteRepo($folder);

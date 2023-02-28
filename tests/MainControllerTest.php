@@ -61,6 +61,15 @@ final class MainControllerTest extends TestCase
         Approvals::verifyHtml($response->output());
     }
 
+    public function testRendersWhatUserHasVoted(): void
+    {
+        $voteRepo = new FakeVoteRepo;
+        $voteRepo->save("color", new Vote("cmb", ["red", "blue"]));
+        $sut = $this->sut(["voteRepo" => $voteRepo]);
+        $response = $sut(new FakeRequest(["user" => "cmb"]), "color", "red", "green", "blue");
+        Approvals::verifyHtml($response->output());
+    }
+
     public function testRendersTotalsIfConfigured(): void
     {
         $voteRepo = new FakeVoteRepo;
@@ -75,7 +84,7 @@ final class MainControllerTest extends TestCase
     {
         $_POST = [
             "schedule_date_color" => ["blue", "green"],
-            "schedule_submit_color" => "Save",
+            "schedule_submit_color" => "vote",
         ];
         $voteRepo = new FakeVoteRepo;
         $voteRepo->save("color", new Vote("cmb", ["red"]));
@@ -93,7 +102,7 @@ final class MainControllerTest extends TestCase
     {
         $_POST = [
             "schedule_date_color" => ["yellow", "green"],
-            "schedule_submit_color" => "Save",
+            "schedule_submit_color" => "vote",
         ];
         $voteRepo = new FakeVoteRepo;
         $voteRepo->save("color", new Vote("cmb", ["red"]));
@@ -102,15 +111,54 @@ final class MainControllerTest extends TestCase
         $sut(new FakeRequest(["user" => "cmb"]), "color", "red", "green", "blue");
         $this->assertEquals(
             ["cmb" => new Vote("cmb", ["red"]), "other" => new Vote("other", ["blue"])],
-            $voteRepo->findAll("color", null)
+            $voteRepo->findAll("color")
         );
+    }
+
+    public function testPostFailureIfNotLoggedIn(): void
+    {
+        $_POST = [
+            "schedule_date_color" => ["blue", "green"],
+            "schedule_submit_color" => "vote",
+        ];
+        $voteRepo = new FakeVoteRepo;
+        $sut = $this->sut(["voteRepo" => $voteRepo]);
+        $response = $sut(new FakeRequest, "color", "red", "green", "blue");
+        Approvals::verifyHtml($response->output());
+        $this->assertEmpty($voteRepo->findAll("color"));
+    }
+
+    public function testPostFailureIfReadonly(): void
+    {
+        $_POST = [
+            "schedule_date_color" => ["blue", "green"],
+            "schedule_submit_color" => "vote",
+        ];
+        $voteRepo = new FakeVoteRepo;
+        $sut = $this->sut(["voteRepo" => $voteRepo]);
+        $response = $sut(new FakeRequest(["user" => "cmb"]), "color", false, true, "red", "green", "blue");
+        Approvals::verifyHtml($response->output());
+        $this->assertEmpty($voteRepo->findAll("color"));
+    }
+
+    public function testPostFailureIfUnkownOptionsAreSupplied(): void
+    {
+        $_POST = [
+            "schedule_date_color" => ["yellow"],
+            "schedule_submit_color" => "vote",
+        ];
+        $voteRepo = new FakeVoteRepo;
+        $sut = $this->sut(["voteRepo" => $voteRepo]);
+        $response = $sut(new FakeRequest(["user" => "cmb"]), "color", "red", "green", "blue");
+        Approvals::verifyHtml($response->output());
+        $this->assertEmpty($voteRepo->findAll("color"));
     }
 
     public function testFailureToSaveVoteIsReported(): void
     {
         $_POST = [
             "schedule_date_color" => ["blue", "green"],
-            "schedule_submit_color" => "Save",
+            "schedule_submit_color" => "vote",
         ];
         $voteRepo = new FakeVoteRepo(["save" => false]);
         $sut = $this->sut(["voteRepo" => $voteRepo]);

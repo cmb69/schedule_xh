@@ -68,7 +68,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {
 <?php if ($currentUser):?>
       <tr class="schedule_buttons">
         <td colspan="<?=$this->esc($columns)?>">
-          <input type="submit" class="submit" name="<?=$this->esc($sname)?>" value="<?=$this->text("label_save")?>">
+          <button name="<?=$this->esc($sname)?>" value="vote"><?=$this->text("label_save")?></button>
         </td>
       </tr>
 <?php endif?>

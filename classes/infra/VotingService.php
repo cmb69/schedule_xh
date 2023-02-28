@@ -21,6 +21,8 @@
 
 namespace Schedule\Infra;
 
+use Schedule\Value\Vote;
+
 class VotingService
 {
     /** @var string */
@@ -52,7 +54,7 @@ class VotingService
     }
 
     /**
-     * @return array<string,array<string>>
+     * @return list<Vote>
      */
     public function findAll(string $name, ?string $user, bool $sorted): array
     {
@@ -63,28 +65,27 @@ class VotingService
         $file = fopen($filename, "r");
         assert($file !== false);
         flock($file, LOCK_SH);
-        $records = [];
+        $votes = [];
         while (($record = $this->readRecord($file)) !== false) {
             if ($record[0] !== null) {
                 assert($this->containsOnlyStrings($record));
-                $records[$record[0]] = array_slice($record, 1);
+                $votes[] = new Vote($record[0], array_slice($record, 1));
             }
         }
         flock($file, LOCK_UN);
         fclose($file);
-        if ($user !== null && !array_key_exists($user, $records)) {
-            $records[$user] = [];
+        if ($user !== null && !array_key_exists($user, $votes)) {
+            $votes[] = new Vote($user, []);
         }
         if ($sorted) {
-            ksort($records);
+            usort($votes, function ($a, $b) {
+                return $a->voter() <=> $b->voter();
+            });
         }
-        return $records;
+        return $votes;
     }
 
-    /**
-     * @param array<string> $options
-     */
-    public function vote(string $name, string $user, array $options): bool
+    public function vote(string $name, Vote $vote): bool
     {
         $filename = "{$this->dataFolder()}{$name}.csv";
         if (!is_writeable($filename)) {
@@ -100,12 +101,12 @@ class VotingService
         while (($record = $this->readRecord($file)) !== false) {
             if ($record[0] !== null) {
                 assert($this->containsOnlyStrings($record));
-                if ($record[0] !== $user) {
+                if ($record[0] !== $vote->voter()) {
                     fputcsv($temp, $record, "\t", "\"", "\0");
                 }
             }
         }
-        fputcsv($temp, array_merge([$user], $options), "\t", "\"", "\0");
+        fputcsv($temp, array_merge([$vote->voter()], $vote->choices()), "\t", "\"", "\0");
         rewind($temp);
         rewind($file);
         stream_copy_to_stream($temp, $file);

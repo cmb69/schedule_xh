@@ -26,6 +26,7 @@ use Schedule\Infra\View;
 use Schedule\Infra\VotingService;
 use Schedule\Logic\Util;
 use Schedule\Value\Arguments;
+use Schedule\Value\Vote;
 
 final class MainController
 {
@@ -68,23 +69,24 @@ final class MainController
         $posting = isset($_POST['schedule_submit_' . $name]);
         if (!$posting || $request->user() === null || $args->readOnly()) {
             $user = (!$args->readOnly() && $request->user() !== null) ? $request->user() : null;
-            $recs = $this->votingService->findAll($name, $user, (bool) $this->conf['sort_users']);
+            $votes = $this->votingService->findAll($name, $user, (bool) $this->conf['sort_users']);
         } else {
             $submission = $this->submit($name, $args->options());
             $user = $request->user();
             if ($submission !== null) {
-                $this->votingService->vote($name, $user, $submission);
+                $vote = new Vote($user, $submission);
+                $this->votingService->vote($name, $vote);
             }
-            $recs = $this->votingService->findAll($name, $user, (bool) $this->conf['sort_users']);
+            $votes = $this->votingService->findAll($name, $user, (bool) $this->conf['sort_users']);
         }
-        return $this->planner($name, $args, $recs, $request);
+        return $this->planner($name, $args, $votes, $request);
     }
 
-    /** @param array<string,array<string>> $recs */
+    /** @param list<Vote> $votes */
     private function planner(
         string $name,
         Arguments $args,
-        array $recs,
+        array $votes,
         Request $request
     ): string {
         $counts = [];
@@ -93,12 +95,12 @@ final class MainController
         }
         $users = [];
         $cells = [];
-        foreach ($recs as $user => $rec) {
-            $users[$user] = [];
-            $cells[$user] = [];
+        foreach ($votes as $vote) {
+            $users[$vote->voter()] = [];
+            $cells[$vote->voter()] = [];
             foreach ($args->options() as $option) {
-                $ok = array_search($option, $rec) !== false;
-                $users[$user][$option] = $ok ? "schedule_green" : "schedule_red";
+                $ok = array_search($option, $vote->choices()) !== false;
+                $users[$vote->voter()][$option] = $ok ? "schedule_green" : "schedule_red";
                 if ($ok) {
                     $counts[$option]++;
                 }

@@ -25,6 +25,7 @@ use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\TestCase;
+use Schedule\Value\Vote;
 
 final class VotingServiceTest extends TestCase
 {
@@ -49,9 +50,9 @@ final class VotingServiceTest extends TestCase
         $sut = new VotingService($this->root->url() . "/", true);
         $actual = $sut->findAll("test", "userC", true);
         $expected = [
-            "userA" => ["optA"],
-            "userB" => ["optB"],
-            "userC" => [],
+            new Vote("userA", ["optA"]),
+            new Vote("userB", ["optB"]),
+            new Vote("userC", []),
         ];
         $this->assertEquals($actual, $expected);
     }
@@ -60,7 +61,7 @@ final class VotingServiceTest extends TestCase
     {
         $file = $this->csvFixture();
         $sut = new VotingService($this->root->url() . "/", true);
-        $sut->vote("test", "userC", ["optC"]);
+        $sut->vote("test", new Vote("userC", ["optC"]));
         $expected =
             "userA\toptA\n"
             . "userB\toptB\n"
@@ -72,7 +73,7 @@ final class VotingServiceTest extends TestCase
     {
         $file = $this->csvFixture();
         $sut = new VotingService($this->root->url() . "/", true);
-        $sut->vote("test", "userA", ["optC"]);
+        $sut->vote("test", new Vote("userA", ["optC"]));
         $expected =
             "userB\toptB\n"
             . "userA\toptC\n";

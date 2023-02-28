@@ -19,29 +19,31 @@
  * along with Schedule_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Schedule\Infra;
+namespace Schedule\Value;
 
-use Schedule\Value\Vote;
-
-class FakeVotingService extends VotingService
+class Vote
 {
-    private $votes;
+    /** @var string */
+    private $voter;
 
-    public function __construct() {}
+    /** @var list<string> */
+    private $choices;
 
-    public function dataFolder(): string
+    /** @param list<string> $choices */
+    public function __construct(string $voter, array $choices)
     {
-        return "./content/schedule/";
+        $this->voter = $voter;
+        $this->choices = $choices;
     }
 
-    public function findAll(string $name, ?string $user, bool $sorted): array
+    public function voter(): string
     {
-        return $this->votes[$name];
+        return $this->voter;
     }
 
-    public function vote(string $name, Vote $vote): bool
+    /** @return list<string> */
+    public function choices(): array
     {
-        $this->votes[$name][$vote->voter()] = $vote;
-        return true;
+        return $this->choices;
     }
 }

@@ -26,6 +26,7 @@ use PHPUnit\Framework\TestCase;
 use Schedule\Infra\FakeRequest;
 use Schedule\Infra\FakeVotingService;
 use Schedule\Infra\View;
+use Schedule\Value\Vote;
 
 final class MainControllerTest extends TestCase
 {
@@ -46,8 +47,8 @@ final class MainControllerTest extends TestCase
     public function testRender(): void
     {
         $votingService = new FakeVotingService;
-        $votingService->vote("color", "cmb", ["red"]);
-        $votingService->vote("color", "other", ["blue"]);
+        $votingService->vote("color", new Vote("cmb", ["red"]));
+        $votingService->vote("color", new Vote("other", ["blue"]));
         $sut = $this->sut(["votingService" => $votingService]);
         $response = $sut(new FakeRequest, "color", "red", "green", "blue");
         Approvals::verifyHtml($response);
@@ -56,8 +57,8 @@ final class MainControllerTest extends TestCase
     public function testRendersTotalsIfConfigured(): void
     {
         $votingService = new FakeVotingService;
-        $votingService->vote("color", "cmb", ["red"]);
-        $votingService->vote("color", "other", ["blue"]);
+        $votingService->vote("color", new Vote("cmb", ["red"]));
+        $votingService->vote("color", new Vote("other", ["blue"]));
         $sut = $this->sut(["votingService" => $votingService]);
         $response = $sut(new FakeRequest, "color", true, "red", "green", "blue");
         Approvals::verifyHtml($response);
@@ -70,13 +71,13 @@ final class MainControllerTest extends TestCase
             "schedule_submit_color" => "Save",
         ];
         $votingService = new FakeVotingService;
-        $votingService->vote("color", "cmb", ["red"]);
-        $votingService->vote("color", "other", ["blue"]);
+        $votingService->vote("color", new Vote("cmb", ["red"]));
+        $votingService->vote("color", new Vote("other", ["blue"]));
         $sut = $this->sut(["votingService" => $votingService]);
         $sut(new FakeRequest(["user" => "cmb"]), "color", "red", "green", "blue");
 
         $this->assertEquals(
-            ["cmb" => ["blue", "green"], "other" => ["blue"]],
+            ["cmb" => new Vote("cmb", ["blue", "green"]), "other" => new Vote("other", ["blue"])],
             $votingService->findAll("color", null, true)
         );
     }
@@ -88,12 +89,12 @@ final class MainControllerTest extends TestCase
             "schedule_submit_color" => "Save",
         ];
         $votingService = new FakeVotingService;
-        $votingService->vote("color", "cmb", ["red"]);
-        $votingService->vote("color", "other", ["blue"]);
+        $votingService->vote("color", new Vote("cmb", ["red"]));
+        $votingService->vote("color", new Vote("other", ["blue"]));
         $sut = $this->sut(["votingService" => $votingService]);
         $sut(new FakeRequest(["user" => "cmb"]), "color", "red", "green", "blue");
         $this->assertEquals(
-            ["cmb" => ["red"], "other" => ["blue"]],
+            ["cmb" => new Vote("cmb", ["red"]), "other" => new Vote("other", ["blue"])],
             $votingService->findAll("color", null, true)
         );
     }

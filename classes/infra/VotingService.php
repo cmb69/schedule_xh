@@ -66,15 +66,19 @@ class VotingService
         assert($file !== false);
         flock($file, LOCK_SH);
         $votes = [];
+        $voted = false;
         while (($record = $this->readRecord($file)) !== false) {
             if ($record[0] !== null) {
                 assert($this->containsOnlyStrings($record));
                 $votes[] = new Vote($record[0], array_slice($record, 1));
+                if ($record[0] === $user) {
+                    $voted = true;
+                }
             }
         }
         flock($file, LOCK_UN);
         fclose($file);
-        if ($user !== null && !array_key_exists($user, $votes)) {
+        if ($user !== null && !$voted) {
             $votes[] = new Vote($user, []);
         }
         if ($sorted) {

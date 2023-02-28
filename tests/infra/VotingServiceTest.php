@@ -57,6 +57,18 @@ final class VotingServiceTest extends TestCase
         $this->assertEquals($actual, $expected);
     }
 
+    public function testFindsAllWithoutDuplicate(): void
+    {
+        $this->csvFixture();
+        $sut = new VotingService($this->root->url() . "/", true);
+        $actual = $sut->findAll("test", "userA", true);
+        $expected = [
+            new Vote("userA", ["optA"]),
+            new Vote("userB", ["optB"]),
+        ];
+        $this->assertEquals($expected, $actual);
+    }
+
     public function testVote(): void
     {
         $file = $this->csvFixture();

@@ -41,7 +41,17 @@ class Response
     private $output = "";
 
     /** @var string|null */
+    private $title = null;
+
+    /** @var string|null */
     private $location = null;
+
+    public function withTitle(string $title): self
+    {
+        $that = clone $this;
+        $that->title = $title;
+        return $that;
+    }
 
     public function merge(Response $other): self
     {
@@ -57,6 +67,11 @@ class Response
         return $this->output;
     }
 
+    public function title(): ?string
+    {
+        return $this->title;
+    }
+
     public function location(): ?string
     {
         return $this->location;
@@ -64,9 +79,13 @@ class Response
 
     public function fire(): string
     {
+        global $title;
         if ($this->location !== null) {
             header("Location: " . $this->location, true, 303);
             exit;
+        }
+        if ($this->title !== null) {
+            $title = $this->title;
         }
         return $this->output;
     }

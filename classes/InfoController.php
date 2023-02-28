@@ -53,7 +53,7 @@ final class InfoController
         return Response::create($this->view->render("info", [
             "version" => SCHEDULE_VERSION,
             "checks" => $this->systemChecks($request->pluginsFolder()),
-        ]));
+        ]))->withTitle("Schedule " . SCHEDULE_VERSION);
     }
 
     /**

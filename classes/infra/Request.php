@@ -41,6 +41,27 @@ class Request
         return $_SESSION['username'] ?? ($_SESSION['Name'] ?? null);
     }
 
+    /** @return array{submit:string,dates:list<string>}|null */
+    public function postFor(string $name): ?array
+    {
+        $post = $this->post();
+        $submit = $post["schedule_submit_$name"] ?? null;
+        $dates = $post["schedule_date_$name"] ?? null;
+        if ($submit === null || !is_string($submit) || $dates === null || !is_array($dates)) {
+            return null;
+        }
+        return ["submit" => $submit, "dates" => array_values($dates)];
+    }
+
+    /**
+     * @codeCoverageIgnore
+     * @return array<string,string|array<string,string>>
+     */
+    protected function post()
+    {
+        return $_POST;
+    }
+
     /**
      * @codeCoverageIgnore
      * @return array{folder:array<string,string>,file:array<string,string>}

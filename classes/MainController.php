@@ -65,12 +65,10 @@ final class MainController
         if (($args = $this->parseArguments(array_values($args))) === null) {
             return (new Response)->addOutput($this->view->fail("err_no_option"));
         }
-        switch ($_POST["schedule_submit_" . $name] ?? "") {
-            default:
-                return $this->widget($name, $args);
-            case "vote":
-                return $this->vote($name, $args);
+        if ($request->postFor($name) !== null) {
+            return $this->vote($name, $args);
         }
+        return $this->widget($name, $args);
     }
 
     private function widget(string $name, Arguments $args): Response
@@ -123,7 +121,8 @@ final class MainController
     private function parseVote(string $name, array $options): ?Vote
     {
         assert($this->request->user() !== null);
-        $fields = $_POST["schedule_date_" . $name] ?? [];
+        assert($this->request->postFor($name) !== null);
+        $fields = $this->request->postFor($name)["dates"];
         $choices = [];
         foreach ($fields as $field) {
             if (array_search($field, $options) === false) {

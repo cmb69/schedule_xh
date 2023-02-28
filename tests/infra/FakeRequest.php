@@ -40,6 +40,11 @@ class FakeRequest extends Request
         return $this->options["user"] ?? null;
     }
 
+    protected function post()
+    {
+        return $this->options["post"] ?? [];
+    }
+
     protected function pth(): array
     {
         return $this->options["pth"] ?? [];

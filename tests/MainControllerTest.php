@@ -106,6 +106,18 @@ final class MainControllerTest extends TestCase
         );
     }
 
+    public function testFailureToSaveVoteIsReported(): void
+    {
+        $_POST = [
+            "schedule_date_color" => ["blue", "green"],
+            "schedule_submit_color" => "Save",
+        ];
+        $voteRepo = new FakeVoteRepo(["save" => false]);
+        $sut = $this->sut(["voteRepo" => $voteRepo]);
+        $response = $sut(new FakeRequest(["user" => "cmb"]), "color", "red", "green", "blue");
+        Approvals::verifyHtml($response->output());
+    }
+
     private function sut($options = [])
     {
         return new MainController(

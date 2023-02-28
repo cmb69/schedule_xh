@@ -85,8 +85,10 @@ final class MainController
         } else {
             $vote = $this->parseVote($name, $args->options());
             if ($vote !== null) {
-                $this->voteRepo->save($name, $vote);
-                return $this->response->redirect($request->url());
+                if ($this->voteRepo->save($name, $vote)) {
+                    return $this->response->redirect($request->url());
+                }
+                $this->response->addOutput($this->view->fail("err_save"));
             }
             $votes = $this->voteRepo->findAll($name);
             $votes[] = new Vote($this->request->user(), []);

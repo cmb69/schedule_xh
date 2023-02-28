@@ -25,9 +25,14 @@ use Schedule\Value\Vote;
 
 class FakeVoteRepo extends VoteRepo
 {
+    private $options = [];
+
     private $votes = [];
 
-    public function __construct() {}
+    public function __construct($options = [])
+    {
+        $this->options = $options;
+    }
 
     public function dataFolder(): string
     {
@@ -42,6 +47,6 @@ class FakeVoteRepo extends VoteRepo
     public function save(string $topic, Vote $vote): bool
     {
         $this->votes[$topic][$vote->voter()] = $vote;
-        return true;
+        return $this->options["save"] ?? true;
     }
 }

@@ -75,7 +75,7 @@ final class InfoController
             ];
         }
         foreach (['config/', 'css/', 'languages/'] as $folder) {
-            $folders[] = $pluginsFolder . "realblog/" . $folder;
+            $folders[] = $pluginsFolder . "schedule/" . $folder;
         }
         $folders[] = $this->votingService->dataFolder();
         foreach ($folders as $folder) {

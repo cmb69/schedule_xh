@@ -24,7 +24,7 @@ namespace Schedule;
 use Schedule\Infra\Request;
 use Schedule\Infra\Response;
 use Schedule\Infra\View;
-use Schedule\Infra\VotingService;
+use Schedule\Infra\VoteRepo;
 use Schedule\Logic\Util;
 use Schedule\Value\Arguments;
 use Schedule\Value\Vote;
@@ -34,8 +34,8 @@ final class MainController
     /** @var array<string,string> */
     private $conf;
 
-    /** @var VotingService */
-    private $votingService;
+    /** @var VoteRepo */
+    private $voteRepo;
 
     /** @var View */
     private $view;
@@ -49,11 +49,11 @@ final class MainController
     /** @param array<string,string> $conf */
     public function __construct(
         array $conf,
-        VotingService $votingService,
+        VoteRepo $voteRepo,
         View $view
     ) {
         $this->conf = $conf;
-        $this->votingService = $votingService;
+        $this->voteRepo = $voteRepo;
         $this->view = $view;
     }
 
@@ -73,14 +73,28 @@ final class MainController
         $posting = isset($_POST["schedule_submit_" . $name]);
         if (!$posting || $this->request->user() === null || $args->readOnly()) {
             $user = (!$args->readOnly() && $this->request->user() !== null) ? $this->request->user() : null;
-            $votes = $this->votingService->findAll($name, $user, (bool) $this->conf["sort_users"]);
+            $votes = $this->voteRepo->findAll($name);
+            if ($user) {
+                $votes[] = new Vote($user, []);
+            }
+            if ($this->conf["sort_users"]) {
+                usort($votes, function ($a, $b) {
+                    return $a->voter() <=> $b->voter();
+                });
+            }
         } else {
             $vote = $this->parseVote($name, $args->options());
             if ($vote !== null) {
-                $this->votingService->vote($name, $vote);
+                $this->voteRepo->save($name, $vote);
                 return $this->response->redirect($request->url());
             }
-            $votes = $this->votingService->findAll($name, $this->request->user(), (bool) $this->conf["sort_users"]);
+            $votes = $this->voteRepo->findAll($name);
+            $votes[] = new Vote($this->request->user(), []);
+            if ($this->conf["sort_users"]) {
+                usort($votes, function ($a, $b) {
+                    return $a->voter() <=> $b->voter();
+                });
+            }
         }
         return $this->response->addOutput($this->renderWidget($name, $args, $votes));
     }

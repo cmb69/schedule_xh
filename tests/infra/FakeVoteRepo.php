@@ -23,7 +23,7 @@ namespace Schedule\Infra;
 
 use Schedule\Value\Vote;
 
-class FakeVotingService extends VotingService
+class FakeVoteRepo extends VoteRepo
 {
     private $votes = [];
 
@@ -34,14 +34,14 @@ class FakeVotingService extends VotingService
         return "./content/schedule/";
     }
 
-    public function findAll(string $name, ?string $user, bool $sorted): array
+    public function findAll(string $topic): array
     {
-        return $this->votes[$name] ?? [];
+        return $this->votes[$topic] ?? [];
     }
 
-    public function vote(string $name, Vote $vote): bool
+    public function save(string $topic, Vote $vote): bool
     {
-        $this->votes[$name][$vote->voter()] = $vote;
+        $this->votes[$topic][$vote->voter()] = $vote;
         return true;
     }
 }

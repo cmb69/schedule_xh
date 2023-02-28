@@ -23,14 +23,14 @@ namespace Schedule;
 
 use Schedule\Infra\SystemChecker;
 use Schedule\Infra\View;
-use Schedule\Infra\VotingService;
+use Schedule\Infra\VoteRepo;
 
 class Dic
 {
     public static function makeInfoController(): InfoController
     {
         return new InfoController(
-            self::makeVotingService(),
+            self::makeVoteRepo(),
             self::makeView(),
             new SystemChecker()
         );
@@ -42,16 +42,20 @@ class Dic
 
         return new MainController(
             $plugin_cf["schedule"],
-            self::makeVotingService(),
+            self::makeVoteRepo(),
             self::makeView()
         );
     }
 
-    private static function makeVotingService(): VotingService
+    private static function makeVoteRepo(): VoteRepo
     {
         global $pth, $cf, $sl;
 
-        return new VotingService($pth['folder']['content'], $sl === $cf['language']['default']);
+        $folder = $pth['folder']['content'];
+        if ($sl === $cf['language']['default']) {
+            $folder = dirname($folder) . "/";
+        }
+        return new VoteRepo($folder);
     }
 
     private static function makeView(): View

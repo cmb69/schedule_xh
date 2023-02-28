@@ -24,12 +24,12 @@ namespace Schedule;
 use Schedule\Infra\Request;
 use Schedule\Infra\SystemChecker;
 use Schedule\Infra\View;
-use Schedule\Infra\VotingService;
+use Schedule\Infra\VoteRepo;
 
 final class InfoController
 {
-    /** @var VotingService */
-    private $votingService;
+    /** @var VoteRepo */
+    private $voteRepo;
 
     /** @var View */
     private $view;
@@ -38,11 +38,11 @@ final class InfoController
     private $systemChecker;
 
     public function __construct(
-        VotingService $votingService,
+        VoteRepo $voteRepo,
         View $view,
         SystemChecker $systemChecker
     ) {
-        $this->votingService = $votingService;
+        $this->voteRepo = $voteRepo;
         $this->view = $view;
         $this->systemChecker = $systemChecker;
     }
@@ -77,7 +77,7 @@ final class InfoController
         foreach (['config/', 'css/', 'languages/'] as $folder) {
             $folders[] = $pluginsFolder . "schedule/" . $folder;
         }
-        $folders[] = $this->votingService->dataFolder();
+        $folders[] = $this->voteRepo->dataFolder();
         foreach ($folders as $folder) {
             $checks[] = [
                 "key" => "syscheck_writable",

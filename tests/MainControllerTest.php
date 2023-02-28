@@ -24,7 +24,7 @@ namespace Schedule;
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
 use Schedule\Infra\FakeRequest;
-use Schedule\Infra\FakeVotingService;
+use Schedule\Infra\FakeVoteRepo;
 use Schedule\Infra\View;
 use Schedule\Value\Vote;
 
@@ -46,10 +46,10 @@ final class MainControllerTest extends TestCase
 
     public function testRender(): void
     {
-        $votingService = new FakeVotingService;
-        $votingService->vote("color", new Vote("cmb", ["red"]));
-        $votingService->vote("color", new Vote("other", ["blue"]));
-        $sut = $this->sut(["votingService" => $votingService]);
+        $voteRepo = new FakeVoteRepo;
+        $voteRepo->save("color", new Vote("cmb", ["red"]));
+        $voteRepo->save("color", new Vote("other", ["blue"]));
+        $sut = $this->sut(["voteRepo" => $voteRepo]);
         $response = $sut(new FakeRequest, "color", "red", "green", "blue");
         Approvals::verifyHtml($response->output());
     }
@@ -63,10 +63,10 @@ final class MainControllerTest extends TestCase
 
     public function testRendersTotalsIfConfigured(): void
     {
-        $votingService = new FakeVotingService;
-        $votingService->vote("color", new Vote("cmb", ["red"]));
-        $votingService->vote("color", new Vote("other", ["blue"]));
-        $sut = $this->sut(["votingService" => $votingService]);
+        $voteRepo = new FakeVoteRepo;
+        $voteRepo->save("color", new Vote("cmb", ["red"]));
+        $voteRepo->save("color", new Vote("other", ["blue"]));
+        $sut = $this->sut(["voteRepo" => $voteRepo]);
         $response = $sut(new FakeRequest, "color", true, "red", "green", "blue");
         Approvals::verifyHtml($response->output());
     }
@@ -77,14 +77,14 @@ final class MainControllerTest extends TestCase
             "schedule_date_color" => ["blue", "green"],
             "schedule_submit_color" => "Save",
         ];
-        $votingService = new FakeVotingService;
-        $votingService->vote("color", new Vote("cmb", ["red"]));
-        $votingService->vote("color", new Vote("other", ["blue"]));
-        $sut = $this->sut(["votingService" => $votingService]);
+        $voteRepo = new FakeVoteRepo;
+        $voteRepo->save("color", new Vote("cmb", ["red"]));
+        $voteRepo->save("color", new Vote("other", ["blue"]));
+        $sut = $this->sut(["voteRepo" => $voteRepo]);
         $response = $sut(new FakeRequest(["user" => "cmb"]), "color", "red", "green", "blue");
         $this->assertEquals(
             ["cmb" => new Vote("cmb", ["blue", "green"]), "other" => new Vote("other", ["blue"])],
-            $votingService->findAll("color", null, true)
+            $voteRepo->findAll("color", null)
         );
         $this->assertEquals("http://example.com/?Schedule", $response->location());
     }
@@ -95,14 +95,14 @@ final class MainControllerTest extends TestCase
             "schedule_date_color" => ["yellow", "green"],
             "schedule_submit_color" => "Save",
         ];
-        $votingService = new FakeVotingService;
-        $votingService->vote("color", new Vote("cmb", ["red"]));
-        $votingService->vote("color", new Vote("other", ["blue"]));
-        $sut = $this->sut(["votingService" => $votingService]);
+        $voteRepo = new FakeVoteRepo;
+        $voteRepo->save("color", new Vote("cmb", ["red"]));
+        $voteRepo->save("color", new Vote("other", ["blue"]));
+        $sut = $this->sut(["voteRepo" => $voteRepo]);
         $sut(new FakeRequest(["user" => "cmb"]), "color", "red", "green", "blue");
         $this->assertEquals(
             ["cmb" => new Vote("cmb", ["red"]), "other" => new Vote("other", ["blue"])],
-            $votingService->findAll("color", null, true)
+            $voteRepo->findAll("color", null)
         );
     }
 
@@ -110,7 +110,7 @@ final class MainControllerTest extends TestCase
     {
         return new MainController(
             $this->conf(),
-            $options["votingService"] ?? new FakeVotingService,
+            $options["voteRepo"] ?? new FakeVoteRepo,
             $this->view()
         );
     }

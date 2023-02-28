@@ -27,7 +27,7 @@ use org\bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\TestCase;
 use Schedule\Value\Vote;
 
-final class VotingServiceTest extends TestCase
+final class VoteRepoTest extends TestCase
 {
     /** @var vfsStreamDirectory */
     private $root;
@@ -39,20 +39,19 @@ final class VotingServiceTest extends TestCase
 
     public function testFindNothing(): void
     {
-        $sut = new VotingService($this->root->url() . "/", true);
-        $actual = $sut->findAll("test", null, false);
+        $sut = new VoteRepo($this->root->url() . "/");
+        $actual = $sut->findAll("test");
         $this->assertEquals($actual, []);
     }
 
     public function testFindAll(): void
     {
         $this->csvFixture();
-        $sut = new VotingService($this->root->url() . "/", true);
-        $actual = $sut->findAll("test", "userC", true);
+        $sut = new VoteRepo($this->root->url() . "/");
+        $actual = $sut->findAll("test");
         $expected = [
             new Vote("userA", ["optA"]),
             new Vote("userB", ["optB"]),
-            new Vote("userC", []),
         ];
         $this->assertEquals($actual, $expected);
     }
@@ -60,8 +59,8 @@ final class VotingServiceTest extends TestCase
     public function testFindsAllWithoutDuplicate(): void
     {
         $this->csvFixture();
-        $sut = new VotingService($this->root->url() . "/", true);
-        $actual = $sut->findAll("test", "userA", true);
+        $sut = new VoteRepo($this->root->url() . "/");
+        $actual = $sut->findAll("test");
         $expected = [
             new Vote("userA", ["optA"]),
             new Vote("userB", ["optB"]),
@@ -72,8 +71,8 @@ final class VotingServiceTest extends TestCase
     public function testVote(): void
     {
         $file = $this->csvFixture();
-        $sut = new VotingService($this->root->url() . "/", true);
-        $sut->vote("test", new Vote("userC", ["optC"]));
+        $sut = new VoteRepo($this->root->url() . "/");
+        $sut->save("test", new Vote("userC", ["optC"]));
         $expected =
             "userA\toptA\n"
             . "userB\toptB\n"
@@ -84,8 +83,8 @@ final class VotingServiceTest extends TestCase
     public function testVoteAgain(): void
     {
         $file = $this->csvFixture();
-        $sut = new VotingService($this->root->url() . "/", true);
-        $sut->vote("test", new Vote("userA", ["optC"]));
+        $sut = new VoteRepo($this->root->url() . "/");
+        $sut->save("test", new Vote("userA", ["optC"]));
         $expected =
             "userB\toptB\n"
             . "userA\toptC\n";

@@ -56,7 +56,10 @@ final class MainController
         if (!preg_match('/^[a-z\-0-9]+$/i', $name)) {
             return $this->view->fail("err_invalid_name");
         }
-    
+
+        $args = array_map(function ($arg) {
+            return !is_string($arg) ? $arg : html_entity_decode($arg, ENT_QUOTES, "UTF-8");
+        }, $args);
         $args = Util::parseArguments($args, [
             "totals" => (bool) $this->conf['default_totals'],
             "readonly" => (bool) $this->conf['default_readonly'],

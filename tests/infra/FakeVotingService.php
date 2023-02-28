@@ -25,7 +25,7 @@ use Schedule\Value\Vote;
 
 class FakeVotingService extends VotingService
 {
-    private $votes;
+    private $votes = [];
 
     public function __construct() {}
 
@@ -36,7 +36,7 @@ class FakeVotingService extends VotingService
 
     public function findAll(string $name, ?string $user, bool $sorted): array
     {
-        return $this->votes[$name];
+        return $this->votes[$name] ?? [];
     }
 
     public function vote(string $name, Vote $vote): bool

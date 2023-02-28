@@ -54,6 +54,13 @@ final class MainControllerTest extends TestCase
         Approvals::verifyHtml($response);
     }
 
+    public function testRendersOptionsWithSpecialChars(): void
+    {
+        $sut = $this->sut();
+        $response = $sut(new FakeRequest(["user" => "cmb"]), "special", "1 &lt; 2", "1 &gt; 2", "1 &amp; 2");
+        Approvals::verifyHtml($response);
+    }
+
     public function testRendersTotalsIfConfigured(): void
     {
         $votingService = new FakeVotingService;

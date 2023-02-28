@@ -27,20 +27,16 @@ class View
     private $folder;
 
     /** @var array<string,string> */
-    private $lang;
+    private $text;
 
-    /**
-     * @param array<string,string> $lang
-     */
-    public function __construct(string $folder, array $lang)
+    /** @param array<string,string> $text */
+    public function __construct(string $folder, array $text)
     {
         $this->folder = $folder;
-        $this->lang = $lang;
+        $this->text = $text;
     }
 
-    /**
-     * @param array<string,mixed> $data
-     */
+    /** @param array<string,mixed> $data */
     public function render(string $template, array $data): string
     {
         extract($data);
@@ -49,22 +45,18 @@ class View
         return (string) ob_get_clean();
     }
 
-    /**
-     * @param string|int $args
-     */
+    /** @param string|int $args */
     public function text(string $key, ...$args): string
     {
-        return vsprintf($this->esc($this->lang[$key]), array_map([$this, 'esc'], $args));
+        return vsprintf($this->esc($this->text[$key]), array_map([$this, 'esc'], $args));
     }
 
     public function fail(string $key): string
     {
-        return "<p class=\"xh_fail\">{$this->text($key)}</p>";
+        return "<p class=\"xh_fail\">{$this->text($key)}</p>\n";
     }
 
-    /**
-     * @param string|int $value
-     */
+    /** @param string|int $value */
     public function esc($value): string
     {
         return XH_hsc((string) $value);

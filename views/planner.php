@@ -2,10 +2,7 @@
 
 use Schedule\Infra\View;
 
-if (!defined("CMSIMPLE_XH_VERSION")) {
-  header("HTTP/1.1 403 Forbidden");
-  exit;
-}
+if (!defined("CMSIMPLE_XH_VERSION")) {header("HTTP/1.1 403 Forbidden"); exit;}
 
 /**
  * @var View $this
@@ -19,7 +16,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {
  * @var int $columns
  */
 ?>
-<!-- Schedule_XH planner -->
+<!-- schedule planner -->
 <?if ($voting):?>
 <form class="schedule" action="<?=$this->esc($url)?>" method="POST">
 <?else:?>

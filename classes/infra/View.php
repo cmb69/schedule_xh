@@ -69,4 +69,9 @@ class View
     {
         return XH_hsc((string) $value);
     }
+
+    public function raw(string $string): string
+    {
+        return $string;
+    }
 }

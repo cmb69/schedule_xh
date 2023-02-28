@@ -139,32 +139,27 @@ final class MainController
     private function renderWidget(string $name, Arguments $args, array $votes): string
     {
         return $this->view->render("planner", [
-            "showTotals"=> $args->totals(),
-            "currentUser" => $args->readonly() ? null : $this->request->user(),
+            "show_totals"=> $args->totals(),
+            "voting" => $args->readonly() ? null : $this->request->user(),
             "url" => $this->request->url(),
             "options" => $args->options(),
-            "counts" => $this->totals($args, $votes),
-            "users" => $this->users($args, $votes),
-            "itype" => $args->multi() ? "checkbox" : "radio",
-            "iname" => "schedule_date_$name",
-            "sname" => "schedule_submit_$name",
+            "totals" => $this->totals($args, $votes),
+            "users" => $this->users($name, $args, $votes),
+            "button" => "schedule_submit_$name",
             "columns" => count($args->options()) + 1,
         ]);
     }
 
     /**
      * @param list<Vote> $votes
-     * @return array<string,int>
+     * @return list<int>
      */
     private function totals(Arguments $args, array $votes): array
     {
-        $totals = [];
-        foreach ($args->options() as $option) {
-            $totals[$option] = 0;
-        }
+        $totals = array_fill(0, count($args->options()), 0);
         foreach ($votes as $vote) {
-            foreach ($args->options() as $option) {
-                $totals[$option] += (int) in_array($option, $vote->choices(), true);
+            foreach ($args->options() as $i => $option) {
+                $totals[$i] += (int) in_array($option, $vote->choices(), true);
             }
         }
         return $totals;
@@ -172,18 +167,31 @@ final class MainController
 
     /**
      * @param list<Vote> $votes
-     * @return array<string,array<string,string>>
+     * @return array<string,list<array{class:string,content:string}>>
      */
-    private function users(Arguments $args, array $votes): array
+    private function users(string $name, Arguments $args, array $votes): array
     {
         $users = [];
         foreach ($votes as $vote) {
             $users[$vote->voter()] = [];
             foreach ($args->options() as $option) {
                 $ok = in_array($option, $vote->choices(), true);
-                $users[$vote->voter()][$option] = $ok ? "schedule_green" : "schedule_red";
+                $users[$vote->voter()][] = [
+                    "class" => $ok ? "schedule_green" : "schedule_red",
+                    "content" => $vote->voter() === $this->request->user()
+                        ? $this->input($name, $args, $option, $ok)
+                        : ($ok ? $this->view->text("label_checked") : $this->view->text("label_unchecked")),
+                ];
             }
         }
         return $users;
+    }
+
+    private function input(string $name, Arguments $args, string $option, bool $checked): string
+    {
+        $type = $args->multi() ? "checkbox" : "radio";
+        $option = $this->view->esc($option);
+        $checked = $checked ? " checked" : "";
+        return "<input type=\"{$type}\" name=\"schedule_date_{$name}[]\" value=\"{$option}\"{$checked}>";
     }
 }

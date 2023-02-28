@@ -7,6 +7,8 @@ $plugin_tx['schedule']['err_save']="The vote could not be saved!";
 
 $plugin_tx['schedule']['total']="Total";
 $plugin_tx['schedule']['label_save']="Save";
+$plugin_tx['schedule']['label_checked']="✓";
+$plugin_tx['schedule']['label_unchecked']="";
 
 $plugin_tx['schedule']['syscheck_title']="System check";
 $plugin_tx['schedule']['syscheck_phpversion']="PHP version ≥ %s";

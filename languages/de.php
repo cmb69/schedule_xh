@@ -7,6 +7,8 @@ $plugin_tx['schedule']['err_save']="Die Abstimmung konnte nicht gespeichert werd
 
 $plugin_tx['schedule']['total']="Gesamt";
 $plugin_tx['schedule']['label_save']="Speichern";
+$plugin_tx['schedule']['label_checked']="✓";
+$plugin_tx['schedule']['label_unchecked']="";
 
 $plugin_tx['schedule']['syscheck_title']="Systemprüfung";
 $plugin_tx['schedule']['syscheck_phpversion']="PHP-Version ≥ %s";

@@ -9,73 +9,59 @@ if (!defined("CMSIMPLE_XH_VERSION")) {
 
 /**
  * @var View $this
- * @var bool $showTotals
- * @var ?string $currentUser
+ * @var bool $show_totals
+ * @var ?string $voting
  * @var string $url
  * @var array<string> $options
- * @var array<string,int> $counts
- * @var array<string,array<string>> $users
- * @var string $itype
- * @var string $iname
- * @var string $sname
+ * @var list<int> $totals
+ * @var array<string,list<array{class:string,content:html}>> $users
+ * @var string $button
  * @var int $columns
  */
 ?>
 <!-- Schedule_XH planner -->
-<?php if ($currentUser):?>
+<?if ($voting):?>
 <form class="schedule" action="<?=$this->esc($url)?>" method="POST">
-<?php else:?>
+<?else:?>
 <div class="schedule">
-<?php endif?>
+<?endif?>
   <table class="schedule">
     <thead>
       <tr>
         <th></th>
-<?php foreach ($options as $option):?>
+<?foreach ($options as $option):?>
         <th><?=$this->esc($option)?></th>
-<?php endforeach?>
+<?endforeach?>
       </tr>
     </thead>
     <tbody>
-<?php foreach ($users as $user => $votes):?>
+<?foreach ($users as $user => $cells):?>
       <tr>
         <td class="schedule_user"><?=$this->esc($user)?></td>
-<?php   foreach ($votes as $option => $class):?>
-        <td class="<?=$this->esc($class)?>">
-<?php     if ($user === $currentUser):?>
-<?php       if ($class === "schedule_green"):?>
-          <input type="<?=$this->esc($itype)?>" name="<?=$this->esc($iname)?>[]" value="<?=$this->esc($option)?>" checked>
-<?php       else:?>
-          <input type="<?=$this->esc($itype)?>" name="<?=$this->esc($iname)?>[]" value="<?=$this->esc($option)?>">
-<?php       endif?>
-<?php     elseif ($class === "schedule_green"):?>
-            ✓
-<?php     endif?>
-        </td>
-<?php   endforeach?>
+<?  foreach ($cells as $cell):?>
+        <td class="<?=$this->esc($cell['class'])?>"><?=$this->raw($cell['content'])?></td>
+<?  endforeach?>
       </tr>
-<?php endforeach?>
-
-<?php if ($showTotals):?>
+<?endforeach?>
+<?if ($show_totals):?>
       <tr class="schedule_total">
         <td class="schedule_user"><?=$this->text("total")?></td>
-<?php   foreach ($counts as $count):?>
-        <td><?=$this->esc($count)?></td>
-<?php   endforeach?>
+<?  foreach ($totals as $total):?>
+        <td><?=$this->esc($total)?></td>
+<?  endforeach?>
       </tr>
-<?php endif?>
-
-<?php if ($currentUser):?>
+<?endif?>
+<?if ($voting):?>
       <tr class="schedule_buttons">
         <td colspan="<?=$this->esc($columns)?>">
-          <button name="<?=$this->esc($sname)?>" value="vote"><?=$this->text("label_save")?></button>
+          <button name="<?=$this->esc($button)?>" value="vote"><?=$this->text("label_save")?></button>
         </td>
       </tr>
-<?php endif?>
+<?endif?>
     </tbody>
   </table>
-<?php if ($currentUser):?>
+<?if ($voting):?>
 </form>
-<?php else:?>
+<?else:?>
 </div>
-<?php endif?>
+<?endif?>

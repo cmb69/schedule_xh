@@ -66,7 +66,7 @@ final class MainController
         if (!preg_match('/^[a-z\-0-9]+$/i', $name)) {
             return $this->response->addOutput($this->view->fail("err_invalid_name"));
         }
-        if (($args = $this->parseArguments($args)) === null) {
+        if (($args = $this->parseArguments(array_values($args))) === null) {
             return $this->response->addOutput($this->view->fail("err_no_option"));
         }
 

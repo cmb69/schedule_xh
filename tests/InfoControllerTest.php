@@ -27,24 +27,17 @@ use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
 use Schedule\Infra\FakeRequest;
 use Schedule\Infra\FakeSystemChecker;
+use Schedule\Infra\FakeVoteRepo;
 use Schedule\Infra\View;
-use Schedule\Infra\VoteRepo;
 
 final class InfoControllerTest extends TestCase
 {
     public function testRendersPluginInfo(): void
     {
-        $sut = new InfoController($this->voteRepo(), $this->view(), new FakeSystemChecker);
+        $sut = new InfoController(new FakeVoteRepo(), $this->view(), new FakeSystemChecker);
         $request = new FakeRequest(["pth" => ["folder" => ["plugins" => "./plugins/"]]]);
-        $response = $sut->execute($request);
+        $response = $sut($request);
         Approvals::verifyHtml($response->output());
-    }
-
-    private function voteRepo()
-    {
-        $voteRepo = $this->createStub(VoteRepo::class);
-        $voteRepo->method('dataFolder')->willReturn("./content/schedule/");
-        return $voteRepo;
     }
 
     private function view()

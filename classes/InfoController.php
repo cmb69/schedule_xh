@@ -48,7 +48,7 @@ final class InfoController
         $this->systemChecker = $systemChecker;
     }
 
-    public function execute(Request $request): Response
+    public function __invoke(Request $request): Response
     {
         return Response::create($this->view->render("info", [
             "version" => SCHEDULE_VERSION,

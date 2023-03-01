@@ -1,7 +1,7 @@
 <?php
 
 const CMSIMPLE_XH_VERSION = "CMSimple_XH 1.7.5";
-const SCHEDULE_VERSION = "2.0";
+const SCHEDULE_VERSION = "2.1-dev";
 
 require_once "./vendor/autoload.php";
 

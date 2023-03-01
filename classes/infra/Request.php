@@ -47,10 +47,10 @@ class Request
         $post = $this->post();
         $submit = $post["schedule_submit_$name"] ?? null;
         $dates = $post["schedule_date_$name"] ?? null;
-        if ($submit === null || !is_string($submit) || $dates === null || !is_array($dates)) {
+        if ($submit === null || !is_string($submit) || ($dates !== null && !is_array($dates))) {
             return null;
         }
-        return ["submit" => $submit, "dates" => array_values($dates)];
+        return ["submit" => $submit, "dates" => array_values($dates ?? [])];
     }
 
     /**

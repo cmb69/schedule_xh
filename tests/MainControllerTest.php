@@ -98,6 +98,19 @@ final class MainControllerTest extends TestCase
         $this->assertEquals("http://example.com/?Schedule", $response->location());
     }
 
+    public function testCanSubmitNoChoices(): void
+    {
+        $voteRepo = new FakeVoteRepo;
+        $voteRepo->save("color", new Vote("cmb", ["red"]));
+        $sut = $this->sut(["voteRepo" => $voteRepo]);
+        $request = new FakeRequest(["user" => "cmb", "post" => [
+            "schedule_submit_color" => "vote",
+        ]]);
+        $response = $sut($request, "color", "red", "green", "blue");
+        $this->assertEquals(["cmb" => new Vote("cmb", [])], $voteRepo->findAll("color"));
+        $this->assertEquals("http://example.com/?Schedule", $response->location());
+    }
+
     public function testSubmissionFailure(): void
     {
         $voteRepo = new FakeVoteRepo;

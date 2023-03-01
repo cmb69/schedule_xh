@@ -27,7 +27,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {
     exit;
 }
 
-const SCHEDULE_VERSION = '2.0-dev';
+const SCHEDULE_VERSION = "2.0";
 
 /**
  * @param bool|string $args

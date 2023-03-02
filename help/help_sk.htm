@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+
+
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"><title>Schedule_XH – User Manual</title>
+  
+  <style type="text/css">
+    body {
+        font-family: Georgia, serif;
+        line-height: 1.5;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+        background: #ffffe1;
+        max-width: 40em;
+    }
+    p {
+        text-align: justify;
+    }
+    pre {
+        color: black;
+        background: #ffe;
+        overflow: auto;
+        padding: 0.2em 0.5em;
+        border: 1px solid silver;
+    }
+  </style></head><body>
+<h1 id="schedule_xh">Schedule_XH</h1>
+<p>Schedule_XH umožňuje koordináciu účasti na podujatiach pre členov registrovaných prostredníctvom <a href="https://github.com/cmb69/register_xh">Register_XH</a> alebo <a href="https://github.com/cmsimple-xh/memberpages">Memberpages</a>
+inštalovaných na Vašej stránke. Je to podobné ako v Doodle service, Ale
+nakoľko dátumy nemajú pre Schedule_XH semantický význam, môže byť
+Schedule_XH použitý aj pre rôzne hlasovania.</p>
+<ul>
+<li><a href="#Po%C5%BEiadavky">Požiadavky</a></li>
+<li><a href="#Download">Download</a></li>
+<li><a href="#In%C5%A1tal%C3%A1cia">Inštalácia</a></li>
+<li><a href="#Nastavenia">Nastavenia</a></li>
+<li><a href="#Pou%C5%BEitie">Použitie</a></li>
+<li><a href="#Rie%C5%A1enie_probl%C3%A9mov">Riešenie problémov</a><br>
+</li>
+<li><a href="#Licencia">Licencia</a></li>
+<li><a href="#Garancie">Garancie</a></li>
+</ul>
+<h2 id="requirements"><a name="Požiadavky"></a>Požiadavky</h2>
+<p>Schedule_XH je plugin pre CMSimple_XH. Vyžaduje CMSimple_XH ≥ 1.7.0 a PHP ≥ 7.1.0.</p>
+<h2 id="download"><a name="Download"></a>Download</h2>
+<p><span>Aktuálna verzia je dostupná na</span> <a href="https://github.com/cmb69/schedule_xh/releases/latest" target="_blank">Github</a>.</p>
+<h2 id="installation"><a name="Inštalácia"></a>Inštalácia</h2>
+<p>Inštalácia prebieha rovnako ako pri vňčšine pluginov pre CMSimple_XH plugins. Pozrite detaily na <a href="https://wiki.cmsimple-xh.org/doku.php/installation#plugins">CMSimple_XH wiki</a>.</p>
+<ol type="1">
+<li><strong>Zálohujte dáta na Vašom serveri.</strong></li>
+<li>Rozbaľte inštalačný balík.</li>
+<li>Nahrajte celý adresár <code>schedule/</code> na Váš server do CMSimple_XH adresára <code>plugins/</code>.</li>
+<li>Nastavte prístupové práva pre <code>config/</code>, <code>css/</code>, <code>languages/</code> a pre dátové adresáre pluginu.</li>
+<li>V správcovskom prostredí prejdite do <code>Schedule</code> a skontrolujte, či sú všetky požiadavky splnené.</li>
+</ol>
+<h2 id="settings"><a name="Nastavenia"></a>Nastavenia</h2>
+<p>Nastavnia sa robia v správcovskom prostredí rovnako ako pri väčšine pluginov pre CMSimple_XH. Zvoľte <code>Plugins</code> → <code>Schedule</code>.</p>
+<p>V <code>Config</code> môžete zmeniť základné nastavenia pluginu. Nápoveda sa zobrazí presunutím kurzoru nad "Help" ikonu.</p>
+<p>Lokalizáciu možno urobiť v <code>Language</code>. Ak nejestvuje
+jazykový súbor pre Váš jazyk, alebo ak chcete niektoré výrazy upraviť,
+urobte preklad alebo zmeny podľa vlastnej potreby.</p>
+<p>Vzhľad Schedule_XH môžete upraviť v <code>Stylesheet</code>.</p>
+<h2 id="usage"><a name="Použitie"></a>Použitie</h2>
+<p>Pre umiestnenie plánovania/hlasovania na stránke CMSimple_XH, použite tento príkaz:</p>
+<pre><code>{{{schedule('%NAME%', %SHOW_TOTALS%, %READ_ONLY%, %MULTI%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%')}}}</code></pre>
+<p>Parametre majú tento význam:</p>
+<ul>
+<li><code>%NAME%</code>: Názov podujatia alebo hlasovania. Je to
+zároveň názov súboru CSV, do ktorého sa ukladajú výsledky, takže môže
+obsahovať iba malé písmená alebo číslice a pomlčky (<code>a</code>-<code>z</code>), (<code>0</code>-<code>9</code>) a (<code>-</code>).</li>
+<li><code>%SHOW_TOTALS%</code>: Majú sa zobrazovať súčty?: <code>true</code> (áno) alebo <code>false</code>
+(nie). Hodnotu nepíšte v úvodzovkách. Ak chcete použiť základnú hodnotu
+pluginu z nastavenia pluginu, nechajte prázdne, ak vynecháte aj <code>%READ_ONLY%</code> a <code>%MULTI%</code>.</li>
+<li><code>%READ_ONLY%</code>: Má byť plánovač "read only"?: <code>true</code> (áno) alebo <code>false</code> (nie). Hodnotu nepíšte v úvodzovkách. Ak chcete použiť základnú hodnotu
+pluginu z nastavenia pluginu, nechajte prázdne, ak vynecháte aj<code></code> <code>%MULTI%</code>.</li>
+<li><code>%MULTI%</code>: Má byť viacnásobný výber použitý aj pre jednotlivý plánovač?: <code>true</code> (áno) alebo <code>false</code> (nie). Hodnotu nepíšte v úvodzovkách. Ak chcete použiť základnú hodnotu
+pluginu z nastavenia pluginu, nechajte prázdne.</li>
+<li><code>%OPTION_X%</code>: Názov možnosti, ktorý sa použije ako
+hlavička stĺpca v tabuľke. Obyčajne je to dátum, ale nakoľko
+Schedule_XH to nevyhodnocuje semanticky, môže to byť aj ľubovoľný text.
+Počet možností nie je limitovaný.</li>
+</ul>
+<p>Nie je nutné obmedzovať prístup na túto stránku iba registrovaným
+užívateľom. Neregistrovaný návštevník uvidí iba aktuálne výsledky bez
+možnosti vlastného vstupu do plánovača/hlasovania. Plánovač/hlasovanie
+teda môže byť umiestnené aj priamo v template stránky:</p>
+<pre><code>&lt;?=schedule('%NAME%', %SHOW_TOTALS%, %READ_ONLY%, %MULTI%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');?&gt;</code></pre>
+<p>Avšak, ak chcete obmedziť vstup do plánovača/hlasovania iba pre
+určitú skupinu registrovaných (úroveň), musíte plaánovať/hlasovanie
+umiestniť na stránku s obmedzeným prístupom pre konkrétnu skupinu.</p>
+<h3 id="examples">Príklady</h3>
+<p>Plánovač pre vianočné oslavy:</p>
+<pre><code>{{{schedule('christmas', 'Dec. 18th', 'Dec. 19th', 'Dec. 22nd')}}}</code></pre>
+<figure>
+<img src="https://raw.githubusercontent.com/cmb69/schedule_xh/master/help/christmas.gif" alt=""><figcaption>Snímok plánovača</figcaption>
+</figure>
+<p>Po hlasovaní o termíne osláv chcete nechať hlasovanie viditeľné, aby
+každý mohol vidieť výsledok hlasovania. V takom prípade je potrebné
+nastaviť ho po ukončení hlasovania ako "read only". Pre n astavenie <code>%READ_ONLY%</code> parametra musíte špecifikovať aj parameter <code>%SHOW_TOTALS%</code>:</p>
+<pre><code>{{{schedule('christmas', false, true, 'Dec. 18th', 'Dec. 19th', 'Dec. 22nd')}}}</code></pre>
+<p>Pre hlasovanie o farbe tímového dresu, ktoré zobrazí aj súčty pod tabuľkou (bez ohľadu na nastavenie pluginu):</p>
+<pre><code>{{{schedule('shirts', true, 'red', 'green', 'blue')}}}</code></pre>
+<h3 id="notes">Poznámky:</h3>
+<ul>
+<li>Na stránke môžete použiť ľubovoľ+ný počet plánovačov/hlasovaní; musíte ich iba jednoznačne pomenovať.</li>
+<li>Rovnaký plánovač/hlasovanie môžete umiestniť aj na viacerých stránkach; použite rovnaký názov.</li>
+<li>Hlasujúci môžu meniť svoje voľby neobmedzene, pokiaľ nie je nastavenie "read only".</li>
+<li>Možnosti môžete meniť, aj keď sa o nich už hlasovalo, lebo voľba je viazaná na názov možnosti, nie na jej pozíciu.</li>
+</ul>
+<h2 id="troubleshooting"><a name="Riešenie_problémov"></a>Riešenie problémov<br>
+</h2>
+<p>Chyby alebo problémy oznámte na <a href="https://github.com/cmb69/schedule_xh/issues">Github</a> alebo vo <a href="https://cmsimpleforum.com/">CMSimple_XH Forum</a>.</p>
+<h2 id="license"><a name="Licencia"></a>Licencia</h2>
+<p>Schedule_XH je free software: môžete ho šíriť ďalej a/alebo ho
+upravovať v zmysle GNU General Public License ako je zverejnená vo Free
+Software Foundation, buď vo verzii 3 licencie, alebo (podľa vášho
+uváženia) novších verzií.</p>
+<p>Schedule_XH sprístupnený v nádeji, že bude pre vás užitočný, ale <span style="font-style: italic;">bez akýchkoľvek záruk</span>; vrátane <em>vhodnosti alebo funkčnosti pre špecifické použitie</em><em></em>. Viac detailov nájdete v GNU General Public License.</p>
+<p>Kópiu GNU General Public License by ste mali dostať v rámci Schedule_XH. Ak nie, pozrite na <a href="https://www.gnu.org/licenses/" class="uri">https://www.gnu.org/licenses/</a>.</p>
+<p>Copyright © Christoph M. Becker</p>
+<h2 id="credits"><a name="Garancie"></a>Garancie<br>
+</h2>
+<p>Plugin bol inšpirovaný <em>Roymcavoy</em>.</p>
+<p>Ikonu pluginu navrhol <a href="https://www.deviantart.com/schollidesign">schollidesign</a>. Veľká vďaka za zveerejnenie v zmysle GPL.</p>
+<p>Veľká vďaka celej komunite <a href="https://www.cmsimpleforum.com/">CMSimple_XH Forum</a> za tipy, rady a tetovanie. Vďaka patrí predovšetkým <em>Ele</em> za "beta testy" a podnety pre vylepšenie.</p>
+<p>A v neposlednom rade <a href="https://www.harteg.dk/">Petovi Hartegovi</a>, “otcovi” CMSimple a všetkým vývojárom <a href="https://www.cmsimple-xh.org/">CMSimple_XH</a>, bez ktorých by tento CMS neexistoval.</p>
+
+</body></html>

@@ -154,6 +154,8 @@ along with Schedule_XH.  If not, see <https://www.gnu.org/licenses/>.
 
 Copyright © Christoph M. Becker
 
+Slovak translation © Dr. Martin Sereday
+
 ## Credits
 
 The plugin was inspired by *Roymcavoy*.

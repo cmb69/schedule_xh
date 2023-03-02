@@ -164,6 +164,8 @@ Schedule_XH erhalten haben. Falls nicht, siehe <https://www.gnu.org/licenses/>.
 
 Copyright © Christoph M. Becker
 
+Slovakische Übersetzung © Dr. Martin Sereday
+
 ## Danksagung
 
 Das Plugin wurde von *Roymcavoy* angeregt.

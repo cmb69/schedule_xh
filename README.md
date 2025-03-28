@@ -18,8 +18,12 @@ other votings as well.
 
 ## Requirements
 
-Schedule_XH is a plugin for CMSimple_XH.
+Schedule_XH is a plugin for [CMSimple_XH](https://www.cmsimple-xh.org/).
 It requires CMSimple_XH ≥ 1.7.0 and PHP ≥ 7.1.0.
+Schedule_XH also requires [Plib_XH](https://github.com/cmb69/plib_xh) ≥ 1.5;
+if that is not already installed (see *Settings*→*Info*),
+get the [lastest release](https://github.com/cmb69/plib_xh/releases/latest),
+and install it.
 
 ## Download
 

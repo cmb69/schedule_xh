@@ -18,8 +18,12 @@ haben, kann es ebenso für andere Abstimmungen verwendet werden.
 
 ## Voraussetzungen
 
-Schedule_XH ist ein Plugin für CMSimple_XH.
+Schedule_XH ist ein Plugin für [CMSimple_XH](https://www.cmsimple-xh.org/de/).
 Es benötigt CMSimple_XH ≥ 1.7.0 und PHP ≥ 7.1.0.
+Schedule_XH benötigt weiterhin [Plib_XH](https://github.com/cmb69/plib_xh) ≥ 1.5;
+ist dieses noch nicht installiert (see *Einstellungen*→*Info*),
+laden Sie das [aktuelle Release](https://github.com/cmb69/plib_xh/releases/latest)
+herunter, und installieren Sie es.
 
 ## Download
 

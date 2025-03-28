@@ -8,6 +8,7 @@ parameters:
   scanDirectories:
     - vendor/phpunit/phpunit
     - vendor/mikey179/vfsstream
+    - ../plib/classes
   scanFiles:
     - ../../cmsimple/adminfuncs.php
     - ../../cmsimple/functions.php

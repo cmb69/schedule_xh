@@ -21,9 +21,9 @@
 
 namespace Schedule;
 
+use Plib\View;
 use Schedule\Infra\Request;
 use Schedule\Infra\Response;
-use Schedule\Infra\View;
 use Schedule\Infra\VoteRepo;
 use Schedule\Logic\Util;
 use Schedule\Value\Arguments;
@@ -55,10 +55,10 @@ final class MainController
     public function __invoke(Request $request, string $name, ...$args): Response
     {
         if (!preg_match('/^[a-z\-0-9]+$/i', $name)) {
-            return Response::create($this->view->fail("err_invalid_name"));
+            return Response::create($this->view->message("fail", "err_invalid_name"));
         }
         if (($args = $this->parseArguments(array_values($args))) === null) {
-            return Response::create($this->view->fail("err_no_option"));
+            return Response::create($this->view->message("fail", "err_no_option"));
         }
         if ($request->postFor($name) !== null) {
             return $this->vote($request, $name, $args);
@@ -82,15 +82,15 @@ final class MainController
     private function vote(Request $request, string $name, Arguments $args): Response
     {
         if ($request->user() === null || $args->readOnly()) {
-            return Response::create($this->view->fail("err_vote"))
+            return Response::create($this->view->message("fail", "err_vote"))
                 ->merge($this->widget($request, $name, $args));
         }
         if (($vote = $this->parseVote($request, $name, $args->options())) === null) {
-            return Response::create($this->view->fail("err_vote"))
+            return Response::create($this->view->message("fail", "err_vote"))
                 ->merge($this->widget($request, $name, $args));
         }
         if (!$this->voteRepo->save($name, $vote)) {
-            return Response::create($this->view->fail("err_save"))
+            return Response::create($this->view->message("fail", "err_save"))
                 ->merge($this->widget($request, $name, $args));
         }
         return Response::redirect($request->url());

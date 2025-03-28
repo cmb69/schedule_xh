@@ -1,6 +1,6 @@
 <?php
 
-use Schedule\Infra\View;
+use Plib\View;
 
 if (!defined("CMSIMPLE_XH_VERSION")) {header("HTTP/1.1 403 Forbidden"); exit;}
 
@@ -44,13 +44,13 @@ if (!defined("CMSIMPLE_XH_VERSION")) {header("HTTP/1.1 403 Forbidden"); exit;}
       <tr class="schedule_total">
         <td class="schedule_user"><?=$this->text("total")?></td>
 <?  foreach ($totals as $total):?>
-        <td><?=$this->esc($total)?></td>
+        <td><?=$total?></td>
 <?  endforeach?>
       </tr>
 <?endif?>
 <?if ($voting):?>
       <tr class="schedule_buttons">
-        <td colspan="<?=$this->esc($columns)?>">
+        <td colspan="<?=$columns?>">
           <button name="<?=$this->esc($button)?>" value="vote"><?=$this->text("label_save")?></button>
         </td>
       </tr>

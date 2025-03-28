@@ -21,6 +21,7 @@
 
 namespace Schedule;
 
+use Plib\View as PlibView;
 use Schedule\Infra\SystemChecker;
 use Schedule\Infra\View;
 use Schedule\Infra\VoteRepo;
@@ -58,10 +59,10 @@ class Dic
         return new VoteRepo($folder);
     }
 
-    private static function makeView(): View
+    private static function makeView(): PlibView
     {
         global $plugin_tx, $pth;
 
-        return new View($pth["folder"]["plugins"] . "schedule/views/", $plugin_tx["schedule"]);
+        return new PlibView($pth["folder"]["plugins"] . "schedule/views/", $plugin_tx["schedule"]);
     }
 }

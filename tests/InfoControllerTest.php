@@ -25,10 +25,10 @@ use function XH_includeVar;
 
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
+use Plib\View;
 use Schedule\Infra\FakeRequest;
 use Schedule\Infra\FakeSystemChecker;
 use Schedule\Infra\FakeVoteRepo;
-use Schedule\Infra\View;
 
 final class InfoControllerTest extends TestCase
 {
@@ -41,7 +41,7 @@ final class InfoControllerTest extends TestCase
         Approvals::verifyHtml($response->output());
     }
 
-    private function view()
+    private function view(): View
     {
         return new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["schedule"]);
     }

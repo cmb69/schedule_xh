@@ -23,9 +23,9 @@ namespace Schedule;
 
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
+use Plib\View;
 use Schedule\Infra\FakeRequest;
 use Schedule\Infra\FakeVoteRepo;
-use Schedule\Infra\View;
 use Schedule\Value\Vote;
 
 final class MainControllerTest extends TestCase

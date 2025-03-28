@@ -70,13 +70,36 @@ final class MainController
     {
         $user = (!$args->readOnly() && $request->username() !== null) ? $request->username() : null;
         $votes = $this->voteRepo->findAll($name);
-        if ($user && !Util::hasVoted($user, $votes)) {
+        if ($user && !$this->hasVoted($user, $votes)) {
             $votes[] = new Vote($user, []);
         }
         if ($this->conf["sort_users"]) {
-            $votes = Util::sortVotesByVoter($votes);
+            $votes = $this->sortVotesByVoter($votes);
         }
         return $this->renderWidget($request, $name, $args, $votes);
+    }
+
+    /** @param list<Vote> $votes */
+    private function hasVoted(string $user, array $votes): bool
+    {
+        foreach ($votes as $vote) {
+            if ($vote->voter() === $user) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param list<Vote> $votes
+     * @return list<Vote>
+     */
+    private function sortVotesByVoter(array $votes): array
+    {
+        usort($votes, function ($a, $b) {
+            return $a->voter() <=> $b->voter();
+        });
+        return array_values($votes);
     }
 
     private function vote(Request $request, string $name, Arguments $args): Response

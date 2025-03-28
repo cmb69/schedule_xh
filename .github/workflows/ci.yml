@@ -33,8 +33,8 @@ jobs:
       - name: composer install
         run: cd cmsimplexh/plugins/schedule && composer install
       - name: phing sniff
-        run: cd cmsimplexh/plugins/schedule && PATH=tools:$PATH phing sniff
+        run: cd cmsimplexh/plugins/schedule && PATH=tools:vendor/bin:$PATH phing sniff
       - name: phing stan
-        run: cd cmsimplexh/plugins/schedule && PATH=tools:$PATH phing stan
+        run: cd cmsimplexh/plugins/schedule && PATH=tools:vendor/bin:$PATH phing stan
       - name: phing test
-        run: cd cmsimplexh/plugins/schedule && PATH=tools:$PATH phing test
+        run: cd cmsimplexh/plugins/schedule && PATH=tools:vendor/bin:$PATH phing test

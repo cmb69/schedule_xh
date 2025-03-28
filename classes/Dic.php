@@ -39,6 +39,17 @@ class Dic
         );
     }
 
+    public static function callBuilder(): CallBuilder
+    {
+        global $pth, $plugin_cf;
+
+        return new CallBuilder(
+            $pth["folder"]["plugins"] . "schedule/",
+            $plugin_cf["schedule"],
+            self::makeView()
+        );
+    }
+
     public static function makeMainController(): MainController
     {
         global $plugin_cf;

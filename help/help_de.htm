@@ -36,7 +36,12 @@
 <li><a href="#download">Download</a></li>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#einstellungen">Einstellungen</a></li>
-<li><a href="#verwendung">Verwendung</a></li>
+<li><a href="#verwendung">Verwendung</a>
+<ul>
+<li><a href="#aufruf-assistent">Aufruf-Assistent</a></li>
+<li><a href="#beispiele">Beispiele</a></li>
+<li><a href="#hinweise">Hinweise</a></li>
+</ul></li>
 <li><a href="#fehlerbehebung">Fehlerbehebung</a></li>
 <li><a href="#lizenz">Lizenz</a></li>
 <li><a href="#danksagung">Danksagung</a></li>
@@ -73,6 +78,9 @@
 <p>Es ist nicht erforderlich den Zugriff auf diese Seite auf Mitglieder zu beschränken; wenn Besucher Ihrer Website nicht angemeldet sind, werden sie eben nur die aktuellen Ergebnisse sehen, ohne jedoch abstimmen zu können. Daher können Sie den Planer auch im Template platzieren:</p>
 <pre><code>&lt;?php echo schedule(&#39;%NAME%&#39;, %GESAMTERGEBNIS%, %SCHREIBGESCHÜTZT%, %MEHRFACH%, &#39;%OPTION_1%&#39;, &#39;%OPTION_2%&#39;, &#39;%OPTION_N%&#39;)?&gt;</code></pre>
 <p>Wenn sie allerdings die Abstimmung auf eine bestimmte Benutzergruppe bzw. Zugriffsebene beschränken wollen, müssen Sie den Planer auf einer Seite unterbringen, die nur Mitgliedern mit entsprechender Berechtigung zugänglich ist.</p>
+<h3 id="aufruf-assistent">Aufruf-Assistent</h3>
+<p>Um das Schreiben der Pluginaufrufe zu vereinfachen, gibt es im Backend einen Aufruf-Assistenten (<code>Plugins</code> → <code>Schedule</code> → <code>Aufruf-Assistent</code>). Sie können die gewünschten Eigenschaften der Planung/Abstimmung eingeben; beachten Sie, dass jeweils eine Option per Zeile in das Textfeld eingetragen wird. Wenn Sie <code>Erstellen</code> drücken, wird der vollständige Pluginaufruf in dem unteren Textfeld angezeigt, von wo Sie ihn per Copy &amp; Paste auf der gewünschte Seiten platzieren können.</p>
+<p>Sie können auch einen bestehenden Pluginaufruf in das untere Textfeld kopieren, und nachdem Sie <code>Zerlegen</code> drücken, werden die Eigenschaften der Planung/Abstimmung im Formular angezeigt, wo Sie diese bearbeiten können, um schließlich durch Drücken von <code>Erstellen</code> den geänderten Pluginaufruf zu erhalten.</p>
 <h3 id="beispiele">Beispiele</h3>
 <p>Um eine Weihnachtsfeier für die Belegschaft zu terminieren:</p>
 <pre><code>{{{schedule(&#39;Weihnachten&#39;, &#39;18.12.&#39;, &#39;19.12.&#39;, &#39;22.12.&#39;)}}}</code></pre>

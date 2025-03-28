@@ -12,6 +12,9 @@ haben, kann es ebenso für andere Abstimmungen verwendet werden.
 - [Installation](#installation)
 - [Einstellungen](#einstellungen)
 - [Verwendung](#verwendung)
+  - [Aufruf-Assistent](#aufruf-assistent)
+  - [Beispiele](#beispiele)
+  - [Hinweise](#hinweise)
 - [Fehlerbehebung](#fehlerbehebung)
 - [Lizenz](#lizenz)
 - [Danksagung](#danksagung)
@@ -111,6 +114,22 @@ Wenn sie allerdings die Abstimmung auf eine bestimmte Benutzergruppe bzw.
 Zugriffsebene beschränken wollen, müssen Sie den Planer auf einer Seite
 unterbringen, die nur Mitgliedern mit entsprechender Berechtigung zugänglich
 ist.
+
+### Aufruf-Assistent
+
+Um das Schreiben der Pluginaufrufe zu vereinfachen,
+gibt es im Backend einen Aufruf-Assistenten (`Plugins` → `Schedule` → `Aufruf-Assistent`).
+Sie können die gewünschten Eigenschaften der Planung/Abstimmung eingeben;
+beachten Sie, dass jeweils eine Option per Zeile in das Textfeld eingetragen wird.
+Wenn Sie `Erstellen` drücken,
+wird der vollständige Pluginaufruf in dem unteren Textfeld angezeigt,
+von wo Sie ihn per Copy & Paste auf der gewünschte Seiten platzieren können.
+
+Sie können auch einen bestehenden Pluginaufruf in das untere Textfeld kopieren,
+und nachdem Sie `Zerlegen` drücken,
+werden die Eigenschaften der Planung/Abstimmung im Formular angezeigt,
+wo Sie diese bearbeiten können,
+um schließlich durch Drücken von `Erstellen` den geänderten Pluginaufruf zu erhalten.
 
 ### Beispiele
 

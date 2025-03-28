@@ -1,6 +1,4 @@
-/*
- * The planners.
- */
+/* The planners */
 
 .schedule {}
 .schedule {}
@@ -32,4 +30,23 @@
 .schedule .submit {
     margin-top: 0.5em;
     padding: 0.2em 0.5em;
+}
+
+/* Call builder */
+
+.schedule_call_builder label span {
+    display: inline-block;
+    width: 7em;
+    vertical-align: top;
+}
+.schedule_call_builder textarea {
+    width: 30em;
+    height: 10em;
+}
+.schedule_call_builder textarea[name=plugin_call] {
+    height: 4em;
+}
+.schedule_call_builder .schedule_buttons {
+    display: flex;
+    justify-content: space-evenly;
 }

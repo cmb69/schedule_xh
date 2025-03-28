@@ -21,6 +21,11 @@ class DicTest extends TestCase
         $this->assertInstanceOf(MainController::class, Dic::makeMainController());
     }
 
+    public function testMakesCallBuilder(): void
+    {
+        $this->assertInstanceOf(CallBuilder::class, Dic::callBuilder());
+    }
+
     public function testMakesInfoController(): void
     {
         $this->assertInstanceOf(InfoController::class, Dic::makeInfoController());

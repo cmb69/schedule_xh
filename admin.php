@@ -1,5 +1,6 @@
 <?php
 
+use Plib\Request;
 use Schedule\Dic;
 
 if (!defined("CMSIMPLE_XH_VERSION")) {
@@ -12,13 +13,16 @@ if (!defined("CMSIMPLE_XH_VERSION")) {
  * @var string $o
  */
 
-XH_registerStandardPluginMenuItems(false);
+XH_registerStandardPluginMenuItems(true);
 
-if (XH_wantsPluginAdministration('schedule')) {
-    $o .= print_plugin_admin('off');
+if (XH_wantsPluginAdministration("schedule")) {
+    $o .= print_plugin_admin("on");
     switch ($admin) {
-        case '':
+        case "":
             $o .= Dic::makeInfoController()()();
+            break;
+        case "plugin_main":
+            $o .= Dic::callBuilder()(Request::current())();
             break;
         default:
             $o .= plugin_admin_common();

@@ -36,7 +36,12 @@
 <li><a href="#download">Download</a></li>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#settings">Settings</a></li>
-<li><a href="#usage">Usage</a></li>
+<li><a href="#usage">Usage</a>
+<ul>
+<li><a href="#call-builder">Call Builder</a></li>
+<li><a href="#examples">Examples</a></li>
+<li><a href="#notes">Notes</a></li>
+</ul></li>
 <li><a href="#troubleshooting">Troubleshooting</a></li>
 <li><a href="#license">License</a></li>
 <li><a href="#credits">Credits</a></li>
@@ -73,6 +78,9 @@
 <p>It is not necessary to restrict access to this page to members; if visitors of your site are not logged in, they will just see the current results, without being able to vote. So you can even place the planner in the template:</p>
 <pre><code>&lt;?=schedule(&#39;%NAME%&#39;, %SHOW_TOTALS%, %READ_ONLY%, %MULTI%, &#39;%OPTION_1%&#39;, &#39;%OPTION_2%&#39;, &#39;%OPTION_N%&#39;);?&gt;</code></pre>
 <p>However, if you want to restrict the voting to a certain user group or access level, you have to place the planner on a page, which can only be accessed by members with the respective authorization.</p>
+<h3 id="call-builder">Call Builder</h3>
+<p>To simplify writing the plugin calls, there is a call builder in the back-end (<code>Plugins</code> → <code>Schedule</code> → <code>Call Builder</code>). You can enter the desired properties of the planning/voting; note that the options have to be entered one per line in the textarea. When you press <code>Build</code>, the complete plugin call will be shown in the textarea at the bottom. You can then copy &amp; paste that into the desired page.</p>
+<p>You can also copy &amp; paste an existing plugin call into the textarea at the bottom, and when you press <code>Parse</code>, the properties of the planning/voting will be shown in the form. You can edit these, and press <code>Build</code> to get the modified plugin call.</p>
 <h3 id="examples">Examples</h3>
 <p>To schedule a Christmas staff party:</p>
 <pre><code>{{{schedule(&#39;christmas&#39;, &#39;Dec. 18th&#39;, &#39;Dec. 19th&#39;, &#39;Dec. 22nd&#39;)}}}</code></pre>

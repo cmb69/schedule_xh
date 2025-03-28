@@ -12,6 +12,9 @@ other votings as well.
 - [Installation](#installation)
 - [Settings](#settings)
 - [Usage](#usage)
+  - [Call Builder](#call-builder)
+  - [Examples](#examples)
+  - [Notes](#notes)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
 - [Credits](#credits)
@@ -103,6 +106,20 @@ being able to vote. So you can even place the planner in the template:
 However, if you want to restrict the voting to a certain user group or
 access level, you have to place the planner on a page, which can only be
 accessed by members with the respective authorization.
+
+### Call Builder
+
+To simplify writing the plugin calls, there is a call builder in the back-end
+(`Plugins` → `Schedule` → `Call Builder`).
+You can enter the desired properties of the planning/voting;
+note that the options have to be entered one per line in the textarea.
+When you press `Build`,
+the complete plugin call will be shown in the textarea at the bottom.
+You can then copy & paste that into the desired page.
+
+You can also copy & paste an existing plugin call into the textarea at the bottom,
+and when you press `Parse`, the properties of the planning/voting will be shown in the form.
+You can edit these, and press `Build` to get the modified plugin call.
 
 ### Examples
 

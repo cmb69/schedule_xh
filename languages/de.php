@@ -1,5 +1,7 @@
 <?php
 
+$plugin_tx['schedule']['menu_main']="Aufruf-Assistent";
+
 $plugin_tx['schedule']['err_invalid_name']="Der Name des Ereignisses darf nur alphanumerische und Minus-Zeichen enthalten!";
 $plugin_tx['schedule']['err_no_option']="Sie müssen wenigstens eine Option angeben!";
 $plugin_tx['schedule']['err_vote']="Etwas hat bei der Abstimmung nicht funktioniert! Bitte versuchen Sie es erneut.";
@@ -9,6 +11,14 @@ $plugin_tx['schedule']['total']="Gesamt";
 $plugin_tx['schedule']['label_save']="Speichern";
 $plugin_tx['schedule']['label_checked']="✓";
 $plugin_tx['schedule']['label_unchecked']="";
+$plugin_tx['schedule']['label_build']="↓ Erstellen";
+$plugin_tx['schedule']['label_multi']="Mehrfach";
+$plugin_tx['schedule']['label_name']="Name";
+$plugin_tx['schedule']['label_options']="Optionen";
+$plugin_tx['schedule']['label_parse']="↑ Zerlegen";
+$plugin_tx['schedule']['label_plugin_call']="Plugin-Aufruf";
+$plugin_tx['schedule']['label_read_only']="Schreibgeschützt";
+$plugin_tx['schedule']['label_show_totals']="Ergebnis anzeigen";
 
 $plugin_tx['schedule']['syscheck_title']="Systemprüfung";
 $plugin_tx['schedule']['syscheck_phpversion']="PHP Version ≥ %s";

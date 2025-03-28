@@ -1,0 +1,45 @@
+
+<script type="module" src="/plugins/schedule/schedule.js?&amp;v=2.1-dev"></script>
+<h1>Schedule – Call Builder</h1>
+<form class="schedule_call_builder">
+  <p>
+    <label>
+      <span>Name</span>
+      <input name="name" required pattern="[a-z0-9\-]+">
+    </label>
+  </p>
+  <p>
+    <label>
+      <span>Show totals</span>
+      <input name="show_totals" type="checkbox" >
+    </label>
+  </p>
+  <p>
+    <label>
+      <span>Read only</span>
+      <input name="read_only" type="checkbox" >
+    </label>
+  </p>
+  <p>
+    <label>
+      <span>Multi</span>
+      <input name="multi" type="checkbox" checked>
+    </label>
+  </p>
+  <p>
+    <label>
+      <span>Options</span>
+      <textarea name="options" required></textarea>
+    </label>
+  </p>
+  <p class="schedule_buttons">
+    <button type="button" name="parse">↑ Parse</button>
+    <button type="button" name="build">↓ Build</button>
+  </p>
+  <p>
+    <label>
+      <span>Plugin call</span>
+      <textarea name="plugin_call"></textarea>
+    </label>
+  </p>
+</form>

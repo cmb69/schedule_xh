@@ -22,8 +22,8 @@
 namespace Schedule;
 
 use Plib\Request;
+use Plib\Response;
 use Plib\View;
-use Schedule\Infra\Response;
 use Schedule\Infra\VoteRepo;
 use Schedule\Logic\Util;
 use Schedule\Value\Arguments;
@@ -63,10 +63,10 @@ final class MainController
         if ($this->postFor($request, $name) !== null) {
             return $this->vote($request, $name, $args);
         }
-        return $this->widget($request, $name, $args);
+        return Response::create($this->widget($request, $name, $args));
     }
 
-    private function widget(Request $request, string $name, Arguments $args): Response
+    private function widget(Request $request, string $name, Arguments $args): string
     {
         $user = (!$args->readOnly() && $request->username() !== null) ? $request->username() : null;
         $votes = $this->voteRepo->findAll($name);
@@ -76,22 +76,22 @@ final class MainController
         if ($this->conf["sort_users"]) {
             $votes = Util::sortVotesByVoter($votes);
         }
-        return Response::create($this->renderWidget($request, $name, $args, $votes));
+        return $this->renderWidget($request, $name, $args, $votes);
     }
 
     private function vote(Request $request, string $name, Arguments $args): Response
     {
         if ($request->username() === null || $args->readOnly()) {
-            return Response::create($this->view->message("fail", "err_vote"))
-                ->merge($this->widget($request, $name, $args));
+            return Response::create($this->view->message("fail", "err_vote")
+                . $this->widget($request, $name, $args));
         }
         if (($vote = $this->parseVote($request, $name, $args->options())) === null) {
-            return Response::create($this->view->message("fail", "err_vote"))
-                ->merge($this->widget($request, $name, $args));
+            return Response::create($this->view->message("fail", "err_vote")
+                . $this->widget($request, $name, $args));
         }
         if (!$this->voteRepo->save($name, $vote)) {
-            return Response::create($this->view->message("fail", "err_save"))
-                ->merge($this->widget($request, $name, $args));
+            return Response::create($this->view->message("fail", "err_save")
+                . $this->widget($request, $name, $args));
         }
         return Response::redirect($request->url()->absolute());
     }

@@ -23,11 +23,6 @@ namespace Schedule\Infra;
 
 class Request
 {
-    public function pluginsFolder(): string
-    {
-        return $this->pth()["folder"]["plugins"];
-    }
-
     /** @codeCoverageIgnore */
     public function url(): string
     {
@@ -60,15 +55,5 @@ class Request
     protected function post()
     {
         return $_POST;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     * @return array{folder:array<string,string>,file:array<string,string>}
-     */
-    protected function pth(): array
-    {
-        global $pth;
-        return $pth;
     }
 }

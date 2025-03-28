@@ -34,7 +34,7 @@ final class InfoControllerTest extends TestCase
 {
     public function testRendersPluginInfo(): void
     {
-        $sut = new InfoController(new FakeVoteRepo(), $this->view(), new FakeSystemChecker());
+        $sut = new InfoController("./plugins/schedule/", new FakeVoteRepo(), $this->view(), new FakeSystemChecker());
         $request = new FakeRequest(["pth" => ["folder" => ["plugins" => "./plugins/"]]]);
         $response = $sut($request);
         $this->assertEquals("Schedule 2.1-dev", $response->title());

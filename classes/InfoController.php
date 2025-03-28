@@ -23,12 +23,14 @@ namespace Schedule;
 
 use Plib\SystemChecker;
 use Plib\View;
-use Schedule\Infra\Request;
 use Schedule\Infra\Response;
 use Schedule\Infra\VoteRepo;
 
 final class InfoController
 {
+    /** @var string */
+    private $pluginFolder;
+
     /** @var VoteRepo */
     private $voteRepo;
 
@@ -39,27 +41,29 @@ final class InfoController
     private $systemChecker;
 
     public function __construct(
+        string $pluginFolder,
         VoteRepo $voteRepo,
         View $view,
         SystemChecker $systemChecker
     ) {
+        $this->pluginFolder = $pluginFolder;
         $this->voteRepo = $voteRepo;
         $this->view = $view;
         $this->systemChecker = $systemChecker;
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(): Response
     {
         return Response::create($this->view->render("info", [
             "version" => SCHEDULE_VERSION,
-            "checks" => $this->systemChecks($request->pluginsFolder()),
+            "checks" => $this->systemChecks(),
         ]))->withTitle("Schedule " . SCHEDULE_VERSION);
     }
 
     /**
      * @return list<array{key:string,arg:string,class:string}>
      */
-    private function systemChecks(string $pluginsFolder): array
+    private function systemChecks(): array
     {
         $phpVersion = '7.1.0';
         $checks = [];
@@ -76,7 +80,7 @@ final class InfoController
             ];
         }
         foreach (['config/', 'css/', 'languages/'] as $folder) {
-            $folders[] = $pluginsFolder . "schedule/" . $folder;
+            $folders[] = $this->pluginFolder . $folder;
         }
         $folders[] = $this->voteRepo->dataFolder();
         foreach ($folders as $folder) {

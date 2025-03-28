@@ -29,7 +29,10 @@ class Dic
 {
     public static function makeInfoController(): InfoController
     {
+        global $pth;
+
         return new InfoController(
+            $pth["folder"]["plugins"] . "schedule/",
             self::makeVoteRepo(),
             self::makeView(),
             new SystemChecker()

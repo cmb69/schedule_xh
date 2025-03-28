@@ -12,6 +12,7 @@ $plugin_tx['schedule']['label_unchecked']="";
 
 $plugin_tx['schedule']['syscheck_title']="System check";
 $plugin_tx['schedule']['syscheck_phpversion']="PHP version ≥ %s";
+$plugin_tx['schedule']['syscheck_plibversion']="Plib_XH version ≥ %s";
 $plugin_tx['schedule']['syscheck_xhversion']="CMSimple_XH version ≥ %s";
 $plugin_tx['schedule']['syscheck_writable']="Folder '%s' writable";
 

@@ -12,6 +12,7 @@ $plugin_tx['schedule']['label_unchecked']="";
 
 $plugin_tx['schedule']['syscheck_title']="Systemprüfung";
 $plugin_tx['schedule']['syscheck_phpversion']="PHP Version ≥ %s";
+$plugin_tx['schedule']['syscheck_phpversion']="Plib_XH Version ≥ %s";
 $plugin_tx['schedule']['syscheck_xhversion']="CMSimple_XH Version ≥ %s";
 $plugin_tx['schedule']['syscheck_writable']="Ordner '%s' beschreibbar";
 

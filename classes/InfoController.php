@@ -79,6 +79,13 @@ final class InfoController
             "arg" => $xhVersion,
             "class" => $okay ? "xh_success" : "xh_fail",
         ];
+        $plibVersion = "1.6";
+        $okay = $this->systemChecker->checkPlugin("plib", $plibVersion);
+        $checks[] = [
+            "key" => "syscheck_plibversion",
+            "arg" => $plibVersion,
+            "class" => $okay ? "xh_success" : "xh_fail",
+        ];
         foreach (['config/', 'css/', 'languages/'] as $folder) {
             $folders[] = $this->pluginFolder . $folder;
         }

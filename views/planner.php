@@ -11,7 +11,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {header("HTTP/1.1 403 Forbidden"); exit;}
  * @var string $url
  * @var array<string> $options
  * @var list<int> $totals
- * @var array<string,list<array{class:string,content:html}>> $users
+ * @var array<string,list<array{class:string,content:string}>> $users
  * @var string $button
  * @var int $columns
  */

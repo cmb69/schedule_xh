@@ -25,14 +25,14 @@ class Response
 {
     public static function create(string $output): self
     {
-        $that = new Response;
+        $that = new Response();
         $that->output = $output;
         return $that;
     }
 
     public static function redirect(string $location): self
     {
-        $that = new Response;
+        $that = new Response();
         $that->location = $location;
         return $that;
     }

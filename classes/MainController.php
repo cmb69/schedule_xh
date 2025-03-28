@@ -130,7 +130,7 @@ final class MainController
     private function renderWidget(Request $request, string $name, Arguments $args, array $votes): string
     {
         return $this->view->render("planner", [
-            "show_totals"=> $args->totals(),
+            "show_totals" => $args->totals(),
             "voting" => $args->readonly() ? null : $request->user(),
             "url" => $request->url(),
             "options" => $args->options(),

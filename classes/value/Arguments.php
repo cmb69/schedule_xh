@@ -35,8 +35,27 @@ class Arguments
     /** @var list<string> */
     private $options;
 
+    /**
+     * @param array<bool|mixed> $args
+     * @param array{totals:bool,readonly:bool,multi:bool} $defaults
+     */
+    public static function parse(array $args, array $defaults): ?Arguments
+    {
+        $showTotals = array_key_exists(0, $args) && is_bool($args[0])
+            ? (bool) array_shift($args) : $defaults["totals"];
+        $readOnly = array_key_exists(0, $args) && is_bool($args[0])
+            ? (bool) array_shift($args) : $defaults["readonly"];
+        $isMulti = array_key_exists(0, $args) && is_bool($args[0])
+            ? (bool) array_shift($args) : $defaults["multi"];
+        $options = array_map("strval", $args);
+        if (empty($options)) {
+            return null;
+        }
+        return new self($showTotals, $readOnly, $isMulti, $options);
+    }
+
     /** @param list<string> $options */
-    public function __construct(bool $totals, bool $readonly, bool $multi, array $options)
+    private function __construct(bool $totals, bool $readonly, bool $multi, array $options)
     {
         $this->totals = $totals;
         $this->readonly = $readonly;

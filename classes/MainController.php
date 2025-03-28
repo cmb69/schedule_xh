@@ -102,7 +102,7 @@ final class MainController
         $args = array_map(function ($arg) {
             return !is_string($arg) ? $arg : html_entity_decode($arg, ENT_QUOTES, "UTF-8");
         }, $args);
-        return Util::parseArguments($args, [
+        return Arguments::parse($args, [
             "totals" => (bool) $this->conf["default_totals"],
             "readonly" => (bool) $this->conf["default_readonly"],
             "multi" => (bool) $this->conf["default_multi"],

@@ -10,5 +10,3 @@ parameters:
     - ../../cmsimple/functions.php
   scanDirectories:
     - ../plib/classes
-  typeAliases:
-    html: string

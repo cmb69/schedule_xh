@@ -21,9 +21,8 @@
 
 namespace Schedule;
 
+use Plib\SystemChecker;
 use Plib\View as PlibView;
-use Schedule\Infra\SystemChecker;
-use Schedule\Infra\View;
 use Schedule\Infra\VoteRepo;
 
 class Dic

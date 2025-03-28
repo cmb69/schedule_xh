@@ -2,13 +2,13 @@
 
 namespace Schedule;
 
-use function XH_includeVar;
-
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
 use Plib\FakeSystemChecker;
 use Plib\View;
 use Schedule\Model\FakeVoteRepo;
+
+use function XH_includeVar;
 
 final class InfoControllerTest extends TestCase
 {

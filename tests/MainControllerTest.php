@@ -14,20 +14,20 @@ final class MainControllerTest extends TestCase
     public function testInvalidNameFails(): void
     {
         $sut = $this->sut();
-        $response = $sut(new FakeRequest, "christ!mas");
+        $response = $sut(new FakeRequest(), "christ!mas");
         Approvals::verifyHtml($response->output());
     }
 
     public function testNoOptionsFails(): void
     {
         $sut = $this->sut();
-        $response = $sut(new FakeRequest, "christmas");
+        $response = $sut(new FakeRequest(), "christmas");
         Approvals::verifyHtml($response->output());
     }
 
     public function testRender(): void
     {
-        $voteRepo = new FakeVoteRepo;
+        $voteRepo = new FakeVoteRepo();
         $voteRepo->save("color", new Vote("cmb", ["red"]));
         $voteRepo->save("color", new Vote("other", ["blue"]));
         $sut = $this->sut(["voteRepo" => $voteRepo]);
@@ -48,7 +48,7 @@ final class MainControllerTest extends TestCase
 
     public function testRendersWhatUserHasVoted(): void
     {
-        $voteRepo = new FakeVoteRepo;
+        $voteRepo = new FakeVoteRepo();
         $voteRepo->save("color", new Vote("cmb", ["red", "blue"]));
         $sut = $this->sut(["voteRepo" => $voteRepo]);
         $response = $sut(new FakeRequest(["username" => "cmb"]), "color", "red", "green", "blue");
@@ -57,17 +57,17 @@ final class MainControllerTest extends TestCase
 
     public function testRendersTotalsIfConfigured(): void
     {
-        $voteRepo = new FakeVoteRepo;
+        $voteRepo = new FakeVoteRepo();
         $voteRepo->save("color", new Vote("cmb", ["red"]));
         $voteRepo->save("color", new Vote("other", ["blue"]));
         $sut = $this->sut(["voteRepo" => $voteRepo]);
-        $response = $sut(new FakeRequest, "color", true, "red", "green", "blue");
+        $response = $sut(new FakeRequest(), "color", true, "red", "green", "blue");
         Approvals::verifyHtml($response->output());
     }
 
     public function testSubmissionSuccess(): void
     {
-        $voteRepo = new FakeVoteRepo;
+        $voteRepo = new FakeVoteRepo();
         $voteRepo->save("color", new Vote("cmb", ["red"]));
         $voteRepo->save("color", new Vote("other", ["blue"]));
         $sut = $this->sut(["voteRepo" => $voteRepo]);
@@ -89,7 +89,7 @@ final class MainControllerTest extends TestCase
 
     public function testCanSubmitNoChoices(): void
     {
-        $voteRepo = new FakeVoteRepo;
+        $voteRepo = new FakeVoteRepo();
         $voteRepo->save("color", new Vote("cmb", ["red"]));
         $sut = $this->sut(["voteRepo" => $voteRepo]);
         $request = new FakeRequest([
@@ -106,7 +106,7 @@ final class MainControllerTest extends TestCase
 
     public function testSubmissionFailure(): void
     {
-        $voteRepo = new FakeVoteRepo;
+        $voteRepo = new FakeVoteRepo();
         $voteRepo->save("color", new Vote("cmb", ["red"]));
         $voteRepo->save("color", new Vote("other", ["blue"]));
         $sut = $this->sut(["voteRepo" => $voteRepo]);
@@ -123,7 +123,7 @@ final class MainControllerTest extends TestCase
 
     public function testPostFailureIfNotLoggedIn(): void
     {
-        $voteRepo = new FakeVoteRepo;
+        $voteRepo = new FakeVoteRepo();
         $sut = $this->sut(["voteRepo" => $voteRepo]);
         $request = new FakeRequest(["post" => [
             "schedule_date_color" => ["blue", "green"],
@@ -136,7 +136,7 @@ final class MainControllerTest extends TestCase
 
     public function testPostFailureIfReadonly(): void
     {
-        $voteRepo = new FakeVoteRepo;
+        $voteRepo = new FakeVoteRepo();
         $sut = $this->sut(["voteRepo" => $voteRepo]);
         $request = new FakeRequest(["username" => "cmb", "post" => [
             "schedule_date_color" => ["blue", "green"],
@@ -149,7 +149,7 @@ final class MainControllerTest extends TestCase
 
     public function testPostFailureIfUnkownOptionsAreSupplied(): void
     {
-        $voteRepo = new FakeVoteRepo;
+        $voteRepo = new FakeVoteRepo();
         $sut = $this->sut(["voteRepo" => $voteRepo]);
         $request = new FakeRequest([
             "url" => "http://example.com/?Schedule",
@@ -184,7 +184,7 @@ final class MainControllerTest extends TestCase
     {
         return new MainController(
             $this->conf(),
-            $options["voteRepo"] ?? new FakeVoteRepo,
+            $options["voteRepo"] ?? new FakeVoteRepo(),
             $this->view()
         );
     }

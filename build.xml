@@ -16,6 +16,7 @@
       <arg file="admin.php"/>
       <arg file="index.php"/>
       <arg file="classes"/>
+      <arg file="tests"/>
     </exec>
   </target>
 

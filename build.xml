@@ -73,7 +73,7 @@
         <exclude name="tests/**"/>
         <exclude name="build.xml"/>
         <exclude name="composer.*"/>
-        <exclude name="phpstan.neon"/>
+        <exclude name="phpstan.*"/>
         <exclude name="phpunit.xml"/>
         <exclude name="README*.md"/>
         <exclude name="teplad.xml"/>

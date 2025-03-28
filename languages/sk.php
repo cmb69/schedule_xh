@@ -12,7 +12,6 @@ $plugin_tx['schedule']['label_unchecked']="";
 
 $plugin_tx['schedule']['syscheck_title']="Kontrola systénu";
 $plugin_tx['schedule']['syscheck_phpversion']="PHP verzia ≥ %s";
-$plugin_tx['schedule']['syscheck_extension']="Rozšírenie '%s' načítané";
 $plugin_tx['schedule']['syscheck_writable']="Adresár '%s' umožňuje zápis";
 
 $plugin_tx['schedule']['cf_sort_users']="Majú byť plánovače usporiadané podľa mena užívateľa?";

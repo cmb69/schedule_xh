@@ -11,8 +11,8 @@ $plugin_tx['schedule']['label_checked']="✓";
 $plugin_tx['schedule']['label_unchecked']="";
 
 $plugin_tx['schedule']['syscheck_title']="Systemprüfung";
-$plugin_tx['schedule']['syscheck_phpversion']="PHP-Version ≥ %s";
-$plugin_tx['schedule']['syscheck_extension']="Erweiterung '%s' geladen";
+$plugin_tx['schedule']['syscheck_phpversion']="PHP Version ≥ %s";
+$plugin_tx['schedule']['syscheck_xhversion']="CMSimple_XH Version ≥ %s";
 $plugin_tx['schedule']['syscheck_writable']="Ordner '%s' beschreibbar";
 
 $plugin_tx['schedule']['cf_sort_users']="Ob der Planer nach Benutzernamen sortiert werden soll.";

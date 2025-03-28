@@ -12,7 +12,7 @@ $plugin_tx['schedule']['label_unchecked']="";
 
 $plugin_tx['schedule']['syscheck_title']="System check";
 $plugin_tx['schedule']['syscheck_phpversion']="PHP version ≥ %s";
-$plugin_tx['schedule']['syscheck_extension']="Extension '%s' loaded";
+$plugin_tx['schedule']['syscheck_xhversion']="CMSimple_XH version ≥ %s";
 $plugin_tx['schedule']['syscheck_writable']="Folder '%s' writable";
 
 $plugin_tx['schedule']['cf_sort_users']="Whether the planner shall be ordered by user name.";

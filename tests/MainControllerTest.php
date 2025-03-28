@@ -23,8 +23,8 @@ namespace Schedule;
 
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
+use Plib\FakeRequest;
 use Plib\View;
-use Schedule\Infra\FakeRequest;
 use Schedule\Infra\FakeVoteRepo;
 use Schedule\Value\Vote;
 
@@ -50,14 +50,18 @@ final class MainControllerTest extends TestCase
         $voteRepo->save("color", new Vote("cmb", ["red"]));
         $voteRepo->save("color", new Vote("other", ["blue"]));
         $sut = $this->sut(["voteRepo" => $voteRepo]);
-        $response = $sut(new FakeRequest, "color", "red", "green", "blue");
+        $response = $sut(new FakeRequest(["url" => "http://example.com/?Schedule"]), "color", "red", "green", "blue");
         Approvals::verifyHtml($response->output());
     }
 
     public function testRendersOptionsWithSpecialChars(): void
     {
         $sut = $this->sut();
-        $response = $sut(new FakeRequest(["user" => "cmb"]), "special", "1 &lt; 2", "1 &gt; 2", "1 &amp; 2");
+        $request = new FakeRequest([
+            "url" => "http://example.com/?Schedule",
+            "username" => "cmb",
+        ]);
+        $response = $sut($request, "special", "1 &lt; 2", "1 &gt; 2", "1 &amp; 2");
         Approvals::verifyHtml($response->output());
     }
 
@@ -66,7 +70,7 @@ final class MainControllerTest extends TestCase
         $voteRepo = new FakeVoteRepo;
         $voteRepo->save("color", new Vote("cmb", ["red", "blue"]));
         $sut = $this->sut(["voteRepo" => $voteRepo]);
-        $response = $sut(new FakeRequest(["user" => "cmb"]), "color", "red", "green", "blue");
+        $response = $sut(new FakeRequest(["username" => "cmb"]), "color", "red", "green", "blue");
         Approvals::verifyHtml($response->output());
     }
 
@@ -86,10 +90,14 @@ final class MainControllerTest extends TestCase
         $voteRepo->save("color", new Vote("cmb", ["red"]));
         $voteRepo->save("color", new Vote("other", ["blue"]));
         $sut = $this->sut(["voteRepo" => $voteRepo]);
-        $request = new FakeRequest(["user" => "cmb", "post" => [
-            "schedule_date_color" => ["blue", "green"],
-            "schedule_submit_color" => "vote",
-        ]]);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?Schedule",
+            "username" => "cmb",
+            "post" => [
+                "schedule_date_color" => ["blue", "green"],
+                "schedule_submit_color" => "vote",
+            ],
+        ]);
         $response = $sut($request, "color", "red", "green", "blue");
         $this->assertEquals(
             ["cmb" => new Vote("cmb", ["blue", "green"]), "other" => new Vote("other", ["blue"])],
@@ -103,9 +111,13 @@ final class MainControllerTest extends TestCase
         $voteRepo = new FakeVoteRepo;
         $voteRepo->save("color", new Vote("cmb", ["red"]));
         $sut = $this->sut(["voteRepo" => $voteRepo]);
-        $request = new FakeRequest(["user" => "cmb", "post" => [
-            "schedule_submit_color" => "vote",
-        ]]);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?Schedule",
+            "username" => "cmb",
+            "post" => [
+                "schedule_submit_color" => "vote",
+                ]
+            ]);
         $response = $sut($request, "color", "red", "green", "blue");
         $this->assertEquals(["cmb" => new Vote("cmb", [])], $voteRepo->findAll("color"));
         $this->assertEquals("http://example.com/?Schedule", $response->location());
@@ -117,7 +129,7 @@ final class MainControllerTest extends TestCase
         $voteRepo->save("color", new Vote("cmb", ["red"]));
         $voteRepo->save("color", new Vote("other", ["blue"]));
         $sut = $this->sut(["voteRepo" => $voteRepo]);
-        $request = new FakeRequest(["user" => "cmb", "post" => [
+        $request = new FakeRequest(["username" => "cmb", "post" => [
             "schedule_date_color" => ["yellow", "green"],
             "schedule_submit_color" => "vote",
         ]]);
@@ -145,7 +157,7 @@ final class MainControllerTest extends TestCase
     {
         $voteRepo = new FakeVoteRepo;
         $sut = $this->sut(["voteRepo" => $voteRepo]);
-        $request = new FakeRequest(["user" => "cmb", "post" => [
+        $request = new FakeRequest(["username" => "cmb", "post" => [
             "schedule_date_color" => ["blue", "green"],
             "schedule_submit_color" => "vote",
         ]]);
@@ -158,10 +170,14 @@ final class MainControllerTest extends TestCase
     {
         $voteRepo = new FakeVoteRepo;
         $sut = $this->sut(["voteRepo" => $voteRepo]);
-        $request = new FakeRequest(["user" => "cmb", "post" => [
-            "schedule_date_color" => ["yellow"],
-            "schedule_submit_color" => "vote",
-        ]]);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?Schedule",
+            "username" => "cmb",
+            "post" => [
+                "schedule_date_color" => ["yellow"],
+                "schedule_submit_color" => "vote",
+            ],
+        ]);
         $response = $sut($request, "color", "red", "green", "blue");
         Approvals::verifyHtml($response->output());
         $this->assertEmpty($voteRepo->findAll("color"));
@@ -171,10 +187,14 @@ final class MainControllerTest extends TestCase
     {
         $voteRepo = new FakeVoteRepo(["save" => false]);
         $sut = $this->sut(["voteRepo" => $voteRepo]);
-        $request = new FakeRequest(["user" => "cmb", "post" => [
-            "schedule_date_color" => ["blue", "green"],
-            "schedule_submit_color" => "vote",
-        ]]);
+        $request = new FakeRequest([
+            "url" => "http://example.com/?Schedule",
+            "username" => "cmb",
+            "post" => [
+                "schedule_date_color" => ["blue", "green"],
+                "schedule_submit_color" => "vote",
+            ],
+        ]);
         $response = $sut($request, "color", "red", "green", "blue");
         Approvals::verifyHtml($response->output());
     }

@@ -19,8 +19,8 @@
  * along with Schedule_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Plib\Request;
 use Schedule\Dic;
-use Schedule\Infra\Request;
 
 if (!defined("CMSIMPLE_XH_VERSION")) {
     header("HTTP/1.1 403 Forbidden");
@@ -34,5 +34,5 @@ const SCHEDULE_VERSION = "2.1-dev";
  */
 function schedule(string $name, ...$args): string
 {
-    return Dic::makeMainController()(new Request(), $name, ...$args)->fire();
+    return Dic::makeMainController()(Request::current(), $name, ...$args)->fire();
 }

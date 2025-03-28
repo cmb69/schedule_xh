@@ -27,7 +27,6 @@ use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
 use Plib\FakeSystemChecker;
 use Plib\View;
-use Schedule\Infra\FakeRequest;
 use Schedule\Infra\FakeVoteRepo;
 
 final class InfoControllerTest extends TestCase
@@ -35,8 +34,7 @@ final class InfoControllerTest extends TestCase
     public function testRendersPluginInfo(): void
     {
         $sut = new InfoController("./plugins/schedule/", new FakeVoteRepo(), $this->view(), new FakeSystemChecker());
-        $request = new FakeRequest(["pth" => ["folder" => ["plugins" => "./plugins/"]]]);
-        $response = $sut($request);
+        $response = $sut();
         $this->assertEquals("Schedule 2.1-dev", $response->title());
         Approvals::verifyHtml($response->output());
     }

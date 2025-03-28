@@ -21,8 +21,8 @@
 
 namespace Schedule;
 
+use Plib\Request;
 use Plib\View;
-use Schedule\Infra\Request;
 use Schedule\Infra\Response;
 use Schedule\Infra\VoteRepo;
 use Schedule\Logic\Util;
@@ -60,7 +60,7 @@ final class MainController
         if (($args = $this->parseArguments(array_values($args))) === null) {
             return Response::create($this->view->message("fail", "err_no_option"));
         }
-        if ($request->postFor($name) !== null) {
+        if ($this->postFor($request, $name) !== null) {
             return $this->vote($request, $name, $args);
         }
         return $this->widget($request, $name, $args);
@@ -68,7 +68,7 @@ final class MainController
 
     private function widget(Request $request, string $name, Arguments $args): Response
     {
-        $user = (!$args->readOnly() && $request->user() !== null) ? $request->user() : null;
+        $user = (!$args->readOnly() && $request->username() !== null) ? $request->username() : null;
         $votes = $this->voteRepo->findAll($name);
         if ($user && !Util::hasVoted($user, $votes)) {
             $votes[] = new Vote($user, []);
@@ -81,7 +81,7 @@ final class MainController
 
     private function vote(Request $request, string $name, Arguments $args): Response
     {
-        if ($request->user() === null || $args->readOnly()) {
+        if ($request->username() === null || $args->readOnly()) {
             return Response::create($this->view->message("fail", "err_vote"))
                 ->merge($this->widget($request, $name, $args));
         }
@@ -93,7 +93,7 @@ final class MainController
             return Response::create($this->view->message("fail", "err_save"))
                 ->merge($this->widget($request, $name, $args));
         }
-        return Response::redirect($request->url());
+        return Response::redirect($request->url()->absolute());
     }
 
     /** @param list<bool|string> $args */
@@ -112,9 +112,9 @@ final class MainController
     /** @param list<string> $options */
     private function parseVote(Request $request, string $name, array $options): ?Vote
     {
-        assert($request->user() !== null);
-        assert($request->postFor($name) !== null);
-        $fields = $request->postFor($name)["dates"];
+        assert($request->username() !== null);
+        assert($this->postFor($request, $name) !== null);
+        $fields = $this->postFor($request, $name)["dates"];
         $choices = [];
         foreach ($fields as $field) {
             if (array_search($field, $options) === false) {
@@ -123,7 +123,7 @@ final class MainController
             }
             $choices[] = $field;
         }
-        return new Vote($request->user(), $choices);
+        return new Vote($request->username(), $choices);
     }
 
     /** @param list<Vote> $votes */
@@ -131,8 +131,8 @@ final class MainController
     {
         return $this->view->render("planner", [
             "show_totals" => $args->totals(),
-            "voting" => $args->readonly() ? null : $request->user(),
-            "url" => $request->url(),
+            "voting" => $args->readonly() ? null : $request->username(),
+            "url" => $request->url()->relative(),
             "options" => $args->options(),
             "totals" => $this->totals($args, $votes),
             "users" => $this->users($request, $name, $args, $votes),
@@ -169,13 +169,24 @@ final class MainController
                 $ok = in_array($option, $vote->choices(), true);
                 $users[$vote->voter()][] = [
                     "class" => $ok ? "schedule_green" : "schedule_red",
-                    "content" => $vote->voter() === $request->user()
+                    "content" => $vote->voter() === $request->username()
                         ? $this->input($name, $args, $option, $ok)
                         : ($ok ? $this->view->text("label_checked") : $this->view->text("label_unchecked")),
                 ];
             }
         }
         return $users;
+    }
+
+    /** @return array{submit:string,dates:list<string>}|null */
+    public function postFor(Request $request, string $name): ?array
+    {
+        $submit = $request->post("schedule_submit_$name");
+        $dates = $request->postArray("schedule_date_$name");
+        if ($submit === null) {
+            return null;
+        }
+        return ["submit" => $submit, "dates" => array_values($dates ?? [])];
     }
 
     private function input(string $name, Arguments $args, string $option, bool $checked): string

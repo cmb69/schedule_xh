@@ -5,12 +5,10 @@ parameters:
     - views
     - admin.php
     - index.php
-  scanDirectories:
-    - vendor/phpunit/phpunit
-    - vendor/mikey179/vfsstream
-    - ../plib/classes
   scanFiles:
     - ../../cmsimple/adminfuncs.php
     - ../../cmsimple/functions.php
+  scanDirectories:
+    - ../plib/classes
   typeAliases:
     html: string

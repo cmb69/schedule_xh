@@ -25,8 +25,8 @@ use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
 use Plib\FakeRequest;
 use Plib\View;
-use Schedule\Infra\FakeVoteRepo;
-use Schedule\Value\Vote;
+use Schedule\Model\FakeVoteRepo;
+use Schedule\Model\Vote;
 
 final class MainControllerTest extends TestCase
 {

@@ -19,7 +19,7 @@
  * along with Schedule_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Schedule\Value;
+namespace Schedule\Model;
 
 class Arguments
 {

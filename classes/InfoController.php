@@ -24,7 +24,7 @@ namespace Schedule;
 use Plib\Response;
 use Plib\SystemChecker;
 use Plib\View;
-use Schedule\Infra\VoteRepo;
+use Schedule\Model\VoteRepo;
 
 final class InfoController
 {

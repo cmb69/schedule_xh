@@ -19,13 +19,12 @@
  * along with Schedule_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Schedule\Infra;
+namespace Schedule\Model;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\TestCase;
-use Schedule\Value\Vote;
 
 final class VoteRepoTest extends TestCase
 {

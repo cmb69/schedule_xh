@@ -19,9 +19,7 @@
  * along with Schedule_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Schedule\Infra;
-
-use Schedule\Value\Vote;
+namespace Schedule\Model;
 
 class VoteRepo
 {

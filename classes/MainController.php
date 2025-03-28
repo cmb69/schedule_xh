@@ -24,10 +24,9 @@ namespace Schedule;
 use Plib\Request;
 use Plib\Response;
 use Plib\View;
-use Schedule\Infra\VoteRepo;
-use Schedule\Logic\Util;
-use Schedule\Value\Arguments;
-use Schedule\Value\Vote;
+use Schedule\Model\Arguments;
+use Schedule\Model\Vote;
+use Schedule\Model\VoteRepo;
 
 final class MainController
 {

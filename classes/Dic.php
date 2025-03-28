@@ -23,7 +23,7 @@ namespace Schedule;
 
 use Plib\SystemChecker;
 use Plib\View as PlibView;
-use Schedule\Infra\VoteRepo;
+use Schedule\Model\VoteRepo;
 
 class Dic
 {

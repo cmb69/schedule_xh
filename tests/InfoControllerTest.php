@@ -27,7 +27,7 @@ use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
 use Plib\FakeSystemChecker;
 use Plib\View;
-use Schedule\Infra\FakeVoteRepo;
+use Schedule\Model\FakeVoteRepo;
 
 final class InfoControllerTest extends TestCase
 {

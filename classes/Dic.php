@@ -21,6 +21,7 @@
 
 namespace Schedule;
 
+use Plib\DocumentStore;
 use Plib\SystemChecker;
 use Plib\View as PlibView;
 use Schedule\Model\VoteRepo;
@@ -33,7 +34,7 @@ class Dic
 
         return new InfoController(
             $pth["folder"]["plugins"] . "schedule/",
-            self::makeVoteRepo(),
+            self::makeDocumentStore(),
             self::makeView(),
             new SystemChecker()
         );
@@ -56,12 +57,12 @@ class Dic
 
         return new MainController(
             $plugin_cf["schedule"],
-            self::makeVoteRepo(),
+            self::makeDocumentStore(),
             self::makeView()
         );
     }
 
-    private static function makeVoteRepo(): VoteRepo
+    private static function makeDocumentStore(): DocumentStore
     {
         global $pth, $cf, $sl;
 
@@ -69,7 +70,7 @@ class Dic
         if ($sl !== $cf['language']['default']) {
             $folder = dirname($folder) . "/";
         }
-        return new VoteRepo($folder);
+        return new DocumentStore($folder . "schedule/");
     }
 
     private static function makeView(): PlibView

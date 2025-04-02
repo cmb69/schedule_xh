@@ -21,18 +21,18 @@
 
 namespace Schedule;
 
+use Plib\DocumentStore;
 use Plib\Response;
 use Plib\SystemChecker;
 use Plib\View;
-use Schedule\Model\VoteRepo;
 
 final class InfoController
 {
     /** @var string */
     private $pluginFolder;
 
-    /** @var VoteRepo */
-    private $voteRepo;
+    /** @var DocumentStore */
+    private $store;
 
     /** @var View */
     private $view;
@@ -42,12 +42,12 @@ final class InfoController
 
     public function __construct(
         string $pluginFolder,
-        VoteRepo $voteRepo,
+        DocumentStore $store,
         View $view,
         SystemChecker $systemChecker
     ) {
         $this->pluginFolder = $pluginFolder;
-        $this->voteRepo = $voteRepo;
+        $this->store = $store;
         $this->view = $view;
         $this->systemChecker = $systemChecker;
     }
@@ -89,7 +89,7 @@ final class InfoController
         foreach (['config/', 'css/', 'languages/'] as $folder) {
             $folders[] = $this->pluginFolder . $folder;
         }
-        $folders[] = $this->voteRepo->dataFolder();
+        $folders[] = $this->store->folder();
         foreach ($folders as $folder) {
             $checks[] = [
                 "key" => "syscheck_writable",

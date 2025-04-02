@@ -4,10 +4,10 @@ namespace Schedule;
 
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
+use Plib\DocumentStore;
 use Plib\FakeRequest;
 use Plib\View;
-use Schedule\Model\FakeVoteRepo;
-use Schedule\Model\Vote;
+use Schedule\Model\Voting;
 
 final class MainControllerTest extends TestCase
 {
@@ -27,10 +27,10 @@ final class MainControllerTest extends TestCase
 
     public function testRender(): void
     {
-        $voteRepo = new FakeVoteRepo();
-        $voteRepo->save("color", new Vote("cmb", ["red"]));
-        $voteRepo->save("color", new Vote("other", ["blue"]));
-        $sut = $this->sut(["voteRepo" => $voteRepo]);
+        $voting = Voting::fromString("cmb\tred\nother\tblue");
+        $store = $this->createStub(DocumentStore::class);
+        $store->method("retrieve")->willReturn($voting);
+        $sut = $this->sut(["store" => $store]);
         $response = $sut(new FakeRequest(["url" => "http://example.com/?Schedule"]), "color", "red", "green", "blue");
         Approvals::verifyHtml($response->output());
     }
@@ -48,29 +48,29 @@ final class MainControllerTest extends TestCase
 
     public function testRendersWhatUserHasVoted(): void
     {
-        $voteRepo = new FakeVoteRepo();
-        $voteRepo->save("color", new Vote("cmb", ["red", "blue"]));
-        $sut = $this->sut(["voteRepo" => $voteRepo]);
+        $store = $this->createStub(DocumentStore::class);
+        $store->method("retrieve")->willReturn(Voting::fromString("cmb\tred\tblue"));
+        $sut = $this->sut(["store" => $store]);
         $response = $sut(new FakeRequest(["username" => "cmb"]), "color", "red", "green", "blue");
         Approvals::verifyHtml($response->output());
     }
 
     public function testRendersTotalsIfConfigured(): void
     {
-        $voteRepo = new FakeVoteRepo();
-        $voteRepo->save("color", new Vote("cmb", ["red"]));
-        $voteRepo->save("color", new Vote("other", ["blue"]));
-        $sut = $this->sut(["voteRepo" => $voteRepo]);
+        $store = $this->createStub(DocumentStore::class);
+        $store->method("retrieve")->willReturn(Voting::fromString("cmb\tred\nother\tblue"));
+        $sut = $this->sut(["store" => $store]);
         $response = $sut(new FakeRequest(), "color", true, "red", "green", "blue");
         Approvals::verifyHtml($response->output());
     }
 
     public function testSubmissionSuccess(): void
     {
-        $voteRepo = new FakeVoteRepo();
-        $voteRepo->save("color", new Vote("cmb", ["red"]));
-        $voteRepo->save("color", new Vote("other", ["blue"]));
-        $sut = $this->sut(["voteRepo" => $voteRepo]);
+        $voting = Voting::fromString("cmb\tred\n\nother\tblue");
+        $store = $this->createStub(DocumentStore::class);
+        $store->method("update")->willReturn($voting);
+        $store->expects($this->once())->method("commit")->with($voting)->willReturn(true);
+        $sut = $this->sut(["store" => $store]);
         $request = new FakeRequest([
             "url" => "http://example.com/?Schedule",
             "username" => "cmb",
@@ -80,18 +80,17 @@ final class MainControllerTest extends TestCase
             ],
         ]);
         $response = $sut($request, "color", "red", "green", "blue");
-        $this->assertEquals(
-            ["cmb" => new Vote("cmb", ["blue", "green"]), "other" => new Vote("other", ["blue"])],
-            $voteRepo->findAll("color", null)
-        );
+        $this->assertSame("cmb\tblue\tgreen\nother\tblue", $voting->toString());
         $this->assertEquals("http://example.com/?Schedule", $response->location());
     }
 
     public function testCanSubmitNoChoices(): void
     {
-        $voteRepo = new FakeVoteRepo();
-        $voteRepo->save("color", new Vote("cmb", ["red"]));
-        $sut = $this->sut(["voteRepo" => $voteRepo]);
+        $voting = Voting::fromString("cmb\tred");
+        $store = $this->createStub(DocumentStore::class);
+        $store->method("update")->willReturn($voting);
+        $store->expects($this->once())->method("commit")->with($voting)->willReturn(true);
+        $sut = $this->sut(["store" => $store]);
         $request = new FakeRequest([
             "url" => "http://example.com/?Schedule",
             "username" => "cmb",
@@ -100,57 +99,46 @@ final class MainControllerTest extends TestCase
                 ]
             ]);
         $response = $sut($request, "color", "red", "green", "blue");
-        $this->assertEquals(["cmb" => new Vote("cmb", [])], $voteRepo->findAll("color"));
+        $this->assertSame("cmb", $voting->toString());
         $this->assertEquals("http://example.com/?Schedule", $response->location());
     }
 
     public function testSubmissionFailure(): void
     {
-        $voteRepo = new FakeVoteRepo();
-        $voteRepo->save("color", new Vote("cmb", ["red"]));
-        $voteRepo->save("color", new Vote("other", ["blue"]));
-        $sut = $this->sut(["voteRepo" => $voteRepo]);
+        $sut = $this->sut();
         $request = new FakeRequest(["username" => "cmb", "post" => [
             "schedule_date_color" => ["yellow", "green"],
             "schedule_submit_color" => "vote",
         ]]);
-        $sut($request, "color", "red", "green", "blue");
-        $this->assertEquals(
-            ["cmb" => new Vote("cmb", ["red"]), "other" => new Vote("other", ["blue"])],
-            $voteRepo->findAll("color")
-        );
+        $response = $sut($request, "color", "red", "green", "blue");
+        $this->assertStringContainsString("Something went wrong with voting! Please try again.", $response->output());
     }
 
     public function testPostFailureIfNotLoggedIn(): void
     {
-        $voteRepo = new FakeVoteRepo();
-        $sut = $this->sut(["voteRepo" => $voteRepo]);
+        $sut = $this->sut();
         $request = new FakeRequest(["post" => [
             "schedule_date_color" => ["blue", "green"],
             "schedule_submit_color" => "vote",
         ]]);
         $response = $sut($request, "color", "red", "green", "blue");
         Approvals::verifyHtml($response->output());
-        $this->assertEmpty($voteRepo->findAll("color"));
     }
 
     public function testPostFailureIfReadonly(): void
     {
-        $voteRepo = new FakeVoteRepo();
-        $sut = $this->sut(["voteRepo" => $voteRepo]);
+        $sut = $this->sut();
         $request = new FakeRequest(["username" => "cmb", "post" => [
             "schedule_date_color" => ["blue", "green"],
             "schedule_submit_color" => "vote",
         ]]);
         $response = $sut($request, "color", false, true, "red", "green", "blue");
         Approvals::verifyHtml($response->output());
-        $this->assertEmpty($voteRepo->findAll("color"));
     }
 
     public function testPostFailureIfUnkownOptionsAreSupplied(): void
     {
-        $voteRepo = new FakeVoteRepo();
-        $sut = $this->sut(["voteRepo" => $voteRepo]);
+        $sut = $this->sut();
         $request = new FakeRequest([
             "url" => "http://example.com/?Schedule",
             "username" => "cmb",
@@ -161,13 +149,16 @@ final class MainControllerTest extends TestCase
         ]);
         $response = $sut($request, "color", "red", "green", "blue");
         Approvals::verifyHtml($response->output());
-        $this->assertEmpty($voteRepo->findAll("color"));
     }
 
     public function testFailureToSaveVoteIsReported(): void
     {
-        $voteRepo = new FakeVoteRepo(["save" => false]);
-        $sut = $this->sut(["voteRepo" => $voteRepo]);
+        $store = $this->createStub(DocumentStore::class);
+        $voting = Voting::fromString("");
+        $store->method("retrieve")->willReturn($voting);
+        $store->method("update")->willReturn($voting);
+        $store->expects($this->once())->method("commit")->with($voting)->willReturn(false);
+        $sut = $this->sut(["store" => $store]);
         $request = new FakeRequest([
             "url" => "http://example.com/?Schedule",
             "username" => "cmb",
@@ -182,9 +173,11 @@ final class MainControllerTest extends TestCase
 
     private function sut($options = [])
     {
+        $store = $this->createStub(DocumentStore::class);
+        $store->method("retrieve")->willReturn(Voting::fromString(""));
         return new MainController(
             $this->conf(),
-            $options["voteRepo"] ?? new FakeVoteRepo(),
+            $options["store"] ?? $store,
             $this->view()
         );
     }

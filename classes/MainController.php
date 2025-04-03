@@ -21,12 +21,12 @@
 
 namespace Schedule;
 
+use Plib\CsrfProtector;
 use Plib\DocumentStore;
 use Plib\Request;
 use Plib\Response;
 use Plib\View;
 use Schedule\Model\Arguments;
-use Schedule\Model\Vote;
 use Schedule\Model\Voting;
 
 final class MainController
@@ -37,6 +37,9 @@ final class MainController
     /** @var DocumentStore */
     private $store;
 
+    /** @var CsrfProtector */
+    private $csrfProtector;
+
     /** @var View */
     private $view;
 
@@ -44,10 +47,12 @@ final class MainController
     public function __construct(
         array $conf,
         DocumentStore $store,
+        CsrfProtector $csrfProtector,
         View $view
     ) {
         $this->conf = $conf;
         $this->store = $store;
+        $this->csrfProtector = $csrfProtector;
         $this->view = $view;
     }
 
@@ -83,6 +88,10 @@ final class MainController
     private function vote(Request $request, string $name, Arguments $args): Response
     {
         if ($request->username() === null || $args->readOnly()) {
+            return Response::create($this->view->message("fail", "err_vote")
+                . $this->widget($request, $name, $args));
+        }
+        if (!$this->csrfProtector->check($request->post("schedule_token"))) {
             return Response::create($this->view->message("fail", "err_vote")
                 . $this->widget($request, $name, $args));
         }
@@ -144,6 +153,7 @@ final class MainController
             "users" => $this->users($request, $name, $args, $voting),
             "button" => "schedule_submit_$name",
             "columns" => count($args->options()) + 1,
+            "csrf_token" => $this->csrfProtector->token(),
         ]);
     }
 

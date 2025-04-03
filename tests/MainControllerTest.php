@@ -4,6 +4,7 @@ namespace Schedule;
 
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
+use Plib\CsrfProtector;
 use Plib\DocumentStore;
 use Plib\FakeRequest;
 use Plib\View;
@@ -136,6 +137,22 @@ final class MainControllerTest extends TestCase
         Approvals::verifyHtml($response->output());
     }
 
+    public function testVotingIsCsrfProtected(): void
+    {
+        $voting = Voting::fromString("");
+        $store = $this->createStub(DocumentStore::class);
+        $store->method("retrieve")->willReturn($voting);
+        $csrfProtector = $this->createStub(CsrfProtector::class);
+        $csrfProtector->method("check")->willReturn(false);
+        $sut = $this->sut(["store" => $store, "csrf" => $csrfProtector]);
+        $request = new FakeRequest(["username" => "cmb", "post" => [
+            "schedule_date_color" => ["blue", "green"],
+            "schedule_submit_color" => "vote",
+        ]]);
+        $response = $sut($request, "color", "red", "green", "blue");
+        $this->assertStringContainsString("Something went wrong with voting! Please try again.", $response->output());
+    }
+
     public function testPostFailureIfUnkownOptionsAreSupplied(): void
     {
         $sut = $this->sut();
@@ -175,9 +192,13 @@ final class MainControllerTest extends TestCase
     {
         $store = $this->createStub(DocumentStore::class);
         $store->method("retrieve")->willReturn(Voting::fromString(""));
+        $csrfProtector = $this->createStub(CsrfProtector::class);
+        $csrfProtector->method("token")->willReturn("123456789");
+        $csrfProtector->method("check")->willReturn(true);
         return new MainController(
             $this->conf(),
             $options["store"] ?? $store,
+            $options["csrf"] ?? $csrfProtector,
             $this->view()
         );
     }

@@ -14,6 +14,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {header("HTTP/1.1 403 Forbidden"); exit;}
  * @var array<string,list<array{class:string,content:string}>> $users
  * @var string $button
  * @var int $columns
+ * @var string $csrf_token
  */
 ?>
 <!-- schedule planner -->
@@ -58,6 +59,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {header("HTTP/1.1 403 Forbidden"); exit;}
     </tbody>
   </table>
 <?if ($voting):?>
+  <input type="hidden" name="schedule_token" value="<?=$this->esc($csrf_token)?>">
 </form>
 <?else:?>
 </div>

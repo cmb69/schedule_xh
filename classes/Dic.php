@@ -21,6 +21,7 @@
 
 namespace Schedule;
 
+use Plib\CsrfProtector;
 use Plib\DocumentStore;
 use Plib\SystemChecker;
 use Plib\View as PlibView;
@@ -58,6 +59,7 @@ class Dic
         return new MainController(
             $plugin_cf["schedule"],
             self::makeDocumentStore(),
+            new CsrfProtector(),
             self::makeView()
         );
     }

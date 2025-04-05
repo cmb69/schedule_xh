@@ -18,7 +18,7 @@ final class InfoControllerTest extends TestCase
         $store->method("folder")->willReturn("./content/schedule/");
         $sut = new InfoController("./plugins/schedule/", $store, $this->view(), new FakeSystemChecker());
         $response = $sut();
-        $this->assertEquals("Schedule 2.1-dev", $response->title());
+        $this->assertEquals("Schedule 2.1", $response->title());
         Approvals::verifyHtml($response->output());
     }
 

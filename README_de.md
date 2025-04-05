@@ -36,9 +36,7 @@ kann von Github herunter geladen werden.
 ## Installation
 
 Die Installation erfolgt wie bei vielen anderen CMSimple_XH-Plugins
-auch. Im
-[CMSimple\_XH-Wiki](https://wiki.cmsimple-xh.org/doku.php/de:installation#plugins)
-finden Sie weitere Details.
+auch.
 
 1. **Sichern Sie die Daten auf Ihrem Server.**
 1. Entpacken Sie die ZIP-Datei auf Ihrem Rechner.
@@ -108,7 +106,7 @@ beschränken; wenn Besucher Ihrer Website nicht angemeldet sind, werden sie eben
 nur die aktuellen Ergebnisse sehen, ohne jedoch abstimmen zu können. Daher
 können Sie den Planer auch im Template platzieren:
 
-    <?php echo schedule('%NAME%', %GESAMTERGEBNIS%, %SCHREIBGESCHÜTZT%, %MEHRFACH%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%')?>
+    <?=schedule('%NAME%', %GESAMTERGEBNIS%, %SCHREIBGESCHÜTZT%, %MEHRFACH%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%')?>
 
 Wenn sie allerdings die Abstimmung auf eine bestimmte Benutzergruppe bzw.
 Zugriffsebene beschränken wollen, müssen Sie den Planer auf einer Seite

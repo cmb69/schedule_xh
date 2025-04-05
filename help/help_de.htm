@@ -51,7 +51,7 @@
 <h2 id="download">Download</h2>
 <p>Das <a href="https://github.com/cmb69/schedule_xh/releases/latest">aktuelle Release</a> kann von Github herunter geladen werden.</p>
 <h2 id="installation">Installation</h2>
-<p>Die Installation erfolgt wie bei vielen anderen CMSimple_XH-Plugins auch. Im <a href="https://wiki.cmsimple-xh.org/doku.php/de:installation#plugins">CMSimple_XH-Wiki</a> finden Sie weitere Details.</p>
+<p>Die Installation erfolgt wie bei vielen anderen CMSimple_XH-Plugins auch.</p>
 <ol type="1">
 <li><strong>Sichern Sie die Daten auf Ihrem Server.</strong></li>
 <li>Entpacken Sie die ZIP-Datei auf Ihrem Rechner.</li>
@@ -76,7 +76,7 @@
 <li><code>%OPTION_X%</code>: Der Name der Option, der als Überschrift der entsprechenden Tabellenspalte angezeigt wird. Dies ist normalerweise ein Datum, aber da dieser Name keine semantische Bedeutung für Schedule_XH hat, kann es eine beliebige Zeichenkette sein. Grundsätzlich können Sie so viele Option angegeben wie Sie möchten.</li>
 </ul>
 <p>Es ist nicht erforderlich den Zugriff auf diese Seite auf Mitglieder zu beschränken; wenn Besucher Ihrer Website nicht angemeldet sind, werden sie eben nur die aktuellen Ergebnisse sehen, ohne jedoch abstimmen zu können. Daher können Sie den Planer auch im Template platzieren:</p>
-<pre><code>&lt;?php echo schedule(&#39;%NAME%&#39;, %GESAMTERGEBNIS%, %SCHREIBGESCHÜTZT%, %MEHRFACH%, &#39;%OPTION_1%&#39;, &#39;%OPTION_2%&#39;, &#39;%OPTION_N%&#39;)?&gt;</code></pre>
+<pre><code>&lt;?=schedule(&#39;%NAME%&#39;, %GESAMTERGEBNIS%, %SCHREIBGESCHÜTZT%, %MEHRFACH%, &#39;%OPTION_1%&#39;, &#39;%OPTION_2%&#39;, &#39;%OPTION_N%&#39;)?&gt;</code></pre>
 <p>Wenn sie allerdings die Abstimmung auf eine bestimmte Benutzergruppe bzw. Zugriffsebene beschränken wollen, müssen Sie den Planer auf einer Seite unterbringen, die nur Mitgliedern mit entsprechender Berechtigung zugänglich ist.</p>
 <h3 id="aufruf-assistent">Aufruf-Assistent</h3>
 <p>Um das Schreiben der Pluginaufrufe zu vereinfachen, gibt es im Backend einen Aufruf-Assistenten (<code>Plugins</code> → <code>Schedule</code> → <code>Aufruf-Assistent</code>). Sie können die gewünschten Eigenschaften der Planung/Abstimmung eingeben; beachten Sie, dass jeweils eine Option per Zeile in das Textfeld eingetragen wird. Wenn Sie <code>Erstellen</code> drücken, wird der vollständige Pluginaufruf in dem unteren Textfeld angezeigt, von wo Sie ihn per Copy &amp; Paste auf der gewünschte Seiten platzieren können.</p>

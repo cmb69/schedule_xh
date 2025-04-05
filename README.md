@@ -35,9 +35,7 @@ is available for download on Github.
 
 ## Installation
 
-The installation is done as with many other CMSimple\_XH plugins. See the
-[CMSimple\_XH wiki](https://wiki.cmsimple-xh.org/doku.php/installation#plugins)
-for further details.
+The installation is done as with many other CMSimple\_XH plugins.
 
 1. **Backup the data on your server.**
 1. Unzip the distribution on your computer.
@@ -101,7 +99,7 @@ It is not necessary to restrict access to this page to members; if visitors
 of your site are not logged in, they will just see the current results, without
 being able to vote. So you can even place the planner in the template:
 
-    <?=schedule('%NAME%', %SHOW_TOTALS%, %READ_ONLY%, %MULTI%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%');?>
+    <?=schedule('%NAME%', %SHOW_TOTALS%, %READ_ONLY%, %MULTI%, '%OPTION_1%', '%OPTION_2%', '%OPTION_N%')?>
 
 However, if you want to restrict the voting to a certain user group or
 access level, you have to place the planner on a page, which can only be

@@ -39,7 +39,7 @@ function initCallBuilder(form) {
     if (!(textarea instanceof HTMLTextAreaElement)) return;
 
     parseButton.onclick = () => {
-        const call = textarea.value.replace(/^\s*{{{\s*schedule\s*\(\s*|\s*\)\s*}}}\s*$/g, "");
+        const call = textarea.value.replace(/^\s*{{{\s*schedule\s*\(\s*|\s*\)[;\s]*}}}\s*$/g, "");
         const args = call.split(/\s*,\s*/g);
         const arg = args.shift();
         if (arg !== undefined) {

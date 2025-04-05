@@ -108,4 +108,26 @@
     <delete dir="dist"/>
   </target>
 
+  <target name="build-patch" description="builds a distributable update package">
+    <fail unless="patchee" message="patchee is not defined!"/>
+    <unzip file="Schedule_XH-2.1.zip" todir="current"/>
+    <unzip file="${patchee}" todir="patchee"/>
+    <copy todir="dist">
+      <fileset dir="current">
+        <different targetdir="patchee" ignoreFileTimes="true"/>
+      </fileset>
+    </copy>
+    <delete>
+      <fileset dir="dist/schedule">
+        <include name="config/config.php"/>
+        <include name="languages/??.php"/>
+        <include name="css/stylesheet.css"/>
+      </fileset>
+    </delete>
+    <zip destfile="Schedule_XH-2.1-update-from-2.x.zip" basedir="dist" includeemptydirs="false"/>
+    <delete dir="patchee" quiet="true"/>
+    <delete dir="current" quiet="true"/>
+    <delete dir="dist" quiet="true"/>
+  </target>
+
 </project>

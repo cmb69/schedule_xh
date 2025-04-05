@@ -70,7 +70,7 @@ final class MainControllerTest extends TestCase
         $voting = Voting::fromString("cmb\tred\n\nother\tblue");
         $store = $this->createStub(DocumentStore::class);
         $store->method("update")->willReturn($voting);
-        $store->expects($this->once())->method("commit")->with($voting)->willReturn(true);
+        $store->expects($this->once())->method("commit")->willReturn(true);
         $sut = $this->sut(["store" => $store]);
         $request = new FakeRequest([
             "url" => "http://example.com/?Schedule",
@@ -90,7 +90,7 @@ final class MainControllerTest extends TestCase
         $voting = Voting::fromString("cmb\tred");
         $store = $this->createStub(DocumentStore::class);
         $store->method("update")->willReturn($voting);
-        $store->expects($this->once())->method("commit")->with($voting)->willReturn(true);
+        $store->expects($this->once())->method("commit")->willReturn(true);
         $sut = $this->sut(["store" => $store]);
         $request = new FakeRequest([
             "url" => "http://example.com/?Schedule",
@@ -174,7 +174,7 @@ final class MainControllerTest extends TestCase
         $voting = Voting::fromString("");
         $store->method("retrieve")->willReturn($voting);
         $store->method("update")->willReturn($voting);
-        $store->expects($this->once())->method("commit")->with($voting)->willReturn(false);
+        $store->expects($this->once())->method("commit")->willReturn(false);
         $sut = $this->sut(["store" => $store]);
         $request = new FakeRequest([
             "url" => "http://example.com/?Schedule",

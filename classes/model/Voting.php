@@ -29,7 +29,7 @@ final class Voting implements Document
     private $votes;
 
     /** @return static */
-    public static function fromString(string $contents)
+    public static function fromString(string $contents, string $key = "")
     {
         $data = [];
         if ($contents !== "") {

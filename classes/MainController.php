@@ -100,9 +100,9 @@ final class MainController
                 . $this->widget($request, $name, $args));
         }
         $voting = $this->store->update($name . ".csv", Voting::class);
-        assert($voting instanceof Voting); // won't return null
+        assert($voting instanceof Voting);
         $voting->vote($request->username(), $choices);
-        if (!$this->store->commit($voting)) {
+        if (!$this->store->commit()) {
             return Response::create($this->view->message("fail", "err_save")
                 . $this->widget($request, $name, $args));
         }

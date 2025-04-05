@@ -169,7 +169,7 @@ final class MainController
         return $totals;
     }
 
-    /** @return array<string,list<array{class:string,content:string}>> */
+    /** @return array<string,list<object{class:string,content:string}>> */
     private function users(Request $request, string $name, Arguments $args, Voting $voting): array
     {
         $users = [];
@@ -177,7 +177,7 @@ final class MainController
             $users[$voter] = [];
             foreach ($args->options() as $option) {
                 $ok = in_array($option, $choices, true);
-                $users[$voter][] = [
+                $users[$voter][] = (object) [
                     "class" => $ok ? "schedule_green" : "schedule_red",
                     "content" => $voter === $request->username()
                         ? $this->input($name, $args, $option, $ok)

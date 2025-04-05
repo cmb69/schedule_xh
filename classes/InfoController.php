@@ -61,27 +61,27 @@ final class InfoController
     }
 
     /**
-     * @return list<array{key:string,arg:string,class:string}>
+     * @return list<object{key:string,arg:string,class:string}>
      */
     private function systemChecks(): array
     {
         $phpVersion = '7.1.0';
         $checks = [];
-        $checks[] = [
+        $checks[] = (object) [
             "key" => "syscheck_phpversion",
             "arg" => $phpVersion,
             "class" => $this->systemChecker->checkVersion(PHP_VERSION, $phpVersion) ? "xh_success" : "xh_fail",
         ];
         $xhVersion = "1.7.0";
         $okay = $this->systemChecker->checkVersion(CMSIMPLE_XH_VERSION, "CMSimple_XH $xhVersion");
-        $checks[] = [
+        $checks[] = (object) [
             "key" => "syscheck_xhversion",
             "arg" => $xhVersion,
             "class" => $okay ? "xh_success" : "xh_fail",
         ];
         $plibVersion = "1.6";
         $okay = $this->systemChecker->checkPlugin("plib", $plibVersion);
-        $checks[] = [
+        $checks[] = (object) [
             "key" => "syscheck_plibversion",
             "arg" => $plibVersion,
             "class" => $okay ? "xh_success" : "xh_fail",
@@ -91,7 +91,7 @@ final class InfoController
         }
         $folders[] = $this->store->folder();
         foreach ($folders as $folder) {
-            $checks[] = [
+            $checks[] = (object) [
                 "key" => "syscheck_writable",
                 "arg" => $folder,
                 "class" => $this->systemChecker->checkWritability($folder) ? "xh_success" : "xh_warning",

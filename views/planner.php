@@ -9,9 +9,9 @@ if (!defined("CMSIMPLE_XH_VERSION")) {header("HTTP/1.1 403 Forbidden"); exit;}
  * @var bool $show_totals
  * @var ?string $voting
  * @var string $url
- * @var array<string> $options
+ * @var list<string> $options
  * @var list<int> $totals
- * @var array<string,list<array{class:string,content:string}>> $users
+ * @var array<string,list<object{class:string,content:string}>> $users
  * @var string $button
  * @var int $columns
  * @var string $csrf_token
@@ -37,7 +37,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {header("HTTP/1.1 403 Forbidden"); exit;}
       <tr>
         <td class="schedule_user"><?=$this->esc($user)?></td>
 <?  foreach ($cells as $cell):?>
-        <td class="<?=$this->esc($cell['class'])?>"><?=$this->raw($cell['content'])?></td>
+        <td class="<?=$this->esc($cell->class)?>"><?=$this->raw($cell->content)?></td>
 <?  endforeach?>
       </tr>
 <?endforeach?>

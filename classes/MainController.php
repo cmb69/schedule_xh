@@ -74,8 +74,7 @@ final class MainController
     private function widget(Request $request, string $name, Arguments $args): string
     {
         $user = (!$args->readOnly() && $request->username() !== null) ? $request->username() : null;
-        $voting = $this->store->retrieve($name . ".csv", Voting::class);
-        assert($voting instanceof Voting); // won't return null
+        $voting = Voting::retrieve($name, $this->store);
         if ($user && !$voting->voted($user)) {
             $voting->vote($user, []);
         }
@@ -99,8 +98,7 @@ final class MainController
             return Response::create($this->view->message("fail", "err_vote")
                 . $this->widget($request, $name, $args));
         }
-        $voting = $this->store->update($name . ".csv", Voting::class);
-        assert($voting instanceof Voting);
+        $voting = Voting::update($name, $this->store);
         $voting->vote($request->username(), $choices);
         if (!$this->store->commit()) {
             return Response::create($this->view->message("fail", "err_save")

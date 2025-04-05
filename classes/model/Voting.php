@@ -22,11 +22,26 @@
 namespace Schedule\Model;
 
 use Plib\Document;
+use Plib\DocumentStore;
 
 final class Voting implements Document
 {
     /** @var array<string,list<string>> */
     private $votes;
+
+    public static function retrieve(string $name, DocumentStore $store): self
+    {
+        $that = $store->retrieve($name . ".csv", Voting::class);
+        assert($that !== null);
+        return $that;
+    }
+
+    public static function update(string $name, DocumentStore $store): self
+    {
+        $that = $store->update($name . ".csv", Voting::class);
+        assert($that !== null);
+        return $that;
+    }
 
     /** @return static */
     public static function fromString(string $contents, string $key = "")
